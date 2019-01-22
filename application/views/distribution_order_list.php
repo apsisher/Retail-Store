@@ -1,0 +1,149 @@
+<style>
+p{
+    margin:0px;
+}
+</style>
+<section class="content-header">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull pull-right">
+                <button onclick="printDiv('print-section')" class="btn btn-default btn-md btn-flat   pull-right "><i class="fa fa-print  pull-left"></i> Print Report</button>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box" id="print-section">
+                <div class="box-header no-print">
+                    <h3 class="box-title"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 
+                        <?php  echo $table_name; ?>
+                    </h3>
+                    <p>
+                        <small>Used to generate the list of goods supplied to salesman</small>
+                    </p>
+                </div>
+                <div class="box-body">
+                    <?php
+                    if($order_list != NULL)
+                    {
+                    ?>
+                    <div class="col-md-12">
+                        <h3 class="text-center">
+                            <?php 
+                                echo $company_info[0]->companyname; 
+                            ?>
+                            (Order List)
+                        </h3>
+                        
+                    </div>                 
+                    <div class="col-md-12">
+                        <div class="col-md-6 text-left">Sales man : <?php echo $order_list[0]->name; ?></div>
+                        <div class="col-md-6 text-right">Date : <?php echo $order_list[0]->add_date; ?></div>
+                    </div>
+                    <div class="col-md-12 table-responsive">
+                        <table id="" class="table table-hover table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <td>Sno</td>
+                                    <td>Name</td>
+                                    <td>Company</td>
+                                    <td>Opening Stock</td>
+                                    <td>Stock Out(Packs)</td>
+                                    <td>Stock Return</td>
+                                    <td>Stock Sale</td>
+                                    <td>Qty</td>
+                                    <td>Rate (<?php echo $company_info[0]->currency; ?>)</td>
+                                    <td>Total (<?php echo $company_info[0]->currency; ?>)</td>
+                                    <td>Closing Stock</td>
+                                    <td class="no-print"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    
+                                $counter = 1;
+                                $total = 0;
+                                foreach ($order_list as $single_list)
+                                {
+                                    $discount =  (($single_list->price * $single_list->pack) / 100) * $single_list->discount;
+                                    
+                                    $total = $total + (($single_list->price * $single_list->pack) - $discount);
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <?php echo $counter++; ?>
+                                        </td>
+                                        <td>
+                                           <small> <?php echo $single_list->product_name; ?></small>
+                                        </td>
+                                        <td>
+                                           <small> <?php echo $single_list->customer_name; ?></small>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_list->opening_stock; ?>
+                                        </td>
+                                        <td>
+                                        <?php echo $single_list->pack; ?>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                           
+                                        </td>
+                                        <td>
+                                            <?php echo $single_list->price;  ?>
+                                        </td>
+                                        <td>
+                                            <?php echo ($single_list->price * $single_list->pack) - $discount; ?>
+                                            <small style="float:right;"> (<?php echo $single_list->discount.'%'; ?>)</small>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td class="no-print">
+                                            <div class="btn-group pull no-print pull-right">
+                                                <button type="button" class="btn btn-info btn-flat">Action</button>
+                                                <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a onclick="confirmation_alert('make this trashed  ','<?php echo base_url(); ?>order_list/delete_orderlist/<?php echo $single_list->id.'/'.$date.'/'.$salesman_id; ?>')" href="#" >
+                                                            <i class="fa fa-trash"></i> 
+                                                            Delete
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        }
+                                     ?>
+                                    <tr>
+                                        <td colspan="9"></td>
+                                        <td ><b><?php echo  $total; ?></b></td>
+                                        <td ></td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                        
+                        </div>
+                        <?php
+                            }             
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- Bootstrap model  -->
+<?php $this->load->view('bootstrap_model.php'); ?>
+<!-- Bootstrap model  ends--> 
