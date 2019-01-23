@@ -10,8 +10,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Payee extends CI_Controller
 {
-	
-	
 	// Payee
 	public function index()
 

@@ -133,6 +133,10 @@ class Layout extends CI_Controller
 		$company_primary_color = html_escape($this->input->post('company_primary_color'));
 		$company_primary_hover = html_escape($this->input->post('company_primary_hover'));
 		$company_expire_time = html_escape($this->input->post('company_expire_time'));
+		$startday = html_escape($this->input->post('startday'));
+		$startmonth = html_escape($this->input->post('startmonth'));
+		$endday = html_escape($this->input->post('endday'));
+		$endmonth = html_escape($this->input->post('endmonth'));
 
 		// ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY
 		$data = array(
@@ -146,7 +150,11 @@ class Layout extends CI_Controller
 			'language' => $company_language,
 			'primarycolor' => $company_primary_color,
 			'theme_pri_hover' => $company_primary_hover,
-			'expirey' => $company_expire_time
+			'expirey' => $company_expire_time,
+			'startday' => $startday,
+			'startmonth' => $startmonth,
+			'endday' => $endday,
+			'endmonth' => $endmonth,
 		);
 
 		// TABLENAME AND ID FOR DATABASE ACTION

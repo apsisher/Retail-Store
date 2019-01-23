@@ -83,13 +83,7 @@ class Homepage extends CI_Controller
 		//EXPENSE AMOUNT 
 		$data['purchase_amount'] = $this->Accounts_model->purchase_amount();
 
-		$data['customers_count'] = $this->Crud_model->count_product('mp_payee', 'type', 'customer');
-
-		//Count Suppliers
-		$data['suppliers_count'] = $this->Crud_model->count_product('mp_payee', 'type', 'supplier');
-
-		//SUPPLIERS
-		$data['result_supplier'] = $this->Crud_model->fetch_payee_record('supplier',NULL);
+		$data['recent_accounts'] = $this->Crud_model->recent_accounts();
 
 		//CUSTOMER
 		$data['result_customer'] = $this->Crud_model->fetch_payee_record('customer',NULL);

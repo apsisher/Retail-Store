@@ -107,7 +107,7 @@ if (!function_exists('color_options'))
 if (!function_exists('balance_identifier'))
 {
 	//USED TO FETCH AND COUNT THE NUMBER OF OCCURANCE IN RETURN STOCK
-	function balance_identifier($source,$current_balance,$trans_balance)
+	function balance_identifier($source,$current_balance,$total_bill,$total_paid)
 	{
 		$balance = 0;
 		
@@ -116,81 +116,93 @@ if (!function_exists('balance_identifier'))
 
 			case  'Opening_balance':
 			{
-				$balance = $current_balance + $trans_balance;
+				$balance = $current_balance + $total_bill;
+				break;
+			}
+
+			case  'bank_collection':
+			{
+				$balance = $current_balance - $total_paid;
 				break;
 			}
 
 			case  'debit_voucher':
 			{
-				$balance = $current_balance - $trans_balance;	
+				$balance = $current_balance + $total_paid;	
 				break;
 			}
 			case  'expense':
 			{
 			
-				$balance = $current_balance - $trans_balance;
+				$balance = $current_balance - ($total_bill - $total_paid);
 				break;
 			}
-			case  'purchase_receipt':
+			case  'create_purchases':
 			{
 
-				$balance = $current_balance - $trans_balance;
+				$balance = $current_balance - ($total_bill - $total_paid);
 				break;
 
 			}
 			case  'cheque':
 			{
 
-				$balance = $current_balance - $trans_balance;
+				$balance = $current_balance + $total_paid;
 				break;
 			}
 			case  'refund_receipt':
 			{
 				
-				$balance = $current_balance - $trans_balance;
+				$balance = $current_balance - $total_paid;
 				break;
 			}
 			case  'credit_note':
 			{
 
-				$balance = $current_balance -  $trans_balance;
+				$balance = $current_balance -  $total_paid;
 				break;
 			}
 			case  'deposit':
 			{
-				$balance = $current_balance -  $trans_balance;
+				$balance = $current_balance -  $total_paid;
 				break;
 			}
 			case  'sales_receipt':
 			{
 
-				$balance = $current_balance +  $trans_balance;
+				$balance = $current_balance +  ($total_bill - $total_paid);
 				break;
 			}	
-			case  'received_payments':
+			case  'purchases_return':
 			{
 
-				$balance = $current_balance -  $trans_balance;
+				$balance = $current_balance + ($total_bill - $total_paid);
 				break;
 			}	
 
 			case  'credit_voucher':
 			{
 
-				$balance = $current_balance +  $trans_balance;
+				$balance = $current_balance -  $total_paid;
 				break;
 			}	
 
 			case  'purchase_return':
 			{
-				$balance = $current_balance +  $trans_balance;
+				$balance = $current_balance +  $total_paid;
 				break;
 			}
-
-			case  'invoice':
+			
+			case  'pos':
 			{
 
-				$balance = $current_balance +  $trans_balance;
+				$balance = $current_balance +  ($total_bill - $total_paid);
+				break;
+			}
+			case  'return_pos':
+			{
+
+				$balance = $current_balance -  ($total_bill - $total_paid);
 				break;
 			}
 
@@ -210,7 +222,7 @@ if (!function_exists('source_identifier'))
 	//USED TO FETCH AND COUNT THE NUMBER OF OCCURANCE IN RETURN STOCK
 	function source_identifier($source)
 	{
-		if($source == 'debit_voucher' OR $source == 'expense' OR $source == 'purchase_receipt' OR $source == 'cheque'OR $source == 'refund_receipt')
+		if($source == 'debit_voucher' OR $source == 'expense' OR $source == 'purchase_receipt' OR $source == 'cheque' OR $source == 'create_purchases' OR $source == 'return_pos')
 		{
 			$data = 'yes';
 		}

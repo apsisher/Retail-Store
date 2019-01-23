@@ -521,7 +521,6 @@ class Purchase extends CI_Controller
 	//	Purchase/add_purchase
 	public function add_purchase()
 	{
-		
 		// DEFINES LOAD CRUDS_MODEL FORM MODELS FOLDERS
 		$this->load->model('Crud_model');
 		$this->load->model('Transaction_model');

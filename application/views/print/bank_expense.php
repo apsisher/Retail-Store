@@ -1,5 +1,18 @@
 <section class="content-header">
     <div class="row">
+      <div class="col-md-12">
+            <ol class="breadcrumb pull-right">
+                <li>
+                    <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+                </li>
+                <li>
+                  <a href="<?php echo base_url('expense'); ?>"> Expense</a>
+                </li>
+                <li class="active">Print expense</li>
+            </ol>
+      </div> 
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="pull pull-right">
                 <button onclick="printDiv('print-section')" class="btn btn-default btn-sm pull-right "><i class="fa fa-print pull-left"></i> Print Report
@@ -22,32 +35,36 @@
                <img class="print-logo-size pull-right" src="<?php echo base_url('uploads/systemimgs/'.$default_data[0]->logo); ?>" />
            </div>
         </div>  
-        <br />
         <div class="row"> 
            <div class="col-md-12">
-                <h2 class="invoice-title"><b>PURCHASE ORDER</b></h2>
+                <h2 class="invoice-title"><b>BANK EXPENSE VOUCHER</b></h2>
            </div> 
        </div> 
        <div class="row set-border-bottom"> 
            <div class="col-md-4 col-sm-4 pull-left">
-                <h3 ><b>TO </b></h3>
-                <h4 > <?php echo $user_data[0]->customer_name; ?></h4>
+                <h3 ><b>EXPENSE TO </b></h3>
+                <h4 > <?php echo $bank_data[0]->bankname; ?></h4>
            </div>  
            <div class="col-md-4 col-sm-4 pull-right">
                 <span class="pull-right">
-                    <h4 ><b class="invoice-heading"> PO NO </b><span class="pull-right" > <?php echo $estimate_data[0]->id; ?></span></h4>
-                    <h4 ><b class="invoice-heading"> DATE  </b> <span class="pull-right" > <?php echo $estimate_data[0]->date; ?> </span></h4> 
-                    <h4 ><b class="invoice-heading"> EXPIRATION DATE  </b> <span class="pull-right" > <?php echo $estimate_data[0]->expire_date; ?> </span></h4>
+                    <h4 ><b class="invoice-heading"> BANK EXPENSE  NO </b><span class="pull-right" > <?php echo $expense_data[0]->id; ?></span></h4>
+                    <h4 ><b class="invoice-heading"> REF  NO </b><span class="pull-right" > <?php echo $expense_data[0]->ref_no; ?></span></h4>
+                    <h4 ><b class="invoice-heading"> DATE  </b> <span class="pull-right" > <?php echo $expense_data[0]->date; ?> </span></h4>
                 </span>
            </div> 
           
+       </div>  
+       <div class="row set-border-bottom"> 
+           <div class="col-md-4 col-sm-4 pull-left">
+                <h3 ><b>METHOD </b></h3>
+                <h4 > <?php echo $expense_data[0]->method; ?></h4>
+           </div>  
        </div>
        <?php 
-        $subtotal = 0;
-        $tax = 0;
+          $subtotal = 0;
+          $tax = 0;
         if($sales_data != NULL)
         {
-            
         ?>
        <div class="row">
            <div class="col-md-12">
@@ -55,24 +72,17 @@
                    <tr class="table-invoice-row">
                        <th>SERVICE</th>
                        <th>DESCRIPTION</th>
-                       <th>QTY</th>
-                       <th>RATE</th>
-                       <th>TAX</th>
                        <th>AMOUNT</th>
                    </tr>
                    <?php 
                     foreach ($sales_data  as $sale) 
                     {
-                        $subtotal = $subtotal + ($sale->qty*$sale->price);
-                        $tax      = $tax      + $sale->tax;
+                        $subtotal = $subtotal + $sale->price;
                     ?>
                    <tr>
-                       <td><b><?php echo $sale->id; ?></b></td>
+                       <td><b><?php echo $sale->name; ?></b></td>
                        <td><?php echo $sale->description; ?></td>
-                       <td><?php echo $sale->qty; ?></td>
                        <td><?php echo $sale->price; ?></td>
-                       <td><?php echo $sale->tax; ?></td>
-                       <td><?php echo $sale->qty*$sale->price; ?></td>
                    </tr>
                    <?php 
                     }
@@ -88,28 +98,26 @@
            <div class="col-md-4 col-sm-4 pull-right">
             <table class="table footer-table">
                    <tr>
-                       <td><b>SUBTOTAL</b></td>
-                       <td><?php echo $subtotal; ?></td>
+                       <td><b>TOTAL EXPENSE</b></td>
+                       <td> <?php echo $default_data[0]->currency.' '.$subtotal; ?></td>
+                   </tr>
+                    <tr>
+                       <td><b>TOTAL PAID</b></td>
+                       <td> 
+                        <?php echo $default_data[0]->currency.' '.$subtotal; ?></td>
                    </tr>
                    <tr>
-                       <td><b>TAX</b></td>
-                       <td><?php echo $tax; ?></td>
-                   </tr>
-                   <tr>
-                       <td><b>TOTAL</b></td>
-                       <td><?php echo $subtotal + $tax; ?></td>
+                       <td><b>BALANCE</b></td>
+                       <td> 
+                        0
+                      </td>
                    </tr>
                </table>
            </div>
        </div>
        <div class="row">
            <div class="col-md-12">
-               <p>Message : <?php echo $estimate_data[0]->invoicemessage; ?></p>
-           </div>
-       </div> 
-       <div class="row">
-           <div class="col-md-12 text-center accepted-row">
-               <p><span  >Accepted By ___________________ </span> <span > Accepted Date ___________________ </span></p>
+               <p class="text-center"><i>Invoice generated through Bedana accounting software</i></p>
            </div>
        </div>
     </div>

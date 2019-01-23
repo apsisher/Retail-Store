@@ -32,19 +32,11 @@
 				    	<label>Product/Service Type :</label>
 				    	 <select name="product_type" onchange="check_type(this.value)" class="form-control input-lg">
 		                        <option value="0">Service</option>
-		                        <option value="1">Finished Product</option>
 		                </select>
 				    </div>
-				     <div id="cost_per_item" class="form-group">  
-						<?php
-							echo form_label('Cost Per Item :');
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'cost_price','value'=>0);
-							echo form_input($data);	
-						 ?>	
-				    </div> 
 				  	<div class="form-group">  
 						<?php
-							echo form_label('Price/Rate :');
+							echo form_label('Fee/Charges :');
 							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'price','value'=>'0');
 							echo form_input($data);	
 						 ?>	

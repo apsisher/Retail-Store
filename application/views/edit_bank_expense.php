@@ -1,3 +1,16 @@
+<div class="row">
+  <div class="col-md-12">
+    <ol class="breadcrumb pull-left">
+        <li>
+            <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+        </li>
+        <li>
+          <a href="<?php echo base_url('expense/bank_expense'); ?>"> Bank expense</a>
+        </li>
+        <li class="active"> Edit bank expense</li>
+    </ol>
+  </div> 
+</div>
 <div class="invoice">
   <section>
       <div class="row">
@@ -19,7 +32,7 @@
               <?php
                   $attributes = array('id'=>'update_bank_expense','method'=>'post','class'=>'');
               ?>
-              <?php echo form_open('expense/update_bank_expense',$attributes); ?>
+              <?php echo form_open_multipart('expense/update_bank_expense',$attributes); ?>
               <div class="row">
                  <div class="col-md-4 col-sm-12">
                     <div class="form-group">
@@ -176,27 +189,39 @@
                             </tfoot>
                        </table>
                       </div>
-                      <div class="col-md-12 ">
-                        <div class="form-group">
-                            <?php echo form_label('Memo'); ?>
-                            <?php               
-                                $data = array('class'=>'form-control input-lg ','type'=>'text','name'=>'memo','value'=>$parent_row[0]->description,'reqiured'=>'');
-                                echo form_input($data);             
-                            ?>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <?php echo form_label('Memo'); ?>
+                              <?php               
+                                  $data = array('class'=>'form-control input-lg ','type'=>'text','name'=>'memo','value'=>$parent_row[0]->description,'reqiured'=>'');
+                                  echo form_input($data);             
+                              ?>
+                          </div>
                         </div>
-                      </div>  
-                      <div class="col-md-12 ">
-                        <div class="form-group">
-                          
-                            <?php               
-                                 $data = array('class'=>'','type'=>'hidden','name'=>'transaction_id','value'=>$parent_row[0]->transaction_id);
-                                echo form_input($data);       
+                      </div>   
+                       <div class="row">
+                          <div class="col-md-5 ">
+                            <div class="form-group">
+                              <label> <i class="fa fa-paperclip" aria-hidden="true" ></i> Attachments  Maximum size: 25MB</label>
+                                <?php               
+                                    $data = array('class'=>'input-lg ','type'=>'file','name'=>'attachment','reqiured'=>'');
+                                    echo form_input($data);  
 
-                                $data = array('class'=>'','type'=>'hidden','name'=>'expense_id','value'=>$parent_row[0]->id);
-                                echo form_input($data);            
-                            ?>
-                        </div>
-                      </div>                  
+                                     $data = array('class'=>'','type'=>'hidden','name'=>'transaction_id','value'=>$parent_row[0]->transaction_id);
+                                    echo form_input($data);       
+
+                                    $data = array('class'=>'','type'=>'hidden','name'=>'expense_id','value'=>$parent_row[0]->id);
+                                    echo form_input($data);                 
+                                ?>
+                            </div>
+                          </div>
+                           <div class="col-md-7">
+                            <span class="pull-right">
+                              <img class="img-setting" src="<?php echo base_url('uploads/bank_expense/').$parent_row[0]->attachment;?>" >
+                            </span>
+                          </div>                    
+                      </div>               
                       <div class="col-md-12 ">
                           <div class="form-group">
                               <center>

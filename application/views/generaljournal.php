@@ -1,50 +1,76 @@
 <section class="content-header">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="pull pull-left">
+               <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">General journal</li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="pull pull-right">
-                <button onclick="printDiv('print-section')" class="btn btn-default btn-lg btn-flat   pull-right "><i class="fa fa-print  pull-left"></i> Print Report</button>
+                <button onclick="printDiv('print-section')" class="btn btn-default btn-flat   pull-right "><i class="fa fa-print  pull-left"></i> Print / Pdf</button>
             </div>
         </div>
     </div>
 </section>
 <section class="content">
     <div class="box" id="print-section">
-        <div class="box-body box-bg ">
-            <div class="make-container-center">
+        <div class="box-header no-print">
+            <h3 class="box-title"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> General Journal</h3>
+        </div>
+        <div class="box-body ">
             <?php
                 $attributes = array('id'=>'general_journal','method'=>'post','class'=>'');
             ?>
             <?php echo form_open_multipart('statements',$attributes); ?>
-            <div class="row no-print">
-                <div class="col-md-12 ">
-                    <div class="form-group">
-                        <?php echo form_label('From'); ?>
-                        <?php
-                            $data = array('class'=>'form-control input-lg','type'=>'date','name'=>'from','reqiured'=>'');
-                            echo form_input($data);
-                        ?>
+            <div class="row no-print ">
+                <div  class="col-md-12">
+                    <div  class="col-md-1"></div>
+                        <div  class="col-md-8">
+                            <div class="col-md-5 col-sm-4 ">
+                                <div class="form-group">
+                                    <label for="date_from" class="col-sm-4 control-label">
+                                        Date From
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <?php 
+                                            $data = array('class'=>'form-control','id'=>'date_from','type'=>'date','name'=>'from');
+                                            echo form_input($data); 
+                                        ?>
+                                    </div>   
+                                </div>
+                            </div> 
+                            <div class="col-md-5 col-sm-4">
+                                <div class="form-group">
+                                    <label for="date_from" class="col-sm-4 control-label">
+                                        Date To
+                                    </label>
+                                    <div class="col-sm-8 col-md-8">
+                                        <?php 
+                                             $data1 = array('class'=>'form-control','type'=>'date','name'=>'to');
+                                            echo form_input($data1);
+                                        ?>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4">
+                                <div class="form-group">
+                                    <?php
+                                        $data = array('class'=>'btn btn-info','type' => 'submit','name'=>'btnSubmit','value'=>'true', 'content' => '<i class="fa fa-search" aria-hidden="true"></i> Create statement');
+                                        echo form_button($data);
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>                    
-                <div class="col-md-12 ">
-                    <div class="form-group">
-                        <?php echo form_label('To'); ?>
-                        <?php
-                            $data = array('class'=>'form-control input-lg','type'=>'date','name'=>'to','reqiured'=>'');
-                            echo form_input($data);
-                        ?>
-                    </div>
+                    <div  class="col-md-1"></div>
                 </div>
-                <div class="col-md-12 ">
-                    <div class="form-group">
-                        <?php
-                            $data = array('class'=>'btn btn-info btn-flat margin btn-lg pull-right ','type' => 'submit','name'=>'btn_submit_customer','value'=>'true', 'content' => '<i class="fa fa-floppy-o" aria-hidden="true"></i> 
-                                Create Statement');
-                            echo form_button($data);
-                         ?>  
-                    </div>
-                </div>      
-            <?php form_close(); ?>
-        </div>
+                <?php form_close(); ?>
+            <div class="make-container-center">
         <?php 
         if($transaction_records != NULL)
         {
@@ -78,6 +104,7 @@
                 </tbody>
             </table>
         </div>
+
         <?php 
             }
             else

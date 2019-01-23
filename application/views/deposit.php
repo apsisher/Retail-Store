@@ -1,18 +1,21 @@
-<style type="text/css">
-  .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single
-  {
-    border:none;
-    border-bottom: 1px solid #ccc;
-    background-color: transparent;
-  }
-</style>
 <section class="content">
+  <div class="row">
+      <ol class="breadcrumb pull-left">
+          <li>
+              <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+          </li>
+          <li>
+            <a href="<?php echo base_url('bank/deposit_list'); ?>"> Deposit </a>
+          </li>
+          <li class="active">Create deposit</li>
+      </ol>
+    </div> 
     <div class="box" id="print-section">
         <div class="box-body">
             <?php
                 $attributes = array('id'=>'open_balance_accounts','method'=>'post','class'=>'');
             ?>
-            <?php echo form_open('bank/add_deposit',$attributes); ?>
+            <?php echo form_open_multipart('bank/add_deposit',$attributes); ?>
                 <div class="row no-print invoice" >
                     <h4  class="purchase-heading" > <i class="fa fa-check-circle"></i>  Create Bank Deposit <span class="pull-right"> <i class="fa fa-calendar"></i> Deposit Date : <?php
                                 $data = array('class'=>' cheque-fields','type'=>'date','name'=>'deposit_date','reqiured'=>'');
@@ -22,10 +25,10 @@
                     </h4>
                     <div class="col-md-12 cheque-area-border" >
                         <span class="pull-right bank-balance" >Available Balance:  <?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?>  <span id="available_balance">0</span> </span> 
+                      
                       <div class="form-group cheque-setting-top">
                            <label><i class="fa fa-check-circle"></i> Bank</label>
                               <select onchange="find_available(this.value)" name="bank_id" class="form-control select2 cheque-fields">
-                                     <option value="0" >Select bank</option>
                                     <?php 
                                       foreach ($bank_list as $single_bank) 
                                       {
@@ -71,7 +74,7 @@
                         <div class="form-group">
                             <label><i class="fa fa-check-circle"></i> Amount</label>
                             <?php
-                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','reqiured'=>'','step'=>'.01','placeholder'=>'e.g 4000');
+                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','reqiured'=>'','step'=>'.01','value'=>'0');
                                 echo form_input($data);
                             ?>
                         </div> 
@@ -92,9 +95,20 @@
                         <div class="form-group">
                             <label><i class="fa fa-check-circle"></i> Memo</label>
                              <?php
-                                $data = array('class'=>'form-control cheque-fields ','type'=>'text','name'=>'memo','reqiured'=>'','placeholder'=>'e.g Recieved from Customer Shop for his recievables.');
+                                $data = array('class'=>'form-control cheque-fields ','type'=>'text','name'=>'memo','reqiured'=>'','placeholder'=>'e.g Recieved from Customer medix for his recievables.');
                                 echo form_input($data);
                             ?>
+                        </div> 
+                        <div class="form-group">
+                          <div class="border-setting">
+                              <label> <i class="fa fa-paperclip" aria-hidden="true" ></i> 
+                                Attachments  Maximum size: 25MB
+                              </label>
+                                <?php               
+                                    $data = array('class'=>'input-lg ','type'=>'file','name'=>'attachment','reqiured'=>'');
+                                    echo form_input($data);             
+                                ?>
+                            </div>    
                         </div>                    
                     </div>  
                     <div class="form-group ">
@@ -112,12 +126,14 @@
 <script type="text/javascript">
   function find_available(bank_id)
   {
+
         // SHOW AJAX RESPONSE ON REQUEST SUCCESS
         $.ajax({
             url: '<?php echo base_url('bank/check_available_balance/'); ?>'+bank_id,
             success: function(response)
             {
                 $('#available_balance').html(response);
+              
             }
         });
   }

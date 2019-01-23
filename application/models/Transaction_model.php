@@ -196,95 +196,210 @@ class Transaction_model extends CI_Model
         return $data;
     }    
 
-    //USED TO ADD BANK EXPENSES TRANSACTIONS 
-    function add_bank_expense_transaction($data_fields)
+    //USED TO UPDATE CHEQUE
+    public function update_cheque($data_fields)
     {
         $this->db->trans_start();
-        $data1  = array(
-        'date'                 => date('Y-m-d'), 
-        'naration'             => $data_fields['memo'], 
-        'generated_source'     => 'expense'
-        );
+        
+        $credithead  = 0;
+        $debithead   = 0;
+        $debitamount  = 0;
+        $creditamount  = 0;
 
-        $this->db->insert('mp_generalentry',$data1);
-        $data_fields['transaction_id'] = $this->db->insert_id();
-
-         $data1  = array(
-          'transaction_id' => $data_fields['transaction_id'], 
-          'head_id'        => $data_fields['account_head'], 
-          'total_bill'     => $data_fields['total_bill'], 
-          'total_paid'     => $data_fields['total_bill'], 
-          'date'           => $data_fields['date'],
-          'payee_id'       => $data_fields['payee_id'],
-          'user'           => $data_fields['user'],
-          'description'    => $data_fields['memo']
-         );
-
-        $this->db->insert('mp_expense',$data1);
-        $data_fields['expense_id'] = $this->db->insert_id();
-
-
-        //1ST ENTRY
-        $sub_data  = array(
-        'parent_id'   => $data_fields['transaction_id'], 
-        'accounthead' => $data_fields['account_head'], 
-        'amount'      => $data_fields['total_bill'], 
-        'type'        => 0
-        );
-
-        $this->db->insert('mp_sub_entry',$sub_data); 
-
-
-        //1ST ENTRY
-        $sub_data  = array(
-        'parent_id'   => $data_fields['transaction_id'], 
-        'accounthead' => $data_fields['credithead'], 
-        'amount'      => $data_fields['total_bill'], 
-        'type'        => 1
-        );
-        $this->db->insert('mp_sub_entry',$sub_data); 
-
-
-        if($data_fields['credithead'] == 16)
+        if($data_fields['amount'] >= 0)
         {
-           //TRANSACTION DETAILS 
-            $sub_data  = array(
-            'transaction_id'      => $data_fields['transaction_id'], 
-            'bank_id'             => $data_fields['bank_id'], 
-            'method'              => 'Cash',
-            'total_bill'          => $data_fields['total_bill'],
-            'total_paid'          => $data_fields['total_bill'],
-            'ref_no'              => '',
-            'transaction_status'  => 0,
-            'transaction_type'    => 'paid',
-            'payee_id'            => $data_fields['payee_id']
+            $debithead    = $data_fields['account_head']; //ACCOUNT HEAD 
+            $credithead   = 16; //CASH IN BANK
+
+            $debitamount  = $data_fields['amount'];
+            $creditamount = $data_fields['amount'];
+
+
+            $data  = array(
+            'date'                 => $data_fields['date'], 
+            'naration'             => $data_fields['description'], 
+            'generated_source'     => 'cheque'
             );
 
-            $this->db->insert('mp_bank_transaction',$sub_data); 
+            $this->db->where('id', $data_fields['transaction_id']);
+            $this->db->update('mp_generalentry', $data);
 
-        }
+            //DELETEING THE PREVIOUS ACCOUNTS TRANSACTION
+            $this->db->where(['parent_id' => $data_fields['transaction_id']]);
+            $this->db->delete('mp_sub_entry');
 
-        $this->db->trans_complete();
-        if ($this->db->trans_status() === FALSE)
+            if($data_fields['attachment'] != '')
+            {
+                //TRANSACTION DETAILS 
+                $data  = array(
+                'bank_id'             => $data_fields['bank_id'], 
+                'ref_no'              => $data_fields['cheque_id'],
+                'total_paid'          => $data_fields['amount'],
+                'attachment'          => $data_fields['attachment']
+                );
+            }
+            else
+            {
+                //TRANSACTION DETAILS 
+                $data  = array(
+                'bank_id'             => $data_fields['bank_id'], 
+                'ref_no'              => $data_fields['cheque_id'],
+                'total_paid'          => $data_fields['amount']
+                );
+            }
+            
+
+            $this->db->where('transaction_id', $data_fields['transaction_id']);
+            $this->db->update('mp_bank_transaction', $data);
+
+            //TRANSACTION DETAILS 
+            $data  = array(
+                'payee_id'   => $data_fields['payee_id']
+            );
+
+            $this->db->where('transaction_id', $data_fields['transaction_id']);
+            $this->db->update('mp_bank_transaction_payee', $data);
+
+            //1ST ENTRY
+            $sub_data  = array(
+            'parent_id'   => $data_fields['transaction_id'], 
+            'accounthead' => $debithead, 
+            'amount'      => $debitamount, 
+            'type'        => 0
+            );
+            $this->db->insert('mp_sub_entry',$sub_data);  
+
+            //2ST ENTRY
+            $sub_data  = array(
+            'parent_id'   => $data_fields['transaction_id'], 
+            'accounthead' => $credithead, 
+            'amount'      => $creditamount, 
+            'type'        => 1
+            );
+            $this->db->insert('mp_sub_entry',$sub_data); 
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
+                $data_fields = NULL;    
+            }
+            else
+            {
+                $this->db->trans_commit();
+            }
+
+            return $data_fields;
+        }        
+    } 
+
+    //USED TO UPDATE DEPOSIT
+    public function update_deposit($data_fields)
+    {
+        $this->db->trans_start();
+       
+        $credithead  = 0;
+        $debithead   = 0;
+        $debitamount  = 0;
+        $creditamount  = 0;
+
+        if($data_fields['amount'] >= 0)
         {
-            $this->db->trans_rollback();
-            $data_fields = NULL;    
-        }
-        else
-        {
-            $this->db->trans_commit();
-        }
+            $debithead    =  16; //CASH IN BANK 
+            $credithead   = $data_fields['account_head']; //ACCOUNT HEAD
+            $debitamount  = $data_fields['amount'];
+            $creditamount = $data_fields['amount'];
 
-        return $data_fields;
+
+            $data  = array(
+            'date'                 => $data_fields['date'], 
+            'naration'             => $data_fields['description'], 
+            'generated_source'     => 'deposit'
+            );
+
+            $this->db->where('id', $data_fields['transaction_id']);
+            $this->db->update('mp_generalentry', $data);
+
+            //DELETEING THE PREVIOUS ACCOUNTS TRANSACTION
+            $this->db->where(['parent_id' => $data_fields['transaction_id']]);
+            $this->db->delete('mp_sub_entry');
+
+          
+            
+
+             if($data_fields['attachment'] != '')
+            {
+                //TRANSACTION DETAILS 
+                $data  = array(
+                'bank_id'             => $data_fields['bank_id'], 
+                'ref_no'              => $data_fields['refno'],
+                'total_bill'          => $data_fields['amount'],
+                'attachment'          => $data_fields['attachment']
+                );
+            }
+            else
+            {
+                //TRANSACTION DETAILS 
+                $data  = array(
+                'bank_id'             => $data_fields['bank_id'], 
+                'ref_no'              => $data_fields['cheque_id'],
+                'total_bill'          => $data_fields['amount']
+                );
+            }
+
+            $this->db->where('transaction_id', $data_fields['transaction_id']);
+            $this->db->update('mp_bank_transaction', $data);
+
+            //TRANSACTION DETAILS 
+            $data  = array(
+                'payee_id' => $data_fields['payee_id']
+            );
+
+            $this->db->where('transaction_id', $data_fields['transaction_id']);
+            $this->db->update('mp_bank_transaction_payee', $data);
+
+            //1ST ENTRY
+            $sub_data  = array(
+            'parent_id'   => $data_fields['transaction_id'], 
+            'accounthead' => $debithead, 
+            'amount'      => $debitamount, 
+            'type'        => 0
+            );
+            $this->db->insert('mp_sub_entry',$sub_data);  
+
+            //2ST ENTRY
+            $sub_data  = array(
+            'parent_id'   => $data_fields['transaction_id'], 
+            'accounthead' => $credithead, 
+            'amount'      => $creditamount, 
+            'type'        => 1
+            );
+            $this->db->insert('mp_sub_entry',$sub_data); 
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
+                $data_fields = NULL;    
+            }
+            else
+            {
+                $this->db->trans_commit();
+            }
+
+            return $data_fields;
+        }        
     }   
 
     public function create_collection($data_fields)
     {
         $this->db->trans_start();
        
-        $credithead    = 0;
-        $debithead     = 0;
-        $debitamount   = 0;
+        $credithead  = 0;
+        $debithead   = 0;
+        $debitamount  = 0;
         $creditamount  = 0;
 
         if($data_fields['amount'] >= 0)
@@ -332,14 +447,22 @@ class Transaction_model extends CI_Model
             'method'              => 'Collection',
             'ref_no'              => $data_fields['cheque_id'],
             'total_paid'          => $data_fields['amount'],
+            'total_bill'          => 0,
             'transaction_status'  => 0,
             'transaction_type'    => 'bank_collection',
-            'cleared_date'        => date('Y-m-d'),
-            'payee_id'            => $data_fields['payee_id'] 
+            'cleared_date'        => date('Y-m-d')
             );
 
             $this->db->insert('mp_bank_transaction',$sub_data); 
 
+            //TRANSACTION DETAILS 
+            $sub_data  = array(
+            'transaction_id'      => $transaction_id, 
+            'payee_id'            => $data_fields['payee_id'] 
+            
+            );
+
+            $this->db->insert('mp_bank_transaction_payee',$sub_data); 
 
             $this->db->trans_complete();
 
@@ -355,7 +478,7 @@ class Transaction_model extends CI_Model
 
             return $data_fields;
         }        
-    } 
+    }  
 
     //USED TO ADD RETURN ITEMS BACK TO STOCK 
     function add_return_items_transaction($data_fields)
@@ -565,82 +688,88 @@ class Transaction_model extends CI_Model
         return $data_fields;
     }
 
-     //USED TO BANK COLLECTION
+    //USED TO BANK COLLECTION
     public function update_collection($data_fields)
     {
-        $this->db->trans_start();
-       
-        $credithead  = 0;
-        $debithead   = 0;
-        $debitamount  = 0;
-        $creditamount  = 0;
-
-        if($data_fields['amount'] >= 0)
-        {
-            $debithead    =  16; //CASH IN BANK 
-            $credithead   = $data_fields['account_head']; //ACCOUNT HEAD
-            $debitamount  = $data_fields['amount'];
-            $creditamount = $data_fields['amount'];
-
-
-            $data  = array(
-            'date'                 => $data_fields['date'], 
-            'naration'             => $data_fields['description'], 
-            'generated_source'     => 'bank_collection'
-            );
-
-            $this->db->where('id', $data_fields['transaction_id']);
-            $this->db->update('mp_generalentry', $data);
-
-            //DELETEING THE PREVIOUS ACCOUNTS TRANSACTION
-            $this->db->where(['parent_id' => $data_fields['transaction_id']]);
-            $this->db->delete('mp_sub_entry');
-
-            //TRANSACTION DETAILS 
-            $data  = array(
-            'bank_id'             => $data_fields['bank_id'], 
-            'ref_no'              => $data_fields['refno'],
-            'payee_id'            => $data_fields['payee_id'],
-            'total_bill'          => $data_fields['amount']
-            );
-
-            $this->db->where('transaction_id', $data_fields['transaction_id']);
-            $this->db->update('mp_bank_transaction', $data);
-
-
-            //1ST ENTRY
-            $sub_data  = array(
-            'parent_id'   => $data_fields['transaction_id'], 
-            'accounthead' => $debithead, 
-            'amount'      => $debitamount, 
-            'type'        => 0
-            );
-            $this->db->insert('mp_sub_entry',$sub_data);  
-
-            //2ST ENTRY
-            $sub_data  = array(
-            'parent_id'   => $data_fields['transaction_id'], 
-            'accounthead' => $credithead, 
-            'amount'      => $creditamount, 
-            'type'        => 1
-            );
-            $this->db->insert('mp_sub_entry',$sub_data); 
-
-            $this->db->trans_complete();
-
-            if ($this->db->trans_status() === FALSE)
-            {
-                $this->db->trans_rollback();
-                $data_fields = NULL;    
-            }
-            else
-            {
-                $this->db->trans_commit();
-            }
-
-            return $data_fields;
+         $this->db->trans_start();
+        
+         $credithead  = 0;
+         $debithead   = 0;
+         $debitamount  = 0;
+         $creditamount  = 0;
+ 
+         if($data_fields['amount'] >= 0)
+         {
+             $debithead    =  16; //CASH IN BANK 
+             $credithead   = $data_fields['account_head']; //ACCOUNT HEAD
+             $debitamount  = $data_fields['amount'];
+             $creditamount = $data_fields['amount'];
+ 
+ 
+             $data  = array(
+             'date'                 => $data_fields['date'], 
+             'naration'             => $data_fields['description'], 
+             'generated_source'     => 'bank_collection'
+             );
+ 
+             $this->db->where('id', $data_fields['transaction_id']);
+             $this->db->update('mp_generalentry', $data);
+ 
+             //DELETEING THE PREVIOUS ACCOUNTS TRANSACTION
+             $this->db->where(['parent_id' => $data_fields['transaction_id']]);
+             $this->db->delete('mp_sub_entry');
+ 
+             //TRANSACTION DETAILS 
+             $data  = array(
+             'bank_id'             => $data_fields['bank_id'], 
+             'ref_no'              => $data_fields['refno'],
+             'total_bill'          => $data_fields['amount']
+             );
+ 
+             $this->db->where('transaction_id', $data_fields['transaction_id']);
+             $this->db->update('mp_bank_transaction', $data);
+ 
+             //TRANSACTION DETAILS 
+             $data  = array( 
+                 'payee_id'  => $data_fields['payee_id'] 
+             );
+ 
+             $this->db->where('transaction_id', $data_fields['transaction_id']);
+             $this->db->update('mp_bank_transaction_payee', $data);
+ 
+             //1ST ENTRY
+             $sub_data  = array(
+             'parent_id'   => $data_fields['transaction_id'], 
+             'accounthead' => $debithead, 
+             'amount'      => $debitamount, 
+             'type'        => 0
+             );
+             $this->db->insert('mp_sub_entry',$sub_data);  
+ 
+             //2ST ENTRY
+             $sub_data  = array(
+             'parent_id'   => $data_fields['transaction_id'], 
+             'accounthead' => $credithead, 
+             'amount'      => $creditamount, 
+             'type'        => 1
+             );
+             $this->db->insert('mp_sub_entry',$sub_data); 
+ 
+             $this->db->trans_complete();
+ 
+             if ($this->db->trans_status() === FALSE)
+             {
+                 $this->db->trans_rollback();
+                 $data_fields = NULL;    
+             }
+             else
+             {
+                 $this->db->trans_commit();
+             }
+ 
+             return $data_fields;
         }        
-    }
+    }   
 
     
     //USED TO ADD EXPENSES TRANSACTIONS 
@@ -1089,7 +1218,7 @@ class Transaction_model extends CI_Model
                 'total_paid	'     => $data_fields['cash'],
                 'payment_type_id' => $data_fields['payment_type_id'],
                 'payment_date'    => $data_fields['payment_date'],
-                'cash'            => $data_fields['cash'],
+                //'cash'            => $data_fields['cash'],
                 'description'     => $data_fields['description'],
                 'cus_picture'     => $data_fields['cus_picture'],
                 'status'          => $data_fields['status']
@@ -1492,7 +1621,7 @@ class Transaction_model extends CI_Model
           'region_id'      => $data['region_id'], 
           'payment_method' => $data['payment_method'], 
           'total_bill'     => $data['total_bill'],  
-          'bill_paid'      => $data['bill_paid'], 
+          'total_paid'      => $data['bill_paid'], 
           'description'    => $data['description'], 
           'source'         => $data['source'], 
           'cus_id'         => $data['cus_id']
@@ -2038,9 +2167,8 @@ class Transaction_model extends CI_Model
         $debitamount  = 0;
         $creditamount  = 0;
 
-        if($data_fields['amount'] >= 0)
-        {
-            $debithead    = $data_fields['account_head']; //ACCOUNT HEAD 
+        if ($data_fields['amount'] >= 0) {
+            $debithead    = $data_fields['account_head']; //ACCOUNT HEAD
             $credithead   = 16; //CASH IN BANK
 
             $debitamount  = $data_fields['amount'];
@@ -2048,138 +2176,154 @@ class Transaction_model extends CI_Model
 
 
             $data1  = array(
-            'date'                 => $data_fields['date'], 
-            'naration'             => $data_fields['description'], 
+            'date'                 => $data_fields['date'],
+            'naration'             => $data_fields['description'],
             'generated_source'     => 'cheque'
             );
 
-            $this->db->insert('mp_generalentry',$data1);
+            $this->db->insert('mp_generalentry', $data1);
             $transaction_id = $this->db->insert_id();
 
 
             //1ST ENTRY
             $sub_data  = array(
-            'parent_id'   => $transaction_id, 
-            'accounthead' => $debithead, 
-            'amount'      => $debitamount, 
+            'parent_id'   => $transaction_id,
+            'accounthead' => $debithead,
+            'amount'      => $debitamount,
             'type'        => 0
             );
-            $this->db->insert('mp_sub_entry',$sub_data);  
+            $this->db->insert('mp_sub_entry', $sub_data);
 
             //2ST ENTRY
             $sub_data  = array(
-            'parent_id'   => $transaction_id, 
-            'accounthead' => $credithead, 
-            'amount'      => $creditamount, 
+            'parent_id'   => $transaction_id,
+            'accounthead' => $credithead,
+            'amount'      => $creditamount,
             'type'        => 1
             );
-            $this->db->insert('mp_sub_entry',$sub_data); 
+            $this->db->insert('mp_sub_entry', $sub_data);
 
-            //TRANSACTION DETAILS 
+            //TRANSACTION DETAILS
             $sub_data  = array(
-            'transaction_id'      => $transaction_id, 
-            'bank_id'             => $data_fields['bank_id'], 
-            'payee_id'            => $data_fields['payee_id'], 
+            'transaction_id'      => $transaction_id,
+            'bank_id'             => $data_fields['bank_id'],
             'method'              => 'Cheque',
             'ref_no'              => $data_fields['cheque_id'],
-            'total_paid'       => $data_fields['amount'],
-            'cleared_date'     => $data_fields['date'],
+            'total_bill'          => $data_fields['amount'],
+            'total_paid'          => $data_fields['amount'],
             'transaction_status'  => 1,
-            'transaction_type'    => 'paid'
+            'transaction_type'    => 'paid',
+            'cleared_date'        => date('Y-m-d'),
+            'attachment'          => $data_fields['attachment']
             );
 
-            $this->db->insert('mp_bank_transaction',$sub_data);  
- 
+            $this->db->insert('mp_bank_transaction', $sub_data);
+
+
+
+            //TRANSACTION DETAILS PAYEE
+            $sub_data  = array(
+            'transaction_id'      => $transaction_id,
+            'payee_id'            => $data_fields['payee_id'],
+            );
+
+            $this->db->insert('mp_bank_transaction_payee', $sub_data);
 
             $this->db->trans_complete();
 
-            if ($this->db->trans_status() === FALSE)
-            {
+            if ($this->db->trans_status() === false) {
                 $this->db->trans_rollback();
-                $data_fields = NULL;    
-            }
-            else
-            {
+                $data_fields = null;
+            } else {
                 $this->db->trans_commit();
             }
 
             return $data_fields;
-        }        
-    }    
+        }
+    }   
 
     //TRANSACTION USED TO CREATE A BANK DEPOSIT 
     public function create_deposit($data_fields)
     {
-        $this->db->trans_start();
-       
-        $credithead    = 0;
-        $debithead     = 0;
-        $debitamount   = 0;
-        $creditamount  = 0;
-
-        if($data_fields['amount'] >= 0)
-        {
-            $debithead    =  16; //CASH IN BANK 
-            $credithead   = $data_fields['account_head']; //ACCOUNT HEAD
-            $debitamount  = $data_fields['amount'];
-            $creditamount = $data_fields['amount'];
-
-            $data1  = array(
-            'date'                 => $data_fields['date'], 
-            'naration'             => $data_fields['memo'],  
-            'generated_source'     => 'deposit'
-            );
-
-            $this->db->insert('mp_generalentry',$data1);
-            $transaction_id = $this->db->insert_id();
-
-            //1ST ENTRY
-            $sub_data  = array(
-            'parent_id'   => $transaction_id, 
-            'accounthead' => $debithead, 
-            'amount'      => $debitamount, 
-            'type'        => 0
-            );
-            $this->db->insert('mp_sub_entry',$sub_data);  
-
-            //2ST ENTRY
-            $sub_data  = array(
-            'parent_id'   => $transaction_id, 
-            'accounthead' => $credithead, 
-            'amount'      => $creditamount, 
-            'type'        => 1
-            );
-            $this->db->insert('mp_sub_entry',$sub_data); 
-
-            //TRANSACTION DETAILS 
-            $sub_data  = array(
-            'transaction_id'   => $transaction_id, 
-            'bank_id'          => $data_fields['bank_id'], 
-            'payee_id'         => $data_fields['payee_id'], 
-            'method'           => $data_fields['method'],
-            'total_paid'       => $data_fields['amount'],
-            'cleared_date'     => $data_fields['date'],
-            'ref_no'           => $data_fields['refno'],
-            'transaction_status'    => 1,
-            'transaction_type'      => 'recieved'
-            );
-
-            $this->db->insert('mp_bank_transaction',$sub_data); 
-
-            $this->db->trans_complete();
-
-            if ($this->db->trans_status() === FALSE)
-            {
-                $this->db->trans_rollback();
-                $data_fields = NULL;    
-            }
-            else
-            {
-                $this->db->trans_commit();
-            }
-
-            return $data_fields;
-        }        
+         $this->db->trans_start();
+        
+         $credithead    = 0;
+         $debithead     = 0;
+         $debitamount   = 0;
+         $creditamount  = 0;
+ 
+         if($data_fields['amount'] >= 0)
+         {
+             $debithead    =  16; //CASH IN BANK 
+             $credithead   = $data_fields['account_head']; //ACCOUNT HEAD
+             $debitamount  = $data_fields['amount'];
+             $creditamount = $data_fields['amount'];
+ 
+             $data1  = array(
+             'date'                 => $data_fields['date'], 
+             'naration'             => $data_fields['memo'],  
+             'generated_source'     => 'deposit'
+             );
+ 
+             $this->db->insert('mp_generalentry',$data1);
+             $transaction_id = $this->db->insert_id();
+ 
+             //1ST ENTRY
+             $sub_data  = array(
+             'parent_id'   => $transaction_id, 
+             'accounthead' => $debithead, 
+             'amount'      => $debitamount, 
+             'type'        => 0
+             );
+             $this->db->insert('mp_sub_entry',$sub_data);  
+ 
+             //2ST ENTRY
+             $sub_data  = array(
+             'parent_id'   => $transaction_id, 
+             'accounthead' => $credithead, 
+             'amount'      => $creditamount, 
+             'type'        => 1
+             );
+             $this->db->insert('mp_sub_entry',$sub_data); 
+ 
+             //TRANSACTION DETAILS 
+             $sub_data  = array(
+             'transaction_id'      => $transaction_id, 
+             'bank_id'             => $data_fields['bank_id'], 
+             'method'              => $data_fields['method'],
+             'total_paid'          => $data_fields['amount'],
+             'ref_no'              => $data_fields['refno'],
+             'transaction_status'  => 1,
+             'transaction_type'    => 'recieved',
+             'cleared_date'        => date('Y-m-d'),
+             'attachment'          => $data_fields['attachment']
+             );
+ 
+             $this->db->insert('mp_bank_transaction',$sub_data); 
+ 
+             //TRANSACTION DETAILS PAYEE
+             $sub_data  = array(
+             'transaction_id'      => $transaction_id, 
+             'payee_id'            => $data_fields['payee_id'], 
+             
+             );
+ 
+             $this->db->insert('mp_bank_transaction_payee',$sub_data); 
+ 
+             $this->db->trans_complete();
+ 
+             if ($this->db->trans_status() === FALSE)
+             {
+                 $this->db->trans_rollback();
+                 $data_fields = NULL;    
+             }
+             else
+             {
+                 $this->db->trans_commit();
+             }
+ 
+             return $data_fields;
+         }        
     }
 
     //USED TO CREATE A TRANSACTION WHEN CREATE NEW BANK 
@@ -2234,12 +2378,15 @@ class Transaction_model extends CI_Model
 
             //TRANSACTION DETAILS 
             $sub_data  = array(
-            'date_created' => $data_fields['end_date'], 
-            'bank_id'      => $bank_id, 
-            'amount'       => $data_fields['end_balance']
+                'transaction_id'      => $transaction_id, 
+                'cleared_date'        => $data_fields['end_date'], 
+                'bank_id'             => $bank_id, 
+                'cheque_amount'       => $data_fields['end_balance'],
+                'transaction_status'  => 0,
+                'transaction_type'    => 'opening_account'
             );
 
-            $this->db->insert('mp_bank_opening',$sub_data); 
+            $this->db->insert('mp_bank_transaction',$sub_data);  
 
             $this->db->trans_complete();
 

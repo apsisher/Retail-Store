@@ -1,11 +1,21 @@
 <section class="content-header">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="pull pull-left">
+                 <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Bank</li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="pull pull-right">
-                <button type="button" onclick="show_modal_page('<?php echo base_url();?>bank/popup/add_bank_model')" class="btn btn-info btn-flat btn-lg" ><i class="fa fa-plus-square" aria-hidden="true"></i>
+                <button type="button" onclick="show_modal_page('<?php echo base_url();?>bank/popup/add_bank_model')" class="btn btn-info btn-flat" ><i class="fa fa-plus-square" aria-hidden="true"></i>
                     Add bank
                 </button>
-                <button onclick="printDiv('print-section')" class="btn btn-default btn-lg btn-flat   pull-right "><i class="fa fa-print pull-left"></i> Print Report</button>
+                <button onclick="printDiv('print-section')" class="btn btn-default btn-flat   pull-right "><i class="fa fa-print pull-left"></i> Print / Pdf</button>
             </div>
         </div>
     </div>
@@ -73,7 +83,6 @@
                                         </td>
                                         <td>
                                             <div class="btn-group no-print pull pull-right">
-                                                <button type="button" class="btn btn-info btn-flat">Action</button>
                                                 <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
                                                     <span class="caret"></span>
                                                     <span class="sr-only">Toggle Dropdown</span>
@@ -99,9 +108,6 @@
                                                         <?php
                                                         }
                                                         ?>
-                                                    </li>
-                                                    <li >
-                                                        <a href="<?php echo base_url('bank/delete/'.$bank->id); ?>"><i class="fa fa-trash"></i> Delete</a>
                                                     </li>
                                                 </ul>
                                             </div>

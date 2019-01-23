@@ -5,9 +5,9 @@
             <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
         </li>
         <li>
-          <a href="<?php echo base_url('expense/bank_expense'); ?>"> Bank expense</a>
+          <a href="<?php echo base_url('expense'); ?>"> Expense</a>
         </li>
-        <li class="active"> Add bank expense</li>
+        <li class="active">Edit expense</li>
     </ol>
   </div> 
 </div>
@@ -15,13 +15,13 @@
   <section>
       <div class="row">
         <h4 class="purchase-heading">
-          <i class="fa fa-plus-circle"></i> Add Expense 
+          <i class="fa fa-plus-circle"></i> Update Expense 
             <small>
-               <i>Saves this bank expense, and automatically updates your accounting.</i>
-               <span class="pull-right bank-section-details">
+               <i>Update expenses, and automatically updates your accounting.</i>
+                <span class='pull-right  <?php echo ($parent_row[0]->method == "Cash") ? "bank-section-details": ""; ?> '>
                   Available balance :  
-                    PKR <span id="available_balance">0</span>
-                </span>
+                  PKR <span id="available_balance"><?php echo $bank_balance; ?></span>
+            </span>
             </small>
         </h4>
       </div>
@@ -30,14 +30,14 @@
         <div class="box" id="print-section">
             <div class="box-body ">
               <?php
-                  $attributes = array('id'=>'expense_area','method'=>'post','class'=>'');
+                  $attributes = array('id'=>'update_expense','method'=>'post','class'=>'');
               ?>
-              <?php echo form_open_multipart('expense/save_bank_expense',$attributes); ?>
+              <?php echo form_open_multipart('expense/update_expense',$attributes); ?>
               <div class="row">
                  <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <?php       
-                          $data = array('type'=>'hidden','id'=>'save_available_balance','name'=>'save_available_balance','value'=>'0','reqiured'=>'');
+                          $data = array('type'=>'hidden','id'=>'save_available_balance','name'=>'save_available_balance','value'=>$bank_balance,'reqiured'=>'');
                           echo form_input($data);       
                         ?>
                         <label>Payee : </label>               
@@ -49,7 +49,7 @@
                                 foreach ($payee_list as $single_payee)
                                 {
                             ?>
-                                    <option value="<?php echo $single_payee->id; ?>" ><?php echo $single_payee->customer_name.' | '.$single_payee->type; ?> 
+                                    <option <?php echo ($parent_row[0]->payee_id == $single_payee->id) ? 'selected': ''; ?>   value="<?php echo $single_payee->id; ?>" ><?php echo $single_payee->customer_name; ?> 
                                     </option>
                             <?php
                                     }
@@ -61,41 +61,63 @@
                             ?>  
                         </select>
                     </div>
-                 </div>                  
+                 </div>                                        
                  <div class="col-md-4 col-sm-12">
                     <div class="form-group">
-                        <label>Bank : </label>               
-                        <select class="form-control select2 " name="bank_id" id="bank_id">  
-                         <?php
-                            //category_names from mp_category table;
-                            if($bank_list != NULL)
-                            {       
-                                foreach ($bank_list as $single_bank)
-                                {
-                          ?>
-                                    <option value="<?php echo $single_bank->id; ?>" ><?php echo $single_bank->bankname.' | '.$single_bank->branch.' | '.$single_bank->title; ?> 
-                                    </option>
-                          <?php
-                                    }
-                                }
-                                else
-                                {
-                                    echo "No Record Found";
-                                }
-                          ?>  
+                        <label>Payment Method : </label>               
+                        <select class="form-control input-lg " name="payment_method" id="payment_method">
+                           <option <?php echo ($parent_row[0]->method == 'Cash') ? 'selected': ''; ?> value="Cash">Cash</option>
+                            <option <?php echo ($parent_row[0]->method == 'Cheque') ? 'selected': ''; ?>  value="Cheque">Cheque</option>
                         </select>
                     </div>
-                 </div>                                        
+                 </div>
                  <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <?php echo form_label('Date'); ?>
                         <?php               
-                            $data = array('class'=>'form-control input-lg ','type'=>'date','name'=>'date','reqiured'=>'');
+                            $data = array('class'=>'form-control input-lg ','type'=>'date','name'=>'date','reqiured'=>'','value'=>$parent_row[0]->date);
                             echo form_input($data);             
                         ?>
                     </div>
                   </div> 
-                </div>         
+                </div> 
+              <div class="row ">
+                 <div class="col-md-4 col-sm-12">
+                     <div class="form-group">
+                        <?php echo form_label('Ref no.'); ?>
+                        <?php               
+                            $data = array('class'=>'form-control bill-text-fields-settings input-lg','type'=>'text','name'=>'ref_no','reqiured'=>'','value'=>$parent_row[0]->ref_no);
+                            echo form_input($data);             
+                        ?>
+                    </div>
+                 </div>           
+                  <div class="col-md-4 col-sm-12 " <?php echo ($parent_row[0]->method == "Cash") ? "bank-section-details": ""; ?>'>
+                    <div class="form-group">
+                        <label>Bank : </label>               
+                        <select class="form-control select2 " name="bank_id" id="bank_id">
+                          <option value="0"> Select bank </option>
+                          <?php
+                            //category_names from mp_category table;
+                            if($bank_list != NULL)
+                            {       
+                                foreach ($bank_list as $bank)
+                                {
+                          ?>
+                                    <option <?php echo ($bank_row != 0 ? ($bank_row[0]->bank_id == $bank->id ? 'selected' : '') : ''); ?>  value="<?php echo $bank->id; ?>" >
+                                    <?php echo $bank->bankname.' | '.$bank->branch.' | '.$bank->title; ?>
+                                  </option> 
+                          <?php
+                              }
+                            }
+                            else
+                            {
+                                echo "No Record Found";
+                            }
+                          ?>  
+                        </select>
+                    </div>
+                 </div>           
+              </div>          
               <div class="row">
                   <div class="col-md-12 table-responsive">
                        <table class="table table-striped table-hover  ">
@@ -108,6 +130,16 @@
                              </tr>
                            </thead>
                            <tbody  id="transaction_table_body" >
+                            <?php   
+                              $total_tax = 0;
+                              $total_sub = 0;
+                                if($child_row != NULL)
+                                {
+                                  foreach ($child_row as $single_item) 
+                                  {     
+
+                                    $total_sub = $total_sub + $single_item->price;
+                                  ?>
                               <tr>
                                  <td>
                                       <select class="form-control select2 "  name="account_head[]" id="account_head">
@@ -119,7 +151,7 @@
                                               foreach ($head_list as $single_head)
                                               {
                                           ?>
-                                                <option value="<?php echo $single_head->id; ?>" ><?php echo $single_head->name; ?> 
+                                                <option  <?php echo ($single_item->head_id == $single_head->id) ? 'selected': ''; ?> value="<?php echo $single_head->id; ?>" ><?php echo $single_head->name; ?> 
                                                 </option>
                                           <?php
                                               }
@@ -133,13 +165,13 @@
                                  </td>                                     
                                   <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg','type'=>'text','placeholder'=>'Any description','name'=>'descriptionarr[]','reqiured'=>'');
+                                          $data = array('class'=>'form-control input-lg','type'=>'text','placeholder'=>'Any description','name'=>'descriptionarr[]','reqiured'=>'','value'=>$single_item->description);
                                           echo form_input($data);
                                       ?>
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg amount','type'=>'number','name'=>'amount[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>'0');
+                                          $data = array('class'=>'form-control input-lg amount','type'=>'number','name'=>'amount[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>$single_item->price);
                                           echo form_input($data);
                                       ?>
                                  </td>                           
@@ -149,6 +181,10 @@
                                       </a>
                                  </td>
                               </tr>
+                               <?php      
+                                    }
+                                  }
+                                ?>
                            </tbody>
                            <tfoot>                    
                               <tr>
@@ -165,7 +201,17 @@
                                  <td class="text-center expense-total-settings">Total</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'.01','value'=>'0.00','readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'.01','value'=>$parent_row[0]->total_bill,'readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
+                                          echo form_input($data);
+                                      ?>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td colspan="2"></td>
+                                 <td class="text-center expense-total-settings">Paid</td>
+                                 <td>
+                                     <?php 
+                                       $data = array('type'=>'number','name'=>'total_paid','step'=>'.01','value'=>$parent_row[0]->total_paid,'class'=>'total_paid bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -173,34 +219,46 @@
                             </tfoot>
                        </table>
                       </div>
+                      </div>
                       <div class="row">
-                        <div class="col-md-5 ">
-                          <div class="form-group">
-                              <?php echo form_label('Memo'); ?>
-                              <?php               
-                                  $data = array('class'=>'form-control input-lg ','type'=>'text','name'=>'memo','reqiured'=>'');
-                                  echo form_input($data);             
-                              ?>
-                          </div>
-                        </div> 
-                      </div>  
-                       <div class="row">                 
+                          <div class="col-md-4 ">
+                            <div class="form-group">
+                                <?php echo form_label('Memo'); ?>
+                                <?php               
+                                    $data = array('class'=>'form-control input-lg ','type'=>'text','name'=>'memo','value'=>$parent_row[0]->description,'reqiured'=>'');
+                                    echo form_input($data);             
+                                ?>
+                            </div>
+                        </div>                    
+                      </div>
+                      <div class="row">
                           <div class="col-md-5 ">
                             <div class="form-group">
                               <label> <i class="fa fa-paperclip" aria-hidden="true" ></i> Attachments  Maximum size: 25MB</label>
                                 <?php               
                                     $data = array('class'=>'input-lg ','type'=>'file','name'=>'attachment','reqiured'=>'');
-                                    echo form_input($data);             
+                                    echo form_input($data);  
+
+                                     $data = array('class'=>'','type'=>'hidden','name'=>'transaction_id','value'=>$parent_row[0]->transaction_id);
+                                    echo form_input($data);       
+
+                                    $data = array('class'=>'','type'=>'hidden','name'=>'expense_id','value'=>$parent_row[0]->id);
+                                    echo form_input($data);            
                                 ?>
                             </div>
                           </div>
+                           <div class="col-md-7">
+                            <span class="pull-right">
+                              <img class="img-setting" src="<?php echo base_url('uploads/expense/').$parent_row[0]->attachment;?>" >
+                            </span>
+                          </div>                    
                       </div>
                       <div class="col-md-12 ">
                           <div class="form-group">
                               <center>
                               <?php
                                   $data = array('class'=>'btn btn-info  margin btn-lg  ','type' => 'submit','name'=>'btn_submit_customer','value'=>'true','id'=>'btn_save_transaction','content' => '<i class="fa fa-floppy-o" aria-hidden="true"></i> 
-                                      Save expense');
+                                      Update expense');
                                   echo form_button($data);
                                ?>  
                                </center>
@@ -273,6 +331,7 @@ function calculateSubTotal()
     });
 
     $('.total_bill').val((totalAmount).toFixed(2));
+    $('.total_paid').val((totalAmount).toFixed(2));
  }  
 
  function clearalllines()

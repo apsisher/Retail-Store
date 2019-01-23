@@ -1,10 +1,20 @@
 <section class="content-header">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="pull pull-left">
+                <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Bank expense</li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="pull pull-right">
-               <button type="button" onclick="show_modal_page('<?php echo base_url();?>expense/popup/add_bank_expense_model')" class="btn btn-info btn-flat"><i class="fa fa-plus-square" aria-hidden="true"></i>
-                Add Expense
-                </button>
+                <a href="<?php echo base_url('expense/add_bank_expense'); ?>" class="btn btn-info btn-flat"><i class="fa fa-plus-square" aria-hidden="true"></i>
+                    <?php echo $page_add_button_name; ?>
+                </a>
                 <button onclick="printDiv('print-section')" class="btn btn-default btn-flat pull-right "><i class="fa fa-print pull-left"></i> Print / Pdf</button>
             </div>
         </div>
@@ -18,9 +28,9 @@
             </div>
             <div class="box-body">
                 <?php
-                    $attributes = array('id'=>'bank_expense','method'=>'post','class'=>'');
+                    $attributes = array('id'=>'Sales_form','method'=>'post','class'=>'');
                 ?>
-                <?php echo form_open('expense/bank_expense',$attributes); ?>
+                <?php echo form_open('expense/',$attributes); ?>
                 <div class="row no-print">
                     <div class="col-md-3 ">
                         <div class="form-group">
@@ -48,7 +58,7 @@
                             </div>   
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <?php
                                 $data = array('class'=>'btn btn-info','type' => 'submit','name'=>'btnSubmit','value'=>'true', 'content' => '<i class="fa fa-search" aria-hidden="true"></i> Search expense');
@@ -56,6 +66,17 @@
                             ?>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                            <div class="form-group">
+                                <select class="form-control" onchange="search_transaction(this.value)" name="timeperiod">
+                                    <option value="Filter">Filter </option>
+                                    <option value="month">This Month </option>
+                                    <option value="three">Last 3 Months </option>
+                                    <option value="year"> This Year </option>
+                                    <option value="all">  All </option>
+                                </select>
+                            </div>
+                        </div>
                 </div>
              <?php echo form_close(); ?> 
              <div class="col-md-12 table-responsive">
@@ -76,10 +97,11 @@
                 </thead>
                 <tbody>
                     <?php
+                        $counter = 1;
+                        $total_bill = 0;
         				if($expense_record_list != NULL)
                         {
-                            $counter = 1;
-                            $total_bill = 0;
+                           
         					foreach ($expense_record_list as $single_expense)
                             {
                                  $total_bill =  $total_bill + $single_expense->total_bill;
@@ -89,11 +111,11 @@
                                 <?php echo $counter; ?>
                             </td>
                             <td>
-                                <?php echo $single_expense->name; ?>
+                                <?php echo $single_expense->date; ?>
                             </td>
                             <td>
-                                <?php echo $single_expense->date; ?>
-                            </td>                              
+                                <?php echo 'Expense'; ?>
+                            </td>                                
                             <td>
                                 <?php echo $single_expense->bankname; ?>
                             </td>
@@ -103,29 +125,28 @@
                             <td>
                                 <?php echo $single_expense->user; ?>
                             </td>
-                            <!-- <td>
+                            <td>
                             <div class="btn-group pull no-print pull-right">
                                 <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">  
-                                    <li><a  href="<?php //echo base_url().'prints/expense/'.$single_expense->id; ?>">
+                                    <li><a  href="<?php echo base_url().'prints/bank_expense/'.$single_expense->id; ?>">
                                         <i class="fa fa-link"></i> Preview</a>
+                                    </li> 
+                                    <li><a  href="<?php echo base_url().'expense/edit_bank_expense/'.$single_expense->id; ?>">
+                                        <i class="fa fa-pencil"></i> Edit</a>
                                     </li>     
                                 </ul>
                             </div>
-                        </td>  --> 
+                        </td>  
                         </tr>
                         <?php
                             $counter++;
         					}
         				?>
-                        <tr>
-                            <th colspan="3">Total</th>
-                             <th ></th>
-                            <th  colspan="3"><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_bill,'2','.','') ?></th>
-                        </tr>
+                        
                             <?php 
                             }
                             else
@@ -138,12 +159,25 @@
                             }
                             ?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">Total</th>
+                                 <th ></th>
+                                <th  colspan="3"><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_bill,'2','.','') ?></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script type="text/javascript">
+function search_transaction(period)
+{
+    window.location = '<?php echo base_url('expense/bank_expense/')?>'+period;
+}
+</script>
 <!-- Bootstrap model  -->
 <?php $this->load->view('bootstrap_model.php'); ?>
 <!-- Bootstrap model  ends-->        

@@ -31,16 +31,8 @@
 				    	<label>Product/Service Type :</label>
 				    	 <select name="product_type" onchange="check_type(this.value)" class="form-control input-lg">
 		                        <option <?php echo ($single_product[0]->type == 0 ? 'selected' : ''); ?> value="0" >Service</option>
-		                        <option <?php echo ($single_product[0]->type == 1 ? 'selected' : ''); ?> value="1" >Finished Product</option>
 		                </select>
 				    </div>
-				    <div style="display: <?php echo ($single_product[0]->type == 1 ? 'block' : ''); ?>"  id="cost_per_item" class="form-group">  
-						<?php
-							echo form_label('Cost Per Item :');
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'cost_price','value'=>$single_product[0]->cost);
-							echo form_input($data);	
-						 ?>	
-				    </div>  
 				  	<div class="form-group">  
 						<?php
 							echo form_label('Price / Rate :');

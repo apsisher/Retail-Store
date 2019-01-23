@@ -17,6 +17,7 @@ class Services extends CI_Controller
 		// DEFINES PAGE TITLE
 		$data['title'] = 'Service List';
 		// DEFINES NAME OF TABLE HEADING
+
 		$data['table_name'] = 'Services :';
 		// DEFINES WHICH PAGE TO RENDER
 		$data['main_view'] = 'service';
@@ -47,7 +48,6 @@ class Services extends CI_Controller
 		$description = html_escape($this->input->post('description'));
 		$product_type = html_escape($this->input->post('product_type'));
 		$price = html_escape($this->input->post('price'));
-		$cost_price = html_escape($this->input->post('cost_price'));
 		$income_account = html_escape($this->input->post('income_account'));
 		$sales_tax = html_escape($this->input->post('sales_tax'));
 		$redirect_link = html_escape($this->input->post('redirect_link'));
@@ -57,7 +57,7 @@ class Services extends CI_Controller
 			'description' => $description,
 			'type' => $product_type,
 			'price' => $price,
-			'cost' => $cost_price,
+			'cost' => 0,
 			'head_id' => $income_account,
 			'sale_tax' => $sales_tax,
 		);
@@ -141,7 +141,7 @@ class Services extends CI_Controller
 		if ($result == 1)
 		{
 			$array_msg = array(
-				'msg' => '<i style="color:#fff" class="fa fa-pencil-square-o" aria-hidden="true"></i> Product editted',
+				'msg' => '<i style="color:#fff" class="fa fa-pencil-square-o" aria-hidden="true"></i> Service editted',
 				'alert' => 'info',
 			);
 			$this->session->set_flashdata('status', $array_msg);
@@ -149,7 +149,7 @@ class Services extends CI_Controller
 		else
 		{
 			$array_msg = array(
-				'msg' => '<i style="color:#c00" class="fa fa-exclamation-triangle" aria-hidden="true"></i> Product cannot be Editted',
+				'msg' => '<i style="color:#c00" class="fa fa-exclamation-triangle" aria-hidden="true"></i> Service cannot be Editted',
 				'alert' => 'danger',
 			);
 			$this->session->set_flashdata('status', $array_msg);

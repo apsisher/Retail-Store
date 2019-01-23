@@ -464,3 +464,29 @@ table td
 {
 	width: 55%;
 }
+.img-settings
+{
+	background-color: #fff;
+	border-radius:100px;
+}
+.company-icon {
+	background-color: #fff;
+	border-radius: 100px;
+	border: 1px solid #fff;
+}
+
+.company-profile-name {
+	font-size: 18px;
+	margin: 10px 0px;
+	text-align: right;
+}
+
+.profile-user-img {
+	width: 100%;
+	border-radius:5px;
+	height: auto;
+}
+
+.profile-bread-set {
+	margin-bottom: 20px;
+}

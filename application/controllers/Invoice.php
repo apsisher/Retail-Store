@@ -639,44 +639,44 @@ class Invoice extends CI_Controller
 			$result = $this->Crud_model->fetch_record_by_id('mp_contactabout',1);
 			$address = $result[0]->address;
 
-			if($printer_name != '')
-			{
-				//BUSINESS AND OTHER INFO THAT MENTIONED ON THE TOP
-				$general_info = array(
-				'name' => $company_name ,
-				'address' => $address,
-				'receipt' => $data['invoice_id'],
-				'date' => date('Y-m-d'),
-				'customer' => $cus_name,
-				'customer_id' => $get_invoice_result[0]->cus_id,
-				'served' => $user_name['name'],
-				'thanks' => 'Thanks For Visiting Us.',
-				'about' => 'Developed by North Soft',
-				'contact' => ' Contact 03453302833',
-				'printer_name' => $printer_name,
-				'text_size' => 1,
-				'discount' => $total_discount
-				);
+			// if($printer_name != '')
+			// {
+			// 	//BUSINESS AND OTHER INFO THAT MENTIONED ON THE TOP
+			// 	$general_info = array(
+			// 	'name' => $company_name ,
+			// 	'address' => $address,
+			// 	'receipt' => $data['invoice_id'],
+			// 	'date' => date('Y-m-d'),
+			// 	'customer' => $cus_name,
+			// 	'customer_id' => $get_invoice_result[0]->cus_id,
+			// 	'served' => $user_name['name'],
+			// 	'thanks' => 'Thanks For Visiting Us.',
+			// 	'about' => 'Developed by North Soft',
+			// 	'contact' => ' Contact 03453302833',
+			// 	'printer_name' => $printer_name,
+			// 	'text_size' => 1,
+			// 	'discount' => $total_discount
+			// 	);
 
 
-			    $this->load->library('printer');
-			    $printer_result = $this->printer->generate_print($general_info,$data);
-			}
+			//     $this->load->library('printer');
+			//     $printer_result = $this->printer->generate_print($general_info,$data);
+			// }
 		
-			if($printer_result != 'success')
-			{
-				$array_msg = array(
-				'msg' => '<i style="color:#fff" class="fa fa-check-circle-o" aria-hidden="true"></i> Editted invoice successfully but no printer is deducted',
-				'alert' => 'info'
-				);
-			}
-			else
-			{
-				$array_msg = array(
-				'msg' => '<i style="color:#fff" class="fa fa-check-circle-o" aria-hidden="true"></i> Invoice editted',
-				'alert' => 'info'
-				);
-			}
+			// if($printer_result != 'success')
+			// {
+			// 	$array_msg = array(
+			// 	'msg' => '<i style="color:#fff" class="fa fa-check-circle-o" aria-hidden="true"></i> Editted invoice successfully but no printer is deducted',
+			// 	'alert' => 'info'
+			// 	);
+			// }
+			// else
+			// {
+			// 	$array_msg = array(
+			// 	'msg' => '<i style="color:#fff" class="fa fa-check-circle-o" aria-hidden="true"></i> Invoice editted',
+			// 	'alert' => 'info'
+			// 	);
+			// }
 			
 			$this->session->set_flashdata('status', $array_msg);
 		}
@@ -758,29 +758,29 @@ class Invoice extends CI_Controller
 				
 
 				
-				if($printer_name != '')
-				{
-					//BUSINESS AND OTHER INFO THAT MENTIONED ON THE TOP
-					$general_info = array(
-					'name' => $company_name ,
-					'address' => $address,
-					'receipt' => $data['invoice_id'],
-					'date' => date('Y-m-d'),
-					'customer' => $cus_name,
-					'customer_id' => $customer_id,
-					'served' => $agent,
-					'thanks' => 'Thanks For Visiting Us.',
-					'about' => 'Developed by North Soft',
-					'contact' => ' Contact 03453302833',
-					'printer_name' => $printer_name,
-					'text_size' => 1,
-					'discount' => $discountfield
-					);
+				// if($printer_name != '')
+				// {
+				// 	//BUSINESS AND OTHER INFO THAT MENTIONED ON THE TOP
+				// 	$general_info = array(
+				// 	'name' => $company_name ,
+				// 	'address' => $address,
+				// 	'receipt' => $data['invoice_id'],
+				// 	'date' => date('Y-m-d'),
+				// 	'customer' => $cus_name,
+				// 	'customer_id' => $customer_id,
+				// 	'served' => $agent,
+				// 	'thanks' => 'Thanks For Visiting Us.',
+				// 	'about' => 'Developed by North Soft',
+				// 	'contact' => ' Contact 03453302833',
+				// 	'printer_name' => $printer_name,
+				// 	'text_size' => 1,
+				// 	'discount' => $discountfield
+				// 	);
 
-					//UN COMMENT THE BELOW LINE WHEN CONNETED RO PRINTER 
-				    $this->load->library('printer');
-				  $printer_result =  $this->printer->generate_print($general_info,$data);
-				}
+				// 	//UN COMMENT THE BELOW LINE WHEN CONNETED RO PRINTER 
+				//     $this->load->library('printer');
+				//   $printer_result =  $this->printer->generate_print($general_info,$data);
+				// }
 
 				if($printer_result != 'success')
 				{

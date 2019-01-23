@@ -1,14 +1,14 @@
 <div class="row">
   <div class="col-md-12">
-    <ol class="breadcrumb pull-left">
-        <li>
-            <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
-        </li>
-        <li>
-          <a href="<?php echo base_url('expense/bank_expense'); ?>"> Bank expense</a>
-        </li>
-        <li class="active"> Add bank expense</li>
-    </ol>
+        <ol class="breadcrumb pull-left">
+            <li>
+                <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+            </li>
+            <li>
+              <a href="<?php echo base_url('expense'); ?>"> Expense</a>
+            </li>
+            <li class="active">Add expense</li>
+        </ol>
   </div> 
 </div>
 <div class="invoice">
@@ -17,7 +17,7 @@
         <h4 class="purchase-heading">
           <i class="fa fa-plus-circle"></i> Add Expense 
             <small>
-               <i>Saves this bank expense, and automatically updates your accounting.</i>
+               <i>Saves this expense, and automatically updates your accounting.</i>
                <span class="pull-right bank-section-details">
                   Available balance :  
                     PKR <span id="available_balance">0</span>
@@ -32,7 +32,7 @@
               <?php
                   $attributes = array('id'=>'expense_area','method'=>'post','class'=>'');
               ?>
-              <?php echo form_open_multipart('expense/save_bank_expense',$attributes); ?>
+              <?php echo form_open_multipart('expense/add_expense',$attributes); ?>
               <div class="row">
                  <div class="col-md-4 col-sm-12">
                     <div class="form-group">
@@ -61,12 +61,42 @@
                             ?>  
                         </select>
                     </div>
-                 </div>                  
+                 </div>                                        
                  <div class="col-md-4 col-sm-12">
                     <div class="form-group">
+                        <label>Payment Method : </label>               
+                        <select class="form-control input-lg " name="payment_method" id="payment_method">
+                          <option value="Cash" > Cash </option>
+                          <option value="Cheque" > Cheque </option>
+                        </select>
+                    </div>
+                 </div>
+                 <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <?php echo form_label('Date'); ?>
+                        <?php               
+                            $data = array('class'=>'form-control input-lg ','type'=>'date','name'=>'date','reqiured'=>'');
+                            echo form_input($data);             
+                        ?>
+                    </div>
+                  </div> 
+                </div> 
+              <div class="row ">
+                 <div class="col-md-4 col-sm-12">
+                     <div class="form-group">
+                        <?php echo form_label('Ref no.'); ?>
+                        <?php               
+                            $data = array('class'=>'form-control bill-text-fields-settings input-lg','type'=>'text','name'=>'ref_no','reqiured'=>'');
+                            echo form_input($data);             
+                        ?>
+                    </div>
+                 </div>           
+                  <div class="col-md-4 col-sm-12 bank-section-details">
+                    <div class="form-group">
                         <label>Bank : </label>               
-                        <select class="form-control select2 " name="bank_id" id="bank_id">  
-                         <?php
+                        <select class="form-control select2 " name="bank_id" id="bank_id">
+                          <option value="0"> Select bank </option>
+                          <?php
                             //category_names from mp_category table;
                             if($bank_list != NULL)
                             {       
@@ -85,17 +115,8 @@
                           ?>  
                         </select>
                     </div>
-                 </div>                                        
-                 <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <?php echo form_label('Date'); ?>
-                        <?php               
-                            $data = array('class'=>'form-control input-lg ','type'=>'date','name'=>'date','reqiured'=>'');
-                            echo form_input($data);             
-                        ?>
-                    </div>
-                  </div> 
-                </div>         
+                 </div>           
+              </div>          
               <div class="row">
                   <div class="col-md-12 table-responsive">
                        <table class="table table-striped table-hover  ">
@@ -162,10 +183,20 @@
                                </tr>                   
                               <tr>
                                  <td colspan="2"></td>
-                                 <td class="text-center expense-total-settings">Total</td>
+                                 <td class=" expense-total-settings">Total</td>
                                  <td>
                                      <?php 
                                        $data = array('type'=>'number','name'=>'total_bill','step'=>'.01','value'=>'0.00','readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
+                                          echo form_input($data);
+                                      ?>
+                                 </td>
+                              </tr> 
+                              <tr>
+                                 <td colspan="2"></td>
+                                 <td class=" expense-total-settings">Paid</td>
+                                 <td>
+                                     <?php 
+                                       $data = array('type'=>'number','name'=>'total_paid','step'=>'.01','value'=>'0.00','class'=>'total_paid bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -184,16 +215,16 @@
                           </div>
                         </div> 
                       </div>  
-                       <div class="row">                 
-                          <div class="col-md-5 ">
-                            <div class="form-group">
-                              <label> <i class="fa fa-paperclip" aria-hidden="true" ></i> Attachments  Maximum size: 25MB</label>
-                                <?php               
-                                    $data = array('class'=>'input-lg ','type'=>'file','name'=>'attachment','reqiured'=>'');
-                                    echo form_input($data);             
-                                ?>
-                            </div>
+                      <div class="row">                 
+                        <div class="col-md-5 ">
+                          <div class="form-group">
+                            <label> <i class="fa fa-paperclip" aria-hidden="true" ></i> Attachments  Maximum size: 25MB</label>
+                              <?php               
+                                  $data = array('class'=>'input-lg ','type'=>'file','name'=>'attachment','reqiured'=>'');
+                                  echo form_input($data);             
+                              ?>
                           </div>
+                        </div>
                       </div>
                       <div class="col-md-12 ">
                           <div class="form-group">
@@ -273,6 +304,7 @@ function calculateSubTotal()
     });
 
     $('.total_bill').val((totalAmount).toFixed(2));
+    $('.total_paid').val((totalAmount).toFixed(2));
  }  
 
  function clearalllines()

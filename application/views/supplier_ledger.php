@@ -124,7 +124,7 @@
                                 foreach ($transactions as $single_trans) 
                                 {
                                   //  $balance = $balance + ($single_trans->total_bill - $single_trans->total_paid);
-                                    $calculate_balance = balance_identifier($single_trans->generated_source,$balance,($single_trans->total_bill - $single_trans->total_paid));
+                                    $calculate_balance = balance_identifier($single_trans->generated_source,$balance,$single_trans->total_bill , $single_trans->total_paid);
 
                                     $balance = $calculate_balance;
 

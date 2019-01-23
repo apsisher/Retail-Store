@@ -1,11 +1,3 @@
-<style type="text/css">
-  .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single
-  {
-    border:none;
-    border-bottom: 1px solid #ccc;
-    background-color: transparent;
-  }
-</style>
 <section class="content">
     <div class="box" id="print-section">
         <div class="box-body">
@@ -24,7 +16,6 @@
                       <div class="form-group cheque-setting-top">
                            <label><i class="fa fa-check-circle"></i> Bank</label>
                               <select name="bank_id" class="form-control select2 cheque-fields">
-                                    <option value="0" >Select bank</option>
                                     <?php 
                                       foreach ($bank_list as $single_bank) 
                                       {
@@ -71,7 +62,7 @@
                         <div class="form-group">
                             <label><i class="fa fa-check-circle"></i> Amount</label>
                             <?php
-                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','onkeyup'=>'check_amount(this.value)','step'=>'.01','placeholder'=>'e.g 4000');
+                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','onkeyup'=>'check_amount(this.value)','step'=>'.01','value'=>'0');
                                 echo form_input($data);
                             ?>
                         </div>                                         

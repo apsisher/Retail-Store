@@ -3,29 +3,29 @@ if($trans_data != NULL)
 {
 ?>
 <section class="content">
-    <div class="row">
-      <ol class="breadcrumb pull-left">
-          <li>
-              <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
-          </li>
-          <li>
-            <a href="<?php echo base_url('bank/deposit_list'); ?>"> Bank </a>
-          </li>
-          <li class="active">Edit bank collection</li>
-      </ol>
-    </div> 
+  <div class="row">
+    <ol class="breadcrumb pull-left">
+      <li>
+          <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <li>
+        <a href="<?php echo base_url('bank/deposit_list'); ?>"> Deposit </a>
+      </li>
+      <li class="active">Edit deposit</li>
+    </ol>
+  </div> 
     <div class="box" id="print-section">
         <div class="box-body">
             <?php
                 $attributes = array('id'=>'open_balance_accounts','method'=>'post','class'=>'');
             ?>
-            <?php echo form_open('bank/update_collection',$attributes); ?>
+            <?php echo form_open_multipart('bank/update_deposit',$attributes); ?>
                 <div class="row no-print invoice" >
-                    <h4  class="purchase-heading" > <i class="fa fa-pencil"></i>  Edit bank collection <span class="pull-right"> <i class="fa fa-calendar"></i>  Date : <?php
+                    <h4  class="purchase-heading" > <i class="fa fa-pencil"></i>  Edit Deposit <span class="pull-right"> <i class="fa fa-calendar"></i>  Date : <?php
                       $data = array('class'=>' cheque-fields','type'=>'date','name'=>'deposit_date','reqiured'=>'','value'=>$trans_data[0]->date);
                       echo form_input($data);
                     ?></span>
-                        <small>Use to view or edit payment collection from bank</small>
+                        <small>Use to view or edit deposit</small>
                     </h4>
                     <div class="col-md-12 cheque-area-border" >
                       <span class="pull-right bank-balance" >Available Balance:  <?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?>  <span id="available_balance"><?php echo $available_balance; ?></span> </span> 
@@ -33,7 +33,6 @@ if($trans_data != NULL)
                       <div class="form-group cheque-setting-top">
                            <label><i class="fa fa-check-circle"></i> Bank</label>
                               <select onchange="find_available(this.value)" name="bank_id" class="form-control select2 cheque-fields">
-                                    <option value="0" >Select bank</option>
                                     <?php
                                       foreach ($bank_list as $single_bank) 
                                       {
@@ -106,15 +105,29 @@ if($trans_data != NULL)
                                 echo form_input($data);
                             ?>
                             <?php
+                              $data = array('class'=>'','type'=>'hidden','id'=>'che_pri_id','name'=>'che_pri_id','value'=>$trans_data[0]->id);
+                                echo form_input($data); 
+
                                 $data = array('class'=>'','type'=>'hidden','id'=>'transaction_id','name'=>'transaction_id','value'=>$trans_data[0]->transaction_id);
                                 echo form_input($data); 
                             ?>
-                        </div>                    
+                        </div> 
+                        <div class="form-group">
+                          <?php 
+                            $data = array('class'=>'input-lg form-control ','type'=>'file','name'=>'attachment','reqiured'=>'');
+                            echo form_input($data); 
+                          ?>
+                        </div>                   
+                    </div> 
+                    <div class="col-md-6">
+                        <span class="pull-left">
+                          <img class="img-setting" src="<?php echo base_url('uploads/deposit/').$trans_data[0]->attachment;?>" >
+                        </span>
                     </div>  
                     <div class="form-group ">
                       <?php
                           $data = array('class'=>'btn btn-info btn-submit-cheque btn-lg pull-right ','type' => 'submit','name'=>'btn_submit_balance','value'=>'true','content' => '<i class="fa fa-floppy-o" aria-hidden="true"></i> 
-                              Update Payment ');
+                              Update Deposit ');
                           echo form_button($data);
                        ?>  
                     </div>

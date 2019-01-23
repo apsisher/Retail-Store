@@ -1,6 +1,16 @@
 <section class="content-header">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="pull pull-left">
+               <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">Bank reconciliation</li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="pull pull-right">
                 <button onclick="printDiv('print-section')" class="btn btn-default btn-flat   pull-right "><i class="fa fa-print  pull-left"></i> Print / Pdf</button>
             </div>
@@ -18,25 +28,27 @@
             ?>
             <?php echo form_open_multipart('statements/bank_reconciliation',$attributes); ?>
             <div class="row no-print ">
-                <div class="col-md-12">
-                    <div class="form-group">
-                       <select name="bank_id" class="form-control input-lg select2">
-                        <?php 
-                        if($bank_list != NULL)
-                        {
-                          foreach ($bank_list as $single_bank) 
-                          {
-                        ?>
-                             <option value="<?php echo $single_bank->id ?>">
-                              <?php echo $single_bank->bankname.' | '.$single_bank->branch.' | '.$single_bank->branchcode.' | '.$single_bank->title.' | '.$single_bank->accountno;  ?>
-                              </option>
-                        <?php   
-                          }
-                        }  
-                        ?>   
-                        </select>
+                <div  class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                        <select name="bank_id" class="form-control">
+                            <?php 
+                            if ($bank_list != null) 
+                            {
+                                foreach ($bank_list as $single_bank) 
+                                {
+                                    ?>
+                                <option value="<?php echo $single_bank->id ?>">
+                                <?php echo $single_bank->bankname.' | '.$single_bank->branch.' | '.$single_bank->branchcode.' | '.$single_bank->title.' | '.$single_bank->accountno; ?>
+                                </option>
+                            <?php
+                                }
+                            }
+                            ?>   
+                            </select>
+                        </div>
                     </div>
-                </div>
+                <div  class="col-md-2"></div>
                 <div  class="col-md-12">
                     <div  class="col-md-1"></div>
                         <div  class="col-md-8">
@@ -49,7 +61,7 @@
                                         $current_month = date('m');
                                     ?>
                                     <div class="col-sm-8">
-                                        <select name="month" class="form-control input-lg select2">
+                                        <select name="month" class="form-control">
                                              <option <?php echo $current_month == 1 ? 'selected': ''; ?> value="1">January</option>  
                                              <option <?php echo $current_month == 2 ? 'selected': ''; ?> value="2">Feburary</option>  
                                              <option <?php echo $current_month == 3 ? 'selected': ''; ?> value="3">March</option>  
@@ -90,14 +102,8 @@
                         ?>
                     </h3> 
                     <h4 style="text-align:center">
-                       <u> 
-                        <?php 
-                            if($bank_detail != NULL)
-                            {
-                                echo $bank_detail[0]->bankname;
-                            } 
-                        ?>   
-                        </u>
+                       <u> <?php echo $bank_detail[0]->bankname;
+                        ?></u>
                     </h4>
                    <h4 style="text-align:center"><b>Month</b> <?php echo $period; ?> 
                    </h4>
@@ -132,14 +138,14 @@
 
                             foreach ($not_deposits as $single_despoit) 
                             {
-                                $total_deposit = $total_deposit + $single_despoit->total_paid;
+                                $total_deposit = $total_deposit + $single_despoit->total_bill;
                     ?>
                                 <tr class="clickable-row" >
                                     <td ><?php echo $single_despoit->cleared_date; ?></td>
                                     <td><?php echo $single_despoit->method; ?></td>        
                                     <td><?php echo $single_despoit->ref_no; ?></td>
                                     <td><?php echo $single_despoit->customer_name; ?></td>        
-                                    <td><?php echo $single_despoit->total_paid; ?></td>          
+                                    <td><?php echo $single_despoit->total_bill; ?></td>          
                                     <td></td>          
                                 </tr> 
                     <?php
@@ -240,14 +246,14 @@
                     {
                         foreach ($bank_expense as $single_expense) 
                         {
-                            $total_deduction = $total_deduction + $single_expense->total_bill;  
+                            $total_deduction = $total_deduction + $single_expense->price;  
                     ?>
                              <tr class="clickable-row" data-href="">
                                 <td class=""><?php echo $single_expense->name; ?> </td>
                                 <td></td>
                                 <td></td>        
                                 <td></td>
-                                <td><?php echo $single_expense->total_bill; ?> </td>        
+                                <td><?php echo $single_expense->price; ?> </td>        
                                 <td> </td>        
                                           
                             </tr>

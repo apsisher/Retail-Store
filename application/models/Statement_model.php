@@ -2,10 +2,10 @@
 /*
 *  @author    : Muhammad Ibrahim
 *  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
+*  @Created   : 11th December, 2018
+*  @Developed : Team Spantik Lab
+*  @URL       : www.spantiklab.com
+*  @Envato    : https://codecanyon.net/user/spantiklab
 */
 class Statement_model extends CI_Model
 {
@@ -16,7 +16,8 @@ class Statement_model extends CI_Model
         $total_debit = 0;
         $total_credit = 0;
         $form_content = '';
-    
+       
+
         $this->db->select("mp_generalentry.id as transaction_id,mp_generalentry.date,mp_generalentry.naration");
         $this->db->from('mp_generalentry');
         $this->db->where('date >=', $date1);
@@ -51,7 +52,7 @@ class Statement_model extends CI_Model
                          
                          if($single_trans->type == 0)
                          {
-                             $form_content .= '<tr>
+                             $form_content .= '<tr class="clickable-row" data-href="'.base_url('prints/transaction/'.$single_trans->parent_id).'">
                             <td>'.$transaction_record->date.'</td><td><a href="#">'. $single_trans->name.'</a></td><td>
                                 <a href="#">'.$single_trans->amount.'</a>
                             </td>
@@ -63,7 +64,7 @@ class Statement_model extends CI_Model
                          } 
                          else if($single_trans->type == 1)
                          {
-                             $form_content .= '<tr>
+                             $form_content .= '<tr class="clickable-row" data-href="'.base_url('prints/transaction/'.$single_trans->parent_id).'" >
                             <td >'.$transaction_record->date.'</td><td ><a class="general-journal-credit" href="#">'. $single_trans->name.'</a>
                             </td>
                             <td>
@@ -78,11 +79,12 @@ class Statement_model extends CI_Model
                     }
                 }
             }
-                $form_content .= '<tr class="narration" ><td class="border-bottom-journal" colspan="4"><small> <i> - '.$transaction_record->naration.'</i>
+                $form_content .= '<tr class="narration clickable-row" data-href="'.base_url('prints/transaction/'.$single_trans->parent_id).'"  ><td class="border-bottom-journal" colspan="4"><small> <i> - '.$transaction_record->naration.'</i>
                         </small></td></tr>';
             }
         }
-    }
+        }
+
         return $form_content;
     }  
 
@@ -167,12 +169,12 @@ class Statement_model extends CI_Model
 
                         $total_ledger = number_format($total_ledger,'2','.','');
 
-                        $form_content .= '<tr>
-                        <td>'.$single_ledger->date.'</td><td><a href="#">'. $single_ledger->naration.'</a></td><td>
-                            <a href="#">'.$debitamount.'</a>
+                        $form_content .= '<tr class="clickable-row" data-href="'.base_url('prints/transaction/'.$single_ledger->parent_id).'">
+                        <td>'.$single_ledger->date.'</td><td>'. $single_ledger->naration.'</td><td>
+                            '.$debitamount.'
                         </td>
                         <td>
-                            <a href="#">'.$creditamount.'</a>
+                           '.$creditamount.'
                         </td>
                         <td>'.($total_ledger < 0 ? '('.-$total_ledger.')' : $total_ledger ).'</td>            
                     </tr>';
@@ -204,15 +206,19 @@ class Statement_model extends CI_Model
             if($ledger_data != NULL)
             {
                 foreach ($ledger_data as $single_ledger) 
-                {
-                    if($single_ledger->type == 0)
-                    {
-                       $count_total_amt = $count_total_amt + $single_ledger->amount;
-                    }
-                    else 
-                    {
-                        $count_total_amt = $count_total_amt - $single_ledger->amount;   
-                    }   
+                {   
+                   // if($this->check_condition_allowed($single_ledger->parent_id))
+                   // {
+
+                        if($single_ledger->type == 0)
+                        {
+                           $count_total_amt = $count_total_amt + $single_ledger->amount;
+                        }
+                        else 
+                        {
+                            $count_total_amt = $count_total_amt - $single_ledger->amount;   
+                        } 
+                   // }      
                 }
             }
             
@@ -231,11 +237,37 @@ class Statement_model extends CI_Model
         
     }
 
+    //USED TO CHECK WEATHER TRANSACTION IS AVAILABLE OR NOT 
+    public function check_condition_allowed($transaction_id)
+    {
+        $this->db->select("*");
+        $this->db->from('mp_bank_transaction');
+        $this->db->where('transaction_id',$transaction_id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0)
+        {
+            $available_trans =  $query->result();
+
+            if($available_trans[0]->transaction_status == 0)
+            {
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+        else
+        {
+            return TRUE;    
+        }
+    } 
+
     //USED TO GENERATE TRAIL BALANCE 
     public function trail_balance($current_date)
     {
         //ACCOUNTING START DATE
-        $date1 = '2017-11-31';
+        $date1 = '2010-11-31';
 
         $date2 = $current_date;
 
@@ -283,8 +315,10 @@ class Statement_model extends CI_Model
 
     public function income_statement($date1,$date2)
     {
+
         $total_revenue = 0;
         $total_expense  = 0;
+        
         $from_creator = '';
 
         $this->db->select("*");
@@ -315,7 +349,6 @@ class Statement_model extends CI_Model
                     $from_creator .= '<tr><td> Total Revenue </td><td class="pull-right"><h4><b>'.number_format($total_revenue,'2','.','').'</b></h4></td></tr>';
             }
         }
-
         $this->db->select("*");
         $this->db->from('mp_head');
         $this->db->where(['mp_head.nature' => 'Expense']);
@@ -330,6 +363,7 @@ class Statement_model extends CI_Model
 
                 foreach ($record_data as $single_head) 
                 {
+                    
                     $amount =  $this->count_head_amount($single_head->id,$date1,$date2);
                     if( $amount != 0)
                     {
@@ -340,7 +374,7 @@ class Statement_model extends CI_Model
                 }
                     $from_creator .= '<tr><td> Total Expense </td><td class="pull-right">'.number_format($total_expense,'2','.','').'</td></tr>'; 
 
-                    $from_creator .= '<tr class=" total-income"><td> Total Net Lost / Profit </td><td class="pull-right">'.number_format($total_revenue-$total_expense,'2','.','').'</td></tr>';
+                    $from_creator .= '<tr class="total-income"><td> Total Net Lost / Profit </td><td class="pull-right">'.number_format($total_revenue-$total_expense,'2','.','').'</td></tr>';
             }
         }
 
@@ -549,7 +583,7 @@ class Statement_model extends CI_Model
                                 <td style="text-align:right" ><h4><i>'.$retained_earnings.'</i></h4></td></tr>';
          $equity .= '<tr class="balancesheet-row"><td><h4><i>Total Equity </i></h4></td><td style="text-align:right;" ><h4><i>'.$total_equity.'</i></h4></td></tr>'; 
          
-         $total_libility_and_equity .= '<tr class="balancesheet-row"><td ><h4><b><i>Total Liabilities and Equity</i></b></h4></td><td style=" text-align:right;" ><h4<b><i>'.$total_libility_equity_retained.'</i></b></h4></td></tr>';                       
+         $total_libility_and_equity .= '<tr class="balancesheet-row"><td ><h4><b><i>Total Liabilities and Equity</i></b></h4></td><td style=" text-align:right;" ><h4><b><i>'.$total_libility_equity_retained.'</i></b></h4></td></tr>';                       
          return  array('current_assets'=>$current_assets,'noncurrent_assets'=>$noncurrent_assets,'total_assets'=>$total_current_nc,'current_libility'=>$current_libility,'noncurrent_libility'=>$noncurrent_libility,'total_currentnoncurrent_libility'=>$total_current_nc_libility,'equity'=>$equity,'total_libility_equity'=>$total_libility_and_equity);
     }
 

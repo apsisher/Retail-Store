@@ -57,7 +57,6 @@ p{
                                     <td>Rate (<?php echo $company_info[0]->currency; ?>)</td>
                                     <td>Total (<?php echo $company_info[0]->currency; ?>)</td>
                                     <td>Closing Stock</td>
-                                    <td class="no-print"></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,23 +104,6 @@ p{
                                         </td>
                                         <td>
                                             
-                                        </td>
-                                        <td class="no-print">
-                                            <div class="btn-group pull no-print pull-right">
-                                                <button type="button" class="btn btn-info btn-flat">Action</button>
-                                                <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown">
-                                                    <span class="caret"></span>
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li>
-                                                        <a onclick="confirmation_alert('make this trashed  ','<?php echo base_url(); ?>order_list/delete_orderlist/<?php echo $single_list->id.'/'.$date.'/'.$salesman_id; ?>')" href="#" >
-                                                            <i class="fa fa-trash"></i> 
-                                                            Delete
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </td>
                                     </tr>
                                     <?php

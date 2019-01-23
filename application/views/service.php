@@ -6,7 +6,7 @@
                     <li>
                         <a href="<?php echo base_url('homepage'); ?>"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
-                    <li class="active">Products</li>
+                    <li class="active">Services</li>
                 </ol>
             </div>
         </div> 
