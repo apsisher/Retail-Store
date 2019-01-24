@@ -82,11 +82,10 @@
                        <table class="table table-striped table-hover  ">
                            <thead class="purchase-heading">
                             <tr>
-                               <td class="col-md-2 ">Product/Service</td>
+                               <td class="col-md-3 ">Product/Service</td>
                                <td class="col-md-3 ">Description</td>
                                <td class="col-md-1 ">Quantity</td>
                                <td class="col-md-1 ">Price</td>
-                               <td class="col-md-1 ">Tax</td>
                                <td class="col-md-1 ">Amount</td>
                                <td class="col-md-1">Action</td>
                            </tr>
@@ -130,16 +129,7 @@
                                           $data = array('class'=>'form-control input-lg price','type'=>'number','name'=>'price[]','id'=>'price','step'=>'.01','reqiured'=>'','value'=>$single_item->price);
                                           echo form_input($data);
                                       ?>
-                                 </td>    
-                                 <td>
-                                      <?php
-                                          $data = array('class'=>'form-control input-lg sales_tax','type'=>'number','name'=>'tax[]','readonly'=>'readonly','id'=>'sales_tax','step'=>'.01','reqiured'=>'','value'=>$single_item->qty*$single_item->tax);
-
-                                          echo form_input($data); 
-                                          $data = array('class'=>'single_tax','type'=>'hidden','name'=>'single_tax[]','id'=>'single_tax','step'=>'.01','reqiured'=>'','value'=>$single_item->tax);
-                                          echo form_input($data);
-                                      ?>
-                                 </td>   
+                                 </td>     
                                  <td>
                                       <?php
                                           $data = array('class'=>'form-control input-lg item_Subtotal','type'=>'number','name'=>'subtotal[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>$single_item->price*$single_item->qty);
@@ -159,8 +149,8 @@
                            </tbody>
                            <tfoot>                    
                               <tr>
-                                   <td colspan="5">
-                                      <button type="button" class="btn btn-primary btn-add-setting" name="addline" onclick="add_new_row('<?php echo base_url().'invoice/popup/new_invoice_row';?>')"> <i class="fa fa-plus-circle"></i>    Add a line 
+                                   <td colspan="4">
+                                      <button type="button" class="btn btn-primary btn-add-setting" name="addline" onclick="add_new_row('<?php echo base_url().'invoice/popup/new_row_po';?>')"> <i class="fa fa-plus-circle"></i>    Add a line 
                                       </button> 
                                       <button type="button" onclick="clearalllines()" class="btn btn-danger btn-add-setting" name="addline" onclick="add_new_row('<?php echo base_url().'expense/popup/new_bill_row';?>')"> <i class="fa fa-trash"></i>    Clear all lines 
                                       </button>
@@ -168,7 +158,7 @@
                                    <td id="row_loading_status"></td>
                                </tr>                   
                               <tr>
-                                 <td colspan="5"></td>
+                                 <td colspan="4"></td>
                                  <td class=" expense-total-settings">Sub total</td>
                                  <td>
                                      <?php 
@@ -176,19 +166,9 @@
                                           echo form_input($data);
                                       ?>
                                  </td>
-                              </tr>                               
+                              </tr>                                                             
                               <tr>
-                                 <td colspan="5"></td>
-                                 <td class="expense-total-settings">Tax</td>
-                                 <td>
-                                     <?php 
-                                       $data = array('type'=>'number','name'=>'total_tax','step'=>'.01','value'=>$total_tax,'readonly'=>'readonly','id'=>'taxfield','class'=>' bill-total-settings','reqiured'=>'');
-                                          echo form_input($data);
-                                      ?>
-                                 </td>
-                              </tr>                               
-                              <tr>
-                                 <td colspan="5"></td>
+                                 <td colspan="4"></td>
                                  <td class=" expense-total-settings">PO Total </td>
                                  <td>
                                      <?php 
@@ -202,7 +182,7 @@
                       </div>
                       <div class="col-md-5 ">
                         <div class="form-group">
-                            <?php echo form_label('Message displayed on estimate :'); ?>
+                            <?php echo form_label('Message displayed on PO :'); ?>
                             <?php               
                                 $data = array('class'=>'form-control input-lg ','type'=>'text','name'=>'invoicemessage','reqiured'=>'','value'=>$parent_row[0]->invoicemessage);
                                 echo form_input($data);             

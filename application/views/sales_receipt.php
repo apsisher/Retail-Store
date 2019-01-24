@@ -140,7 +140,7 @@
                            <thead class="purchase-heading">
                             <tr>
                                <td class="col-md-2 ">Product/Service
-                                (<a  onclick="show_modal_page('<?php echo base_url();?>sales/popup/add_product_model')" class="add-product-link" href="#">
+                                (<a  onclick="show_modal_page('<?php echo base_url();?>sales_receipt/popup/add_product_model')" class="add-product-link" href="#">
                                  Add New 
                                 </a>)
                                </td>

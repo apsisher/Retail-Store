@@ -49,7 +49,7 @@ p{
                                     <td>Sno</td>
                                     <td>Name</td>
                                     <td>Company</td>
-                                    <td>Opening Stock</td>
+                                    <td>Opening Stock(Packs)</td>
                                     <td>Stock Out(Packs)</td>
                                     <td>Stock Return</td>
                                     <td>Stock Sale</td>

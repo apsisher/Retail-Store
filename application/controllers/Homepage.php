@@ -86,8 +86,8 @@ class Homepage extends CI_Controller
 		$data['recent_accounts'] = $this->Crud_model->recent_accounts();
 
 		//CUSTOMER
-		$data['result_customer'] = $this->Crud_model->fetch_payee_record('customer',NULL);
-
+		$data['result_customer'] = $this->Crud_model->fetch_payee_record('customer','status');
+		
 		//CURRENCY 
 		$data['currency'] = '( '.$this->Crud_model->fetch_record_by_id('mp_langingpage',1)[0]->currency.' )';
 

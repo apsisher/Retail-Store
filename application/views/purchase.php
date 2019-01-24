@@ -141,10 +141,11 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li onclick="show_modal_page('<?php echo base_url().'purchase/popup/view_purchase_detail/'.$single_purchase->id; ?>')" ><a href="#"><i class="fa fa-pencil"></i> View details</a>
-                                                </li>
                                                 <li>
                                                     <a href="<?php echo base_url().'uploads/purchase/'.$single_purchase->cus_picture; ?>" > <i class="fa fa-image"></i> Attachment </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<?php echo base_url().'prints/purchase_receipt/'.$single_purchase->id; ?>" > <i class="fa fa-image"></i> Preview </a>
                                                 </li>
                                             </ul>
                                         </div>

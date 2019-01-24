@@ -376,7 +376,7 @@ class Vouchers extends CI_Controller
 			);
 			$this->session->set_flashdata('status', $array_msg);
 		}
-		redirect('vouchers/open_user_account');
+		redirect('payee/ledger/'.$user_account);
 	}
 
 

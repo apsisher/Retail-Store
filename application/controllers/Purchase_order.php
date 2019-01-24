@@ -57,7 +57,7 @@ class Purchase_order extends CI_Controller
 
 		// PARAMETER 0 MEANS ONLY FETCH THAT RECORD WHICH IS VISIBLE 1 MEANS FETCH ALL
 		$this->load->model('Crud_model');
-		$data['estimate_record'] = $this->Crud_model->fetch_record_estimate($date1,$date2);
+		$data['estimate_record'] = $this->Crud_model->fetch_record_po($date1,$date2);
 
 		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
 		$this->load->view('main/index.php', $data);
@@ -70,9 +70,10 @@ class Purchase_order extends CI_Controller
 		$this->load->model('Crud_model');
 		$data['default_data'] = $this->Crud_model->fetch_record_by_id('mp_langingpage',1); 
 
-		$data['estimate_data'] = $this->Crud_model->fetch_record_by_id(' mp_estimate',$estimate_id); 
+		$data['estimate_data'] = $this->Crud_model->fetch_record_by_id('mp_purchase_order',$estimate_id); 
 
 		$data['sales_data'] = $this->Crud_model->fetch_product_estimate($estimate_id); 		
+		
 		$data['user_data'] = $this->Crud_model->fetch_record_by_id('mp_payee',$data['estimate_data'][0]->payee_id); 
 
 		// DEFINES PAGE TITLE
@@ -94,7 +95,7 @@ class Purchase_order extends CI_Controller
 		$data['title'] = 'Create purchase order';
 
 		//DEFINE TO FETCH THE LIST OF SUPPLIER
-		$data['payee_list'] = $this->Crud_model->fetch_payee_record('company','status');
+		$data['payee_list'] = $this->Crud_model->fetch_record('mp_payee',NULL);
 
 		// DEFINES WHICH PAGE TO RENDER
 		$data['main_view'] = 'create_purchase_order';
@@ -119,7 +120,7 @@ class Purchase_order extends CI_Controller
 		$descriptionarr = html_escape($this->input->post('descriptionarr'));
 		$qty = html_escape($this->input->post('qty'));
 		$price = html_escape($this->input->post('price'));
-		$single_tax = html_escape($this->input->post('single_tax'));
+		
 		$total_bill = html_escape($this->input->post('total_bill'));
 		$invoicemessage = html_escape($this->input->post('invoicemessage'));
 		$memo = html_escape($this->input->post('memo'));
@@ -145,7 +146,7 @@ class Purchase_order extends CI_Controller
 			);
 
 			// DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
-			$parent_id = $this->Crud_model->insert_data_last_id('mp_estimate',$args);
+			$parent_id = $this->Crud_model->insert_data_last_id('mp_purchase_order',$args);
 
 			for($i= 0; $i < count($product); $i++)
 			{
@@ -155,12 +156,11 @@ class Purchase_order extends CI_Controller
 					'product_id' => $product[$i],
 					'description' => $descriptionarr[$i],
 					'qty' => $qty[$i],
-					'price' => $price[$i],
-					'tax' => $single_tax[$i]
+					'price' => $price[$i]
 				);
 
 				// DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
-				$result = $this->Crud_model->insert_data('mp_estimate_sales',$args);
+				$result = $this->Crud_model->insert_data('mp_subpo_details',$args);
 			}
 
 			if ($result != NULL)
@@ -204,7 +204,7 @@ class Purchase_order extends CI_Controller
 	{
 		// TABLENAME AND ID FOR DATABASE ACTION
 		$args = array(
-			'table_name' => 'mp_estimate',
+			'table_name' => 'mp_purchase_order',
 			'id' => $estimate_id
 		);
 
@@ -248,16 +248,16 @@ class Purchase_order extends CI_Controller
 		$data['title'] = 'Edit purchase order';
 
 		//PARENT DATA OF REFUND	
-		$data['parent_row'] = $this->Crud_model->fetch_record_by_id('mp_estimate',$order_id);
+		$data['parent_row'] = $this->Crud_model->fetch_record_by_id('mp_purchase_order',$order_id);
 		
 		//CHILD DATA OF REFUND	
-		$data['child_row'] = $this->Crud_model->fetch_attr_record_by_id('mp_estimate_sales','estimate_id',$order_id);
+		$data['child_row'] = $this->Crud_model->fetch_attr_record_by_id('mp_subpo_details','estimate_id',$order_id);
 
 		// DEFINES TO LOAD THE CATEGORY LIST FROM DATABSE TABLE mp_supplier
-		$data['estiamte_record'] = $this->Crud_model->fetch_record_by_id('mp_estimate',$order_id);
+		$data['estiamte_record'] = $this->Crud_model->fetch_record_by_id('mp_purchase_order',$order_id);
 
 		//DEFINE TO FETCH THE LIST OF SUPPLIER
-		$data['payee_list'] = $this->Crud_model->fetch_payee_record('customer','status');
+		$data['payee_list'] = $this->Crud_model->fetch_record('mp_payee',NULL);
 
 		// DEFINES WHICH PAGE TO RENDER
 		$data['main_view'] = 'edit_po';
@@ -282,7 +282,6 @@ class Purchase_order extends CI_Controller
 		$descriptionarr  = html_escape($this->input->post('descriptionarr'));
 		$qty 			 = html_escape($this->input->post('qty'));
 		$price 			 = html_escape($this->input->post('price'));
-		$single_tax 	 = html_escape($this->input->post('single_tax'));
 		$total_bill 	 = html_escape($this->input->post('total_bill'));
 		$invoicemessage  = html_escape($this->input->post('invoicemessage'));
 		$memo 			 = html_escape($this->input->post('memo'));
@@ -309,11 +308,11 @@ class Purchase_order extends CI_Controller
 			);
 
 			$this->db->where('id',$estimate_id );
-        	$this->db->update('mp_estimate',$data);
+        	$this->db->update('mp_purchase_order',$data);
 
         	 //DELETEING THE PREVIOUS SUB CREDIT ENTRY
         	$this->db->where(['estimate_id' => $estimate_id]);
-        	$this->db->delete('mp_estimate_sales');
+        	$this->db->delete('mp_subpo_details');
 
 			for($i= 0; $i < count($product); $i++)
 			{
@@ -323,12 +322,12 @@ class Purchase_order extends CI_Controller
 				'product_id'  => $product[$i],
 				'description' => $descriptionarr[$i],
 				'qty' 		  => $qty[$i],
-				'price'		  => $price[$i],
-				'tax' 		  => $single_tax[$i]
+				'price'		  => $price[$i]
+				
 				);
 
 				// DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
-				$result = $this->Crud_model->insert_data('mp_estimate_sales',$args);
+				$result = $this->Crud_model->insert_data('mp_subpo_details',$args);
 			}
 
 			if ($result != NULL)
@@ -375,7 +374,7 @@ class Purchase_order extends CI_Controller
 
 		$default_data = $this->Crud_model->fetch_record_by_id('mp_langingpage',1); 
 
-		$estimate_data = $this->Crud_model->fetch_record_by_id('mp_estimate',$estimate_id); 
+		$estimate_data = $this->Crud_model->fetch_record_by_id('mp_purchase_order',$estimate_id); 
 
 		$user_data = $this->Crud_model->fetch_record_by_id('mp_payee',$estimate_data[0]->payee_id); 
 

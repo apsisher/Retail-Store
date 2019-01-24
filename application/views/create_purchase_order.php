@@ -17,7 +17,7 @@
             <div class="row">
                <div class="col-md-4 col-sm-12">
                   <div class="form-group">
-                      <label>Company : </label>               
+                      <label>Account : </label>               
                       <select class="form-control select2 " name="payee_id" id="payee_id">
                           <?php
                           //category_names from mp_category table;
@@ -82,11 +82,10 @@
                        <table class="table table-striped table-hover  ">
                            <thead class="purchase-heading">
                             <tr>
-                               <td class="col-md-2 ">Product/Service</td>
+                               <td class="col-md-3 ">Product/Service</td>
                                <td class="col-md-3 ">Description</td>
                                <td class="col-md-1 ">Quantity</td>
                                <td class="col-md-1 ">Price</td>
-                               <td class="col-md-1 ">Tax</td>
                                <td class="col-md-1 ">Amount</td>
                                <td class="col-md-1">Action</td>
                            </tr>
@@ -119,14 +118,6 @@
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg sales_tax','readonly'=>'readonly','type'=>'number','name'=>'tax[]','id'=>'sales_tax','step'=>'.01','reqiured'=>'','value'=>'0');
-                                          echo form_input($data); 
-                                          $data = array('class'=>'single_tax','type'=>'hidden','name'=>'single_tax[]','id'=>'single_tax','step'=>'.01','reqiured'=>'','value'=>'0');
-                                          echo form_input($data);
-                                      ?>
-                                 </td>   
-                                 <td>
-                                      <?php
                                           $data = array('class'=>'form-control input-lg item_Subtotal','type'=>'number','name'=>'subtotal[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>'0');
                                           echo form_input($data);
                                       ?>
@@ -137,7 +128,6 @@
                                       </a>
                                  </td>
                               </tr>
-                              
                            </tbody>
                            <tfoot>                    
                               <tr>
@@ -150,7 +140,7 @@
                                    <td id="row_loading_status"></td>
                                </tr>                   
                               <tr>
-                                 <td colspan="5"></td>
+                                 <td colspan="4"></td>
                                  <td class=" expense-total-settings">Sub total</td>
                                  <td>
                                      <?php 
@@ -158,19 +148,9 @@
                                           echo form_input($data);
                                       ?>
                                  </td>
-                              </tr>                               
+                              </tr>                                                             
                               <tr>
-                                 <td colspan="5"></td>
-                                 <td class="expense-total-settings">Tax</td>
-                                 <td>
-                                     <?php 
-                                       $data = array('type'=>'number','name'=>'total_tax','step'=>'.01','value'=>'0.00','readonly'=>'readonly','id'=>'taxfield','class'=>' bill-total-settings','reqiured'=>'');
-                                          echo form_input($data);
-                                      ?>
-                                 </td>
-                              </tr>                               
-                              <tr>
-                                 <td colspan="5"></td>
+                                 <td colspan="4"></td>
                                  <td class=" expense-total-settings"> Total </td>
                                  <td>
                                      <?php 

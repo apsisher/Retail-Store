@@ -36,12 +36,15 @@ class Crud_model extends CI_Model
     }
 
     // USED TO FETCH THE RECORD OF ESTIMATE USING PRODUCT ID
-	function fetch_product_estimate($estimate_id)
+	function fetch_product_po($order_id)
 	{
-		$this->db->select("mp_estimate_sales.*,mp_product.product_name");
-		$this->db->from('mp_estimate_sales');
-		$this->db->join('mp_product', "mp_estimate_sales.product_id = mp_product.id");
-		$this->db->where(['mp_estimate_sales.estimate_id' => $estimate_id]);
+        echo $order_id;
+        die();
+
+		$this->db->select("mp_subpo_details.*,mp_product.product_name");
+		$this->db->from('mp_subpo_details');
+		$this->db->join('mp_product', "mp_subpo_details.product_id = mp_product.id");
+		$this->db->where(['mp_subpo_details.estimate_id' => $order_id]);
 		$query = $this->db->get();
 		if ($query->num_rows() > 0)
 		{
@@ -121,7 +124,25 @@ class Crud_model extends CI_Model
         {
             return NULL;
         }
-    }   
+    }
+    
+    public function fetch_record_po($date1,$date2)
+    {
+        $this->db->select("mp_purchase_order.*,mp_payee.id as invoice_payee_id , mp_payee.customer_name");
+        $this->db->where('mp_purchase_order.date >=', $date1);
+        $this->db->where('mp_purchase_order.date <=', $date2);
+        $this->db->from('mp_purchase_order');
+        $this->db->join('mp_payee', "mp_payee.id =  mp_purchase_order.payee_id");
+        $query = $this->db->get();
+        if ($query->num_rows() > 0)
+        {
+            return $query->result();
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 
     // DEFINES TO AVOID MULTIPLE EMAILS IN DATABASE
     public function check_email_address($table_name, $tbl_attribute, $email)
@@ -320,14 +341,6 @@ class Crud_model extends CI_Model
     
     public function fetch_payee_record($type,$status = '')
     {
-        if($type == 'company')
-        {
-            $this->db->where(['type' => $type]);
-        }
-        else
-        {
-            $this->db->where('type !=', 'company');
-        }
         
         if($status != '')
         {
@@ -486,6 +499,24 @@ class Crud_model extends CI_Model
          }
      }
 
+     // USED TO FETCH THE RECORD OF INVOICE SALES USING PRODUCT ID
+	function fetch_product_invoice($invoice_id)
+	{
+		$this->db->select("mp_invoices.*,mp_sales.product_name,mp_sales.mg,mp_sales.price,mp_sales.discount,mp_sales.qty,mp_sales.tax");
+		$this->db->from('mp_invoices');
+		$this->db->join('mp_sales', "mp_sales.order_id = mp_invoices.id");
+		$this->db->where(['mp_invoices.id' => $invoice_id]);
+		$query = $this->db->get();
+		if ($query->num_rows() > 0)
+		{
+			return $query->result();
+		}
+		else
+		{
+			return NULL;
+		}
+    }
+    
      //USED TO FETCH THE RECORD THROUGH PROVIDED ID AND ATTTRIBUTE NAME AND SOURCE
      public function fetch_userid_order_source($source,$agentid)
      {
@@ -1108,6 +1139,18 @@ class Crud_model extends CI_Model
                 else if($single_transaction->transaction_type == 'paid')
                 {
                     $total_available = $total_available - $result[0]->amount;
+                }
+                else if ($single_transaction->transaction_type == 'bank_collection')
+				{
+					$total_available = $total_available + $single_transaction->total_bill;
+				}
+				else if($single_transaction->transaction_type == 'opening_account')
+                {
+                    $total_available = $total_available + $single_transaction->total_bill;
+                }
+                else
+                {
+
                 }
             }
         }

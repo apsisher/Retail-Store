@@ -849,7 +849,7 @@ class Accounts_model extends CI_Model
     function fetch_single_return_item($return_id)
     {
 
-         $this->db->select('mp_return_list.*,mp_payee.customer_name,mp_return.id as return_trans_id,mp_return.date,mp_return.cus_id,mp_return.invoice_id,mp_return.return_amount,mp_return.total_bill,mp_return.agent,mp_return.discount_given, mp_productslist.unit_type');
+         $this->db->select('mp_return_list.*,mp_payee.customer_name,mp_return.id as return_trans_id,mp_return.date,mp_return.cus_id,mp_return.invoice_id,mp_return.total_paid,mp_return.total_bill,mp_return.agent,mp_return.discount_given, mp_productslist.unit_type');
         $this->db->from('mp_return');
         $this->db->join('mp_return_list',"mp_return.id = mp_return_list.return_id");
         $this->db->join('mp_payee',"mp_payee.id = mp_return.cus_id");

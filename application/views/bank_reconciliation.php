@@ -102,8 +102,14 @@
                         ?>
                     </h3> 
                     <h4 style="text-align:center">
-                       <u> <?php echo $bank_detail[0]->bankname;
-                        ?></u>
+                        <?php 
+                            if( $bank_detail[0] != NULL)
+                            {
+                        ?>
+                                <u> <?php echo $bank_detail[0]->bankname; ?></u>
+                        <?php         
+                            }
+                        ?>  
                     </h4>
                    <h4 style="text-align:center"><b>Month</b> <?php echo $period; ?> 
                    </h4>

@@ -490,3 +490,9 @@ table td
 .profile-bread-set {
 	margin-bottom: 20px;
 }
+
+.print-logo-size
+{
+	width: 150px;
+	height: auto;
+}

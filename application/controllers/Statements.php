@@ -35,6 +35,7 @@ class Statements extends CI_Controller
 		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
 		$this->load->view('main/index.php', $data);
 	}
+	
 	// Statements/bank_reconciliation
 	// USED TO BANK RECONCILIATION STATEMENT
 	public function bank_reconciliation()
@@ -54,7 +55,7 @@ class Statements extends CI_Controller
 			$result = $this->Crud_model->fetch_record_by_id('mp_langingpage', 1);
 		}
 		$data['bank_list'] = $this->Crud_model->fetch_record('mp_banks', 'status');
-		if ($bank_id == NULL)
+		if ($bank_id == NULL AND $data['bank_list'] != NULL)
 		{
 			$bank_id = $data['bank_list'][0]->id;
 		}

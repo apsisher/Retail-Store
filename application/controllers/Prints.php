@@ -16,17 +16,65 @@ class Prints extends CI_Controller
 		$this->load->model('Crud_model');
 		$data['default_data'] = $this->Crud_model->fetch_record_by_id('mp_langingpage',1); 
 
-		$data['estimate_data'] = $this->Crud_model->fetch_record_by_id('mp_estimate',$order_id); 
+		$data['order_data'] = $this->Crud_model->fetch_record_by_id('mp_purchase_order',$order_id); 
 
-		$data['sales_data'] = $this->Crud_model->fetch_product_estimate($order_id); 
+		$data['sales_data'] = $this->Crud_model->fetch_attr_record_by_id('mp_subpo_details','estimate_id',$data['order_data'][0]->id); 
 
-		$data['user_data'] = $this->Crud_model->fetch_record_by_id('mp_payee',$data['estimate_data'][0]->payee_id); 
+		$data['user_data'] = $this->Crud_model->fetch_record_by_id('mp_payee',$data['order_data'][0]->payee_id); 
 
 		// DEFINES PAGE TITLE
 		$data['title'] = 'Purchase order';
 
 		// DEFINES WHICH PAGE TO RENDER
 		$data['main_view'] = 'print/po';
+
+		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
+		$this->load->view('main/index.php', $data);
+	}
+
+	//Prints/purchase_receipt 
+	//USED TO PRINT PURCHASE DETAILS 
+	function purchase_receipt($purchase_id)
+	{	
+		$this->load->model('Crud_model');
+
+		$data['default_data'] = $this->Crud_model->fetch_record_by_id('mp_langingpage',1); 
+
+		$data['single_purchase'] = $this->Crud_model->fetch_record_by_id('mp_purchase',$purchase_id);
+
+		$data['purchase_list'] = $this->Crud_model->fetch_purchase_list($purchase_id);	
+
+		$data['user_data'] = $this->Crud_model->fetch_record_by_id('mp_payee',$data['single_purchase'][0]->supplier_id); 
+
+		// DEFINES PAGE TITLE
+		$data['title'] = 'Purchase receipt';
+
+		// DEFINES WHICH PAGE TO RENDER
+		$data['main_view'] = 'print/purchase_receipt.php';
+
+		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
+		$this->load->view('main/index.php', $data);
+	}
+
+	//Prints/purchase_return 
+	//USED TO PRINT PURCHASE DETAILS 
+	function purchase_return($purchase_id)
+	{	
+		$this->load->model('Crud_model');
+
+		$data['default_data'] = $this->Crud_model->fetch_record_by_id('mp_langingpage',1); 
+
+		$data['single_purchase'] = $this->Crud_model->fetch_record_by_id('mp_purchase',$purchase_id);
+
+		$data['purchase_list'] = $this->Crud_model->fetch_purchase_list($purchase_id);	
+
+		$data['user_data'] = $this->Crud_model->fetch_record_by_id('mp_payee',$data['single_purchase'][0]->supplier_id); 
+
+		// DEFINES PAGE TITLE
+		$data['title'] = 'Purchase return';
+
+		// DEFINES WHICH PAGE TO RENDER
+		$data['main_view'] = 'print/purchase_return.php';
 
 		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
 		$this->load->view('main/index.php', $data);
@@ -195,6 +243,27 @@ class Prints extends CI_Controller
 		$this->load->view('main/index.php', $data);
 	}
 
+	// Prints/invoice
+	// USED TO PRINT INVOICE DETAILS
+	function invoice_print($invoice_id)
+	{
+		$this->load->model('Crud_model');
+		$data['default_data'] = $this->Crud_model->fetch_record_by_id('mp_langingpage', 1);
+		
+		$data['invoice_data'] = $this->Crud_model->fetch_record_by_id('mp_invoices', $invoice_id);
+		
+		$data['sales_data'] = $this->Crud_model->fetch_product_invoice($invoice_id);
+
+
+		$data['user_data'] = $this->Crud_model->fetch_record_by_id('mp_payee', $data['invoice_data'][0]->cus_id);
+		// DEFINES PAGE TITLE
+		$data['title'] = 'Sales print';
+		// DEFINES WHICH PAGE TO RENDER
+		$data['main_view'] = 'print/invoice';
+		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
+		$this->load->view('main/index.php', $data);
+	}
+	
 	// Prints/bank_expense
 	// USED TO PRINT BANK EXPENSE DETAILS
 	function bank_expense($expense_id)
@@ -251,7 +320,7 @@ class Prints extends CI_Controller
 			$result = $this->Crud_model->fetch_attr_record_by_id('mp_payee_payments', 'transaction_id', $tran_id);
 			$this->receive_receipt($result[0]->id);
 		}
-		else if ($source == 'invoice')
+		else if ($source == 'pos')
 		{
 			$result = $this->Crud_model->fetch_attr_record_by_id('mp_invoices', 'transaction_id', $tran_id);
 			$this->invoice_print($result[0]->id);
@@ -280,15 +349,25 @@ class Prints extends CI_Controller
 		{
 			$this->debit_voucher($tran_id);
 		}
-		else if ($source == 'purchase_receipt')
+		else if ($source == 'create_purchases')
 		{
-			$result = $this->Crud_model->fetch_attr_record_by_id('mp_purchase_receipt', 'transaction_id', $tran_id);
-			$this->purchase($result[0]->id);
+			$result = $this->Crud_model->fetch_attr_record_by_id('mp_purchase', 'transaction_id', $tran_id);
+			$this->purchase_receipt($result[0]->id);
 		}
-		else if ($source == 'purchase_return')
+		else if ($source == 'purchases_return')
 		{
-			$result = $this->Crud_model->fetch_attr_record_by_id('mp_purchase_return', 'transaction_id', $tran_id);
+			$result = $this->Crud_model->fetch_attr_record_by_id('mp_purchase', 'transaction_id', $tran_id);
 			$this->purchase_return($result[0]->id);
+		}
+		else if ($source == 'bank_collection')
+		{
+			$this->bank_collection($tran_id);
+		}
+		else if ($source == 'return_pos')
+		{
+			$result = $this->Crud_model->fetch_attr_record_by_id('mp_return', 'transaction_id', $tran_id);
+			
+			redirect(base_url('return_items/return_single_invoice/').$result[0]->id);
 		}
 	}
 }	

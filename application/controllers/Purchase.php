@@ -111,6 +111,7 @@ class Purchase extends CI_Controller
 	//USED TO SHOW PURCHASE RETURN 
 	function return_purchase()
 	{
+		
 		// DEFINES PAGE TITLE
 		$data['title'] = 'Purchase return';
 
@@ -533,6 +534,7 @@ class Purchase extends CI_Controller
 		$pur_method 	 = html_escape($this->input->post('pur_method'));
 		$pur_date 		 = html_escape($this->input->post('pur_date'));
 		$total_paid 	 = html_escape($this->input->post('pur_paid'));
+		$offered_discount = html_escape($this->input->post('offered_discount'));
 		$pur_description = html_escape($this->input->post('pur_description'));
 		$bank_id 		 = html_escape($this->input->post('bank_id'));
 		$ref_no 		 = html_escape($this->input->post('ref_no'));
@@ -566,6 +568,7 @@ class Purchase extends CI_Controller
 				'date' => date('Y-m-d'),
 				'supplier_id' => $pur_supplier,
 				'store' => $pur_store,
+				'offered_discount' => $offered_discount,
 				'invoice_id' => $pur_invoice,
 				'total_amount' => $pur_total,
 				'payment_type_id' => $pur_method,

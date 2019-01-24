@@ -814,12 +814,30 @@ class Order_list extends CI_Controller
         {
 
             $check_item_in_temp = $this->Crud_model->fetch_attr_record_by_userid_source('mp_temp_barcoder_order','product_id',$id,$user_name['id'],'supply');
+           
+            if($check_item_in_temp != NULL)
+            {
+             
+              $qty = $check_item_in_temp[0]->pack+1;
 
-            //CALCULATING TAX USING EACH ITEMS
-            $tax_amount = ($result[0]->tax/100)*$result[0]->retail;
+              $args = array(
+                'table_name' => 'mp_temp_barcoder_order',
+                'id'         => $check_item_in_temp[0]->id
+              );
 
-            // ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY FOR EVERY ITERATION
-            $args = array(
+              $data = array(
+                'pack' => $qty
+              );
+  
+              $this->Crud_model->edit_record_id($args, $data);
+            }
+            else
+            {
+                //CALCULATING TAX USING EACH ITEMS
+                $tax_amount = ($result[0]->tax/100)*$result[0]->retail;
+
+                // ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY FOR EVERY ITERATION
+                $args = array(
                 'add_date'      => date('Y-m-d'),
                 'opening_stock' => $result[0]->quantity / $result[0]->packsize,
                 'barcode'       => $result[0]->barcode,
@@ -837,10 +855,11 @@ class Order_list extends CI_Controller
                 'brand_id'      => $result[0]->brand_id,
                 'salesman_id'   => 0,
                 'status'        => 'temp'
-            );
+              );
 
-            // DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
-            $result = $this->Crud_model->insert_data('mp_temp_barcoder_order', $args);
+                // DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
+                $result = $this->Crud_model->insert_data('mp_temp_barcoder_order', $args);
+            }
         }
 
         //LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE

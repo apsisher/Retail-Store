@@ -317,7 +317,18 @@
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-truck" aria-hidden="true"></i> Recent Accounts</h3>
                     <div class="box-tools pull-right">
-                        <span class="label label-primary"><i class="fa fa-truck" aria-hidden="true"></i> <?php echo count($result_customer); ?> New Customer</span>
+                        <span class="label label-primary"><i class="fa fa-truck" aria-hidden="true"></i> 
+                         <?php 
+                            if($recent_accounts != NULL)
+                            {
+                                echo count($recent_accounts);
+                            }
+                            else
+                            {
+                                echo '0';
+                            }
+                         ?>     
+                         New Customer</span>
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>

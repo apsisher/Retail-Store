@@ -35,7 +35,7 @@
 		  <div class="form-group">  
 				<?php
 					echo form_label('Account Title :');
-					$data = array('class'=>'form-control input-lg','type'=>'text','name'=>'title','placeholder'=>'e.g Gigabyte Ltd','reqiured'=>'');
+					$data = array('class'=>'form-control input-lg','type'=>'text','name'=>'title','placeholder'=>'e.g Steve smith','reqiured'=>'');
 					echo form_input($data);	
 				 ?>	
 		  </div>
@@ -50,8 +50,9 @@
 				<?php
 					echo form_label('Account Type :');
 				 ?>	
-				 <select name="account_type"  class="form-control input-lg">
+				 <select name="account_type" onchange="show_opening_balance(this.value)" class="form-control input-lg">
 				 	<option value="0" >New Account</option>
+				 	<option value="1" >Existing Account</option>
 				 </select>
 		  </div>
   		  <div id="existing_account">	 	  

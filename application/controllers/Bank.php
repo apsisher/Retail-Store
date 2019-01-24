@@ -284,6 +284,7 @@ class Bank extends CI_Controller
         // DEFINES WHICH PAGE TO RENDER
         $data['main_view'] = 'cheque';
         
+        
         $this->load->model('Crud_model');
         
         //USED TO FETCH BANKS

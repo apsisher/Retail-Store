@@ -446,7 +446,8 @@ class Return_items extends CI_Controller
     	// DEFINES PAGE TITLE
 		$data['title'] = 'Return invoice';
 
-		$this->load->model('Accounts_model'); 
+		$this->load->model('Accounts_model');
+		 
 		$data['return_data'] = $this->Accounts_model->fetch_single_return_item($return_id);
 
     	// DEFINES WHICH PAGE TO RENDER

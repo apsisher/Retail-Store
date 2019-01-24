@@ -35,7 +35,7 @@ class Company extends CI_Controller
 		
 		// DEFINES TO LOAD THE CATEGORY LIST FROM DATABSE TABLE mp_Categoty
 		$this->load->model('Crud_model');
-		$result = $this->Crud_model->fetch_payee_record('company',NULL);
+		$result = $this->Crud_model->fetch_attr_record_by_id('mp_payee','type','company');
 		$data['comapny_list'] = $result;
 
 		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE

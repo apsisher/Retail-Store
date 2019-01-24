@@ -117,6 +117,7 @@ if (!function_exists('balance_identifier'))
 			case  'Opening_balance':
 			{
 				$balance = $current_balance + $total_bill;
+				$balance = $balance - $total_paid;
 				break;
 			}
 

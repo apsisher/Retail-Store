@@ -447,7 +447,7 @@ class Transaction_model extends CI_Model
             'method'              => 'Collection',
             'ref_no'              => $data_fields['cheque_id'],
             'total_paid'          => $data_fields['amount'],
-            'total_bill'          => 0,
+            'total_bill'          => $data_fields['amount'],
             'transaction_status'  => 0,
             'transaction_type'    => 'bank_collection',
             'cleared_date'        => date('Y-m-d')
@@ -1218,6 +1218,7 @@ class Transaction_model extends CI_Model
                 'total_paid	'     => $data_fields['cash'],
                 'payment_type_id' => $data_fields['payment_type_id'],
                 'payment_date'    => $data_fields['payment_date'],
+                'discount'        => $data_fields['offered_discount'],
                 //'cash'            => $data_fields['cash'],
                 'description'     => $data_fields['description'],
                 'cus_picture'     => $data_fields['cus_picture'],
@@ -2326,83 +2327,98 @@ class Transaction_model extends CI_Model
          }        
     }
 
-    //USED TO CREATE A TRANSACTION WHEN CREATE NEW BANK 
-    function bank_transaction($data_fields)
-    {
-        $this->db->trans_start();
-       
-        $credithead  = 0;
-        $debithead   = 0;
-        $debitamount  = 0;
-        $creditamount  = 0;
+     //USED TO CREATE A TRANSACTION WHEN CREATE NEW BANK 
+     function bank_transaction($data_fields)
+     {
+         $this->db->trans_start();
+        
+         $credithead  = 0;
+         $debithead   = 0;
+         $debitamount  = 0;
+         $creditamount  = 0;
+ 
+         if ($data_fields['end_balance'] >= 0) {
+ 
+             // ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY
+             $args = array(
+                 'bankname' => $data_fields['bankname'],
+                 'branch' => $data_fields['branch'],
+                 'branchcode' => $data_fields['branchcode'],
+                 'title' => $data_fields['title'],
+                 'accountno' =>$data_fields['accountno']
+             );
+ 
+             // DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
+             $this->db->insert('mp_banks', $args);
+             $bank_id = $this->db->insert_id();
+ 
+             $debithead    =  16; //CASH IN BANK
+             //$credithead   = $data_fields['account_head']; //ACCOUNT HEAD
+ 
+             $debitamount  = $data_fields['end_balance'];
+             // $creditamount = $data_fields['amount'];
+ 
+             $data1  = array(
+             'date'                 => $data_fields['end_date'],
+             'naration'             => 'Transaction occurecd from adding new bank account',
+             'generated_source'     => 'add_bank'
+             );
+ 
+             $this->db->insert('mp_generalentry', $data1);
+             $transaction_id = $this->db->insert_id();
+ 
+             //1ST ENTRY
+             $sub_data  = array(
+             'parent_id'   => $transaction_id,
+             'accounthead' => $debithead,
+             'amount'      => $debitamount,
+             'type'        => 0
+             );
+             $this->db->insert('mp_sub_entry', $sub_data);
 
-        if($data_fields['end_balance'] >= 0)
-        {
+             $data1  = array(
+                'date'                 => $data_fields['end_date'],
+                'naration'             => 'Adjusting new bank account',
+                'generated_source'     => 'add_bank'
+             );
+    
+                $this->db->insert('mp_generalentry', $data1);
+                $adjust_id = $this->db->insert_id();
 
-            // ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY
-            $args = array(
-                'bankname' => $data_fields['bankname'],
-                'branch' => $data_fields['branch'],
-                'branchcode' => $data_fields['branchcode'],
-                'title' => $data_fields['title'],
-                'accountno' =>$data_fields['accountno']
-            );
-
-            // DEFINES CALL THE FUNCTION OF insert_data FORM Crud_model CLASS
-            $this->db->insert('mp_banks', $args);
-            $bank_id = $this->db->insert_id();
-
-            $debithead    =  16; //CASH IN BANK 
-            //$credithead   = $data_fields['account_head']; //ACCOUNT HEAD
-
-            $debitamount  = $data_fields['end_balance'];
-           // $creditamount = $data_fields['amount'];
-
-            $data1  = array(
-            'date'                 => $data_fields['end_date'], 
-            'naration'             => 'Transaction occurecd from adding new bank account',  
-            'generated_source'     => 'add_bank'
-            );
-
-            $this->db->insert('mp_generalentry',$data1);
-            $transaction_id = $this->db->insert_id();
-
-            //1ST ENTRY
-            $sub_data  = array(
-            'parent_id'   => $transaction_id, 
-            'accounthead' => $debithead, 
-            'amount'      => $debitamount, 
-            'type'        => 0
-            );
-            $this->db->insert('mp_sub_entry',$sub_data);  
-
-            //TRANSACTION DETAILS 
-            $sub_data  = array(
-                'transaction_id'      => $transaction_id, 
-                'cleared_date'        => $data_fields['end_date'], 
-                'bank_id'             => $bank_id, 
-                'cheque_amount'       => $data_fields['end_balance'],
-                'transaction_status'  => 0,
-                'transaction_type'    => 'opening_account'
-            );
-
-            $this->db->insert('mp_bank_transaction',$sub_data);  
-
-            $this->db->trans_complete();
-
-            if ($this->db->trans_status() === FALSE)
-            {
-                $this->db->trans_rollback();
-                $data_fields = NULL;    
-            }
-            else
-            {
-                $this->db->trans_commit();
-            }
-
-            return $data_fields;
-        }        
-    }
+                //1ST ENTRY
+                $sub_data  = array(
+                    'parent_id'   => $adjust_id,
+                    'accounthead' => $debithead,
+                    'amount'      => $debitamount,
+                    'type'        => 1
+                );
+                
+                $this->db->insert('mp_sub_entry', $sub_data);
+ 
+             //TRANSACTION DETAILS
+             $sub_data  = array(
+                 'transaction_id'      => $transaction_id,
+                 'cleared_date'        => $data_fields['end_date'],
+                 'bank_id'             => $bank_id,
+                 'total_bill'          => $data_fields['end_balance'],
+                 'transaction_status'  => 0,
+                 'transaction_type'    => 'opening_account'
+             );
+ 
+             $this->db->insert('mp_bank_transaction', $sub_data);
+ 
+             $this->db->trans_complete();
+ 
+             if ($this->db->trans_status() === false) {
+                 $this->db->trans_rollback();
+                 $data_fields = null;
+             } else {
+                 $this->db->trans_commit();
+             }
+ 
+             return $data_fields;
+         }
+     } 
 
     //USED TO EDIT INVOICE 
     function edit_invoice_transaction($data, $invoice_id)

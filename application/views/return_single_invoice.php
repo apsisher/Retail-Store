@@ -118,6 +118,7 @@
                         </tr>
                         <?php 
                           $total_after_dis = $total-$return_data[0]->discount_given;
+
                           $total_after_dis = number_format($total_after_dis,2,'.','');
                       ?>  
                      <tr  style="border-bottom: 2px dotted #eee;">
@@ -148,7 +149,7 @@
                                 <tr  style="border-bottom: 2px dotted #eee;">
                                     <td colspan="7"  >
                                          <b>[ Total bill : <?php echo $total_after_dis; ?> </b> /- ] [ <b>
-                                         <b> Cash return :</b> <?php echo $return_data[0]->return_amount; ?> /- ] [ <b>  Cash balance:</b> <?php echo number_format($total_after_dis-$return_data[0]->return_amount,'2','.',''); ?> /- ]
+                                         <b> Cash return :</b> <?php echo $return_data[0]->total_paid; ?> /- ] [ <b>  Cash balance:</b> <?php echo number_format($total_after_dis-$return_data[0]->total_paid,'2','.',''); ?> /- ]
                                     </td>
                                 </tr>
                               
