@@ -149,4 +149,4 @@ class Backup extends CI_Controller
 		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
 		$this->load->view('main/index.php', $data);
 	}
-}
+} 
