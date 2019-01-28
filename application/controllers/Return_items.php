@@ -26,6 +26,7 @@ class Return_items extends CI_Controller
 
 		//FETCHING THE LIST OF CUSTOMERS
 		$customer_record = $this->Crud_model->fetch_payee_record('customer','status');
+
 		$data['customer_record'] = $customer_record;
 
 		//LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE
@@ -345,7 +346,7 @@ class Return_items extends CI_Controller
 		$this->load->model('Crud_model');
 		$result = $this->Crud_model->fetch_attr_record_by_id('mp_temp_barcoder_invoice','agentid',$user_name['id']);
 
-		if($result != NULL AND $invoice_id != '')
+		if($result != NULL)
 		{
 
 			$data = array(

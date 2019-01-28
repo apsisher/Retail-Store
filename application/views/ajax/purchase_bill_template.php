@@ -17,6 +17,7 @@
 
     function calculate_func(val)
     {
+        
         clearTimeout(timmer);
         timmer = setTimeout(function callback()
           { 

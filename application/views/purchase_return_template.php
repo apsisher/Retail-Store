@@ -117,7 +117,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Cash recieved'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','step'=>'.01','reqiured'=>'');
+                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','step'=>'.01','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div>
@@ -127,7 +127,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Balance'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','name'=>'pur_balance','step'=>'.01','reqiured'=>'');
+                    $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','name'=>'pur_balance','step'=>'.01','value'=>0);
                     echo form_input($data);
                 ?>
             </div>
@@ -215,7 +215,7 @@ if($temp_data != NULL)
     $('#payment_id').change(function()
     {
         var method = $('#payment_id').val();
-        if(method == 1)
+        if(method == 'Cheque')
         {
             $('.bank-section-details').css('display','block');
         }

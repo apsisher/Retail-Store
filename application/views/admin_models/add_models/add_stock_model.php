@@ -50,30 +50,57 @@
 			  ?>
                 </div>			   
                 <div class="form-group">
-			   <?php echo form_label('Expiry Date:'); ?>
-               <?php
-					$data = array('class'=>'form-control input-lg','type'=>'date','name'=>'expiry','placeholder'=>'e.g 10','reqiured'=>'');
-					echo form_input($data);
-			  ?>
+					<?php echo form_label('Expiry Date:'); ?>
+					<?php
+							$data = array('class'=>'form-control input-lg','type'=>'date','name'=>'expiry','placeholder'=>'e.g 10','reqiured'=>'');
+							echo form_input($data);
+					?>
                 </div>			   
                 <div class="form-group">
-			   	<?php echo form_label('Quantity:'); ?>
-               	<?php
-					$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'quantity','value'=>'0','id'=>'quantity');
-					echo form_input($data);
-			  	?><small>Calculate single item in each pack size and add its quantity here.</small>
-                </div>                
+					<?php echo form_label('Packs:'); ?>
+					<?php
+						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'quantity','value'=>'0','id'=>'quantity');
+						echo form_input($data);
+					?>
+                </div> 
+				<div class="form-group">
+					<?php echo form_label('Cost per item:'); ?>
+					<?php
+						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'cost','value'=>'0','id'=>'cost');
+						echo form_input($data);
+					?>
+                </div> 
+				<div class="form-group">
+					<?php echo form_label('Retail per item:'); ?>
+					<?php
+						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'retail','value'=>'0','step'=>'.01','id'=>'retial');
+						echo form_input($data);
+					?>
+                </div> 
+				<div class="form-group">
+					<?php echo form_label('Pack Retail :'); ?>
+					<?php
+						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pack_retail','value'=>'0','step'=>'.01','id'=>'pack_retail');
+						echo form_input($data);
+					?>
+                </div> 
+				<div class="form-group">
+					<?php echo form_label('Pack Cost:'); ?>
+					<?php
+						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pack_cost','value'=>'0','id'=>'pack_cost');
+						echo form_input($data);
+					?>
+                </div>                 
                 <div class="form-group">
-			   <?php echo form_label('Internal Notes:'); ?>
-               <?php
+					<?php echo form_label('Internal Notes:'); ?>
+					<?php
 						$data = array('class'=>'form-control input-lg','type'=>'text','name'=>'note','placeholder'=>'any note','reqiured'=>'');
 						echo form_input($data);
-			  ?>
+					?>
                 </div>
 			  	<div class="form-group">  				
 				<?php
-					$data = array('class'=>'btn btn-info btn-flat  btn-lg','type' => 'submit','name'=>'btn_submit_Item','value'=>'true', 'content' => '<i class="fa fa-floppy-o" aria-hidden="true"></i> Save Stock ');
-					
+					$data = array('class'=>'btn btn-info btn-flat  btn-lg','type' => 'submit','name'=>'btn_submit_Item','value'=>'true', 'content' => '<i class="fa fa-floppy-o" aria-hidden="true"></i> Save Stock ');					
 					echo form_button($data);
 				 ?>   
               </div> 

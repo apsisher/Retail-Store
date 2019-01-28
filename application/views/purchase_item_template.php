@@ -135,7 +135,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Cash Paid'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','id'=>'pur_paid','step'=>'.01','value'=>0);
+                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','id'=>'pur_paid','step'=>'.01','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div>
@@ -230,8 +230,9 @@ if($temp_data != NULL)
 <script type="text/javascript">
     $('#payment_id').change(function()
     {
+       
         var method = $('#payment_id').val();
-        if(method == 1)
+        if(method == 'Cheque')
         {
             $('.bank-section-details').css('display','block');
         }

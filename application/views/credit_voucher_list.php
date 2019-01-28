@@ -115,7 +115,7 @@
                                         <?php echo $voucher->customer_name; ?>
                                     </td>
                                     <td>
-                                        <?php echo $voucher->total_bill; ?>
+                                        <?php echo $voucher->total_paid; ?>
                                     </td>
                                     <td>
                                         <?php echo $voucher->memo; ?>

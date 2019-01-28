@@ -84,7 +84,7 @@
             </b>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
-               <b> Phone : </b><?php echo $this->db->get_where('mp_contactabout', array('id' => 1))->result_array()[0]['phone_number'] ;?>
+               <b> Phone : </b><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['contact'] ;?>
                </b>
             </div>
          <?php
@@ -296,7 +296,7 @@
                         </tr>
                         <?php 
                           $total_after_dis = $total-$invoices_Record[$i]->discount;
-                      ?>  
+                        ?>  
                      <tr  style="border-bottom: 2px dotted #eee;">
                         <th  style="width:80%">After Discount(
                             <?php echo $currency;?> ):</th>
@@ -352,7 +352,7 @@
                           
                              ?> 
                              ] [ 
-                             <b> Cash recieved:</b> <?php echo $invoices_Record[$i]->total_paid; ?> /- ] [ <b>  Cash balance:</b> <?php echo $new_amount - $invoices_Record[$i]->total_paid; ?> /- ]
+                             <b> Cash recieved:</b> <?php echo $invoices_Record[$i]->total_paid; ?> /- ] [ <b>  Cash balance:</b> <?php echo $invoices_Record[$i]->total_bill - $invoices_Record[$i]->total_paid; ?> /- ]
                         </td>
                     </tr> 
                     </table>

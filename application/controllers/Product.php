@@ -162,21 +162,29 @@ class Product extends CI_Controller
  {
 
   // DEFINES READ Return_items details FORM Return_items FORM
-  $item_id   = html_escape($this->input->post('item_id'));
+  $item_id        = html_escape($this->input->post('item_id'));
+  $cost           = html_escape($this->input->post('cost'));
+  $retail         = html_escape($this->input->post('retail'));
+  $pack_retail    = html_escape($this->input->post('pack_retail'));
+  $pack_cost      = html_escape($this->input->post('pack_cost'));
   $manufacturing  = html_escape($this->input->post('manufacturing'));
-  $expiry   = html_escape($this->input->post('expiry'));
+  $expiry         = html_escape($this->input->post('expiry'));
   $edit_quantity  = html_escape($this->input->post('quantity'));
-  $note    = html_escape($this->input->post('note'));
-  $date = date('Y-m-d');
-  $user_name = $this->session->userdata('user_id');
-  $added_by = $user_name['name'];
+  $note           = html_escape($this->input->post('note'));
+  $date           = date('Y-m-d');
+  $user_name      = $this->session->userdata('user_id');
+  $added_by       = $user_name['name'];
 
   // DEFINES LOAD CRUDS_MODEL FORM MODELS FOLDERS
   $this->load->model('Crud_model');
    
   // TABLENAME AND ID FOR DATABASE ACTION
   $data = array(
-   'mid'    => $item_id,
+   'mid'          => $item_id,
+   'purchase'     => $cost,
+   'selling'      => $retail,
+   'pack_retail_price'    => $pack_retail,
+   'pack_purchase_price'    => $pack_cost,
    'manufacturing' => $manufacturing,
    'expiry'  => $expiry,
    'qty'    => $edit_quantity,
@@ -287,17 +295,16 @@ $data['main_view'] = 'stock_list';
        'description' => $importdata[9],
        'barcode' => $importdata[10], 
        'min_stock' => $importdata[11], 
-       'total_units' => $importdata[12], 
-       'packsize' => $importdata[13],   
-       'sku' => $importdata[14],  
-       'location' => $importdata[15],   
-       'tax' => $importdata[16],   
-       'type' => $importdata[17],   
-       'brand_id' => $importdata[18],   
-       'brand_sector_id' => $importdata[19],   
-       'unit_type' => $importdata[20],   
-       'net_weight' => $importdata[21],   
-       'whole_sale' => $importdata[22]  
+       'packsize' => $importdata[12],   
+       'sku' => $importdata[13],  
+       'location' => $importdata[14],   
+       'tax' => $importdata[15],   
+       'type' => $importdata[16],   
+       'brand_id' => $importdata[17],   
+       'brand_sector_id' => $importdata[18],   
+       'unit_type' => $importdata[19],   
+       'net_weight' => $importdata[20],   
+       'whole_sale' => $importdata[21]  
 
     );
 
@@ -353,7 +360,6 @@ $data['main_view'] = 'stock_list';
        'Description', 
        'Barcode', 
        'Minimum Level', 
-       'Total Units', 
        'Packsize',   
        'Sku',   
        'Location',  

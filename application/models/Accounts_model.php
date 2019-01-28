@@ -631,15 +631,16 @@ class Accounts_model extends CI_Model
     //USED TO FIND THE CHEQUES 
     function written_cheques($date1,$date2)
     {
-        $this->db->select('mp_generalentry.id as main_trans_id,mp_generalentry.date,mp_banks.bankname,mp_payee.customer_name,mp_sub_entry.amount,mp_bank_transaction.id as bank_trans_id,mp_bank_transaction.ref_no,mp_bank_transaction.transaction_status,mp_head.name as headname');
+        $this->db->select('mp_generalentry.id as main_trans_id,mp_generalentry.date,mp_banks.bankname,mp_payee.customer_name,mp_sub_entry.amount,mp_bank_transaction.id as bank_trans_id,mp_bank_transaction.ref_no,mp_bank_transaction.transaction_status,mp_bank_transaction.total_paid,mp_head.name as headname');
         $this->db->from('mp_generalentry');
         $this->db->join('mp_sub_entry', "mp_generalentry.id = mp_sub_entry.parent_id AND mp_sub_entry.type = 0 ");
         $this->db->join('mp_bank_transaction', "mp_bank_transaction.transaction_id = mp_generalentry.id"); 
-        $this->db->join('mp_bank_transaction_payee', "mp_bank_transaction_payee.transaction_id = mp_generalentry.id"); 
-        $this->db->join('mp_banks', "mp_banks.id = mp_bank_transaction.bank_id");
+        $this->db->join('mp_bank_transaction_payee',"mp_bank_transaction_payee.transaction_id = mp_generalentry.id"); 
+        $this->db->join('mp_banks',"mp_banks.id = mp_bank_transaction.bank_id");
         $this->db->join('mp_head', "mp_head.id = mp_sub_entry.accounthead");
-        $this->db->join('mp_payee', "mp_payee.id = mp_bank_transaction_payee.payee_id");
-        $this->db->where('mp_generalentry.generated_source','cheque');
+        $this->db->group_by('mp_generalentry.id');
+        $this->db->join('mp_payee',"mp_payee.id = mp_bank_transaction_payee.payee_id");
+        $this->db->where('mp_bank_transaction.transaction_type','paid');
         $this->db->where('date >=', $date1);
         $this->db->where('date <=', $date2);
         $query = $this->db->get();
@@ -658,7 +659,7 @@ class Accounts_model extends CI_Model
     function bank_deposits($date1,$date2)
     {
     
-        $this->db->select('mp_generalentry.date,mp_banks.bankname,mp_payee.customer_name,mp_sub_entry.amount,mp_bank_transaction.id as bank_trans_id,mp_bank_transaction.transaction_id,mp_bank_transaction.ref_no,mp_bank_transaction.transaction_status,mp_head.name as headname');
+        $this->db->select('mp_generalentry.date,mp_banks.bankname,mp_payee.customer_name,mp_sub_entry.amount,mp_bank_transaction.id as bank_trans_id,mp_bank_transaction.total_paid,mp_bank_transaction.transaction_id,mp_bank_transaction.ref_no,mp_bank_transaction.transaction_status,mp_head.name as headname');
         $this->db->from('mp_generalentry');
         $this->db->join('mp_sub_entry', "mp_generalentry.id = mp_sub_entry.parent_id AND mp_sub_entry.type = 1 ");
         $this->db->join('mp_bank_transaction', "mp_bank_transaction.transaction_id = mp_generalentry.id"); 
@@ -666,7 +667,8 @@ class Accounts_model extends CI_Model
         $this->db->join('mp_banks', "mp_banks.id = mp_bank_transaction.bank_id");
         $this->db->join('mp_head', "mp_head.id = mp_sub_entry.accounthead");
         $this->db->join('mp_payee', "mp_payee.id = mp_bank_transaction_payee.payee_id");
-        $this->db->where('mp_generalentry.generated_source','deposit');
+        $this->db->where('mp_bank_transaction.transaction_type','recieved');
+        $this->db->group_by('mp_generalentry.id');
         $this->db->where('date >=', $date1);
         $this->db->where('date <=', $date2);
         $query = $this->db->get();

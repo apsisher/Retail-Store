@@ -117,7 +117,7 @@
                                         <?php echo $deposit->customer_name; ?>
                                     </td>
                                     <td>
-                                        <?php echo $deposit->amount; ?>
+                                        <?php echo $deposit->total_paid; ?>
                                     </td>
                                     <td>
                                         <?php echo $deposit->ref_no; ?>

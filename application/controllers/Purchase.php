@@ -120,6 +120,7 @@ class Purchase extends CI_Controller
 		// DEFINES TO LOAD THE CATEGORY LIST FROM DATABSE TABLE mp_Categoty
 		$this->load->model('Crud_model');
 		$result = $this->Crud_model->fetch_payee_record('supplier','status');
+		
 		$data['supplier_list'] = $result;
 
 		$result = $this->Crud_model->fetch_record('mp_stores', NULL);
@@ -230,6 +231,9 @@ class Purchase extends CI_Controller
       
     	}
 
+		// DEFINES TO FETCH THE LIST OF BANK ACCOUNTS 
+		$data['bank_list'] = $this->Crud_model->fetch_record('mp_banks','status');
+
         //LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE
         $data['temp_data'] = $this->Crud_model->fetch_userid_purchase('purchase',$user_name['id']);
 
@@ -313,6 +317,9 @@ class Purchase extends CI_Controller
       
     	}
 
+		 // DEFINES TO FETCH THE LIST OF BANK ACCOUNTS 
+		 $data['bank_list'] = $this->Crud_model->fetch_record('mp_banks','status');
+
         //LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE
         $data['temp_data'] = $this->Crud_model->fetch_userid_purchase('preturn',$user_name['id']);
 
@@ -350,6 +357,9 @@ class Purchase extends CI_Controller
 		//LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE
 		$data['temp_data'] = $this->Crud_model->fetch_userid_purchase('purchase',$user_name['id']);
 		
+		// DEFINES TO FETCH THE LIST OF BANK ACCOUNTS 
+		$data['bank_list'] = $this->Crud_model->fetch_record('mp_banks','status');
+
 		$this->load->view('purchase_item_template.php',$data);
 
 	}
@@ -423,13 +433,15 @@ class Purchase extends CI_Controller
               $temp_data = array(
                 'qty' => $pack
               );
-
+			  
               $this->Pos_transaction_model->general_whole_transaction($new_args,$new_data , $temp_args, $temp_data);
           }
 
       }
 
-		
+		// DEFINES TO FETCH THE LIST OF BANK ACCOUNTS 
+		$data['bank_list'] = $this->Crud_model->fetch_record('mp_banks','status');
+		 
 		//LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE		
 		$data['temp_data'] = $this->Crud_model->fetch_userid_purchase('preturn', $user_name['id']);
 		
@@ -510,6 +522,9 @@ class Purchase extends CI_Controller
 		//USER ID
 		$user_name = $this->session->userdata('user_id');
 
+		// DEFINES TO FETCH THE LIST OF BANK ACCOUNTS 
+		$data['bank_list'] = $this->Crud_model->fetch_record('mp_banks','status');
+
 		//LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE
 		$data['temp_data'] = $this->Crud_model->fetch_userid_purchase('purchase',$user_name['id']);
 
@@ -553,7 +568,7 @@ class Purchase extends CI_Controller
 			$redirect = 'purchase/return_list';
 		}
 
-		if(($save_available_balance-$total_paid) <= 0 AND $pur_method == 'Cheque' AND $status == 0)
+		if(($save_available_balance-$total_paid) < 0 AND $pur_method == 'Cheque' AND $status == 0)
 		{
 			$array_msg = array(
 				'msg' => '<i style="color:#c00" class="fa fa-exclamation-triangle" aria-hidden="true"></i> Insufficient balance available ',

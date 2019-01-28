@@ -45,6 +45,7 @@
                 <h3 ><b>BILL TO </b></h3>
                 <h4 > <?php echo $user_data[0]->customer_name; ?></h4>
                 <p > <?php  echo $receipt_data[0]->billing_address; ?></p>
+                <p>Method : <?php  echo $receipt_data[0]->method; ?> </p>
            </div>  
            <div class="col-md-4 col-sm-4 pull-right">
                 <span class="pull-right">

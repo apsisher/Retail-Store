@@ -1,7 +1,10 @@
 <section class="content-header">
     <div class="row">
         <div class="col-md-12">
-            <div class="pull pull-right"> 
+            <div class="pull pull-right">
+                <button type="button" onclick="show_modal_page('<?php echo base_url();?>product/popup/add_stock_model')" class="btn btn-primary btn-flat btn-lg" ><i class="fa fa-plus-square" aria-hidden="true"></i>
+                    <?php echo $page_stock_button_name; ?>
+                </button>
                 <button onclick="printDiv('print-section')" class="btn btn-default btn-flat btn-lg pull-right "><i class="fa fa-print pull-left"></i> Print Report</button>
             </div>
         </div>
@@ -88,10 +91,10 @@
                                                         <a onclick="confirmation_alert('update this to stock  ','<?php echo base_url().'product/update_to_stock/'.$single_list->id; ?>')"  href="javascript:void(0)"><i class="fa  fa-arrow-circle-o-right"></i> Update to stock
                                                         </a>
                                                     </li> 
-                                                    <!-- <li onclick="show_modal_page('//echo base_url().'product/popup/edit_stock_model/'.$single_list->id; ?>')    " >        
+                                                    <li onclick="show_modal_page('<?php echo base_url().'product/popup/edit_stock_model/'.$single_list->id; ?>')  " >        
                                                         <a href="#"><i class="fa fa-pencil"></i> Edit</a>
                                                     </li>
-                                                    <li  >      
+                                                    <!-- <li  >      
                                                         <a onclick="confirmation_alert('delete this ','//echo base_url().'product/delete_stock/'.$single_list->id; ?>')"  href="javascript:void(0)" >       <i class="fa fa-trash"></i>   Delete
                                                         </a>
                                                     </li> -->

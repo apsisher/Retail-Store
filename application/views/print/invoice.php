@@ -10,7 +10,7 @@
               </li>
               <li class="active">Print invoice</li>
           </ol>
-    </div> 
+    </div>   
   </div>
     <div class="row">
         <div class="col-md-12">
@@ -44,6 +44,7 @@
            <div class="col-md-4 col-sm-4 pull-left">
                 <h3 ><b>BILL TO </b></h3>
                 <h4 > <?php echo $user_data[0]->customer_name; ?></h4>
+                <h3><b>PAYMENT METHOD :</b> <?php echo ($invoice_data[0]->payment_method == 0 ? 'Cash' : 'Cheque'); ?></h3>
            </div>  
            <div class="col-md-4 col-sm-4 pull-right">
                 <span class="pull-right">

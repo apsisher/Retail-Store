@@ -88,7 +88,6 @@ if($temp_data != NULL)
             <div class="col-md-4 privious_balance pull-left">
                 Previous (<?php echo $currency; ?>):
                 <input type="number" disabled="disabled" name="privious_balance" id="privious_balance" class="text-center" step=".01" value="0.00" /> <br>
-                <small><a onclick="open_payment_model()" href="javascript:void(0)">Pay previous balance</a></small> 
             </div>
         </div>        
         <div class="row total-grid-values">

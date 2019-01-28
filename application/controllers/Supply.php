@@ -84,7 +84,6 @@ class Supply extends CI_Controller
      // DEFINES TO LOAD THE CATEGORY LIST FROM DATABSE TABLE mp_Categoty
     $data['salesman_list'] = $this->Crud_model->fetch_record('mp_salesman',NULL);
 
-
     $data['town_list'] = $this->Crud_model->fetch_record('mp_town',NULL);
 
     // DEFINES TO FETCH THE LIST OF BANK ACCOUNTS 

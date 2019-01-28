@@ -1134,26 +1134,26 @@ class Crud_model extends CI_Model
                 //1 DEPOSIT //0 CHEQUE
                 if($single_transaction->transaction_type == 'recieved')
                 {
-                    $total_available = $total_available + $result[0]->amount; 
+                    $total_available = $total_available + $single_transaction->total_paid; 
                 }
                 else if($single_transaction->transaction_type == 'paid')
                 {
-                    $total_available = $total_available - $result[0]->amount;
+                    $total_available = $total_available - $single_transaction->total_paid;
                 }
                 else if ($single_transaction->transaction_type == 'bank_collection')
 				{
-					$total_available = $total_available + $single_transaction->total_bill;
+					$total_available = $total_available + $single_transaction->total_paid;
 				}
 				else if($single_transaction->transaction_type == 'opening_account')
                 {
-                    $total_available = $total_available + $single_transaction->total_bill;
+                    $total_available = $total_available + $single_transaction->total_paid;
                 }
                 else
                 {
 
                 }
             }
-        }
+        } 
         
         return $total_available;
     }
@@ -1741,7 +1741,11 @@ class Crud_model extends CI_Model
 		{
 			$this->db->or_where('mp_payment_voucher.type', 3);
 			$this->db->or_where('mp_payment_voucher.type', $type);
-		}
+        }
+        else
+        {
+            $this->db->where('mp_payment_voucher.type', $type);
+        }
 
 		
 		$this->db->where('mp_payment_voucher.receipt_date >=', $date1);
@@ -1851,7 +1855,9 @@ class Crud_model extends CI_Model
 		$this->db->from('mp_generalentry');
 		$this->db->join('mp_bank_transaction', 'mp_bank_transaction.transaction_id = mp_generalentry.id');
 		$this->db->join('mp_bank_transaction_payee', 'mp_bank_transaction_payee.transaction_id = mp_generalentry.id');
-		$this->db->where('mp_bank_transaction_payee.payee_id', $account_id);
+        $this->db->where('mp_bank_transaction_payee.payee_id', $account_id);
+       // $this->db->where('mp_generalentry.generated_source = "bank_collection" OR mp_generalentry.generated_source = "deposit" OR mp_generalentry.generated_source = "cheque" ');
+
 		if ($period != 'all')
 		{
 			$this->db->where('mp_generalentry.date >=', $date1);
@@ -1876,7 +1882,9 @@ class Crud_model extends CI_Model
         ");
 		$this->db->from('mp_generalentry');
 		$this->db->join('mp_expense', 'mp_expense.transaction_id = mp_generalentry.id');
-		$this->db->where('mp_expense.payee_id', $account_id);
+        $this->db->where('mp_expense.payee_id', $account_id);
+        $this->db->where('mp_expense.method != ','Cheque');
+       // $this->db->where('mp_generalentry.generated_source','expense');
 		if ($period != 'all')
 		{
 			$this->db->where('mp_generalentry.date >=', $date1);
@@ -1927,7 +1935,8 @@ class Crud_model extends CI_Model
         
 		$this->db->from('mp_generalentry');
 		$this->db->join('mp_sales_receipt', 'mp_sales_receipt.transaction_id = mp_generalentry.id');
-		$this->db->where('mp_sales_receipt.payee_id', $account_id);
+        $this->db->where('mp_sales_receipt.payee_id', $account_id);
+        $this->db->where('mp_sales_receipt.method != ','Cheque');
 		if($period != 'all')
 		{
             $this->db->where('mp_generalentry.date >=', $date1);
@@ -1956,6 +1965,9 @@ class Crud_model extends CI_Model
 		$this->db->join('mp_purchase', 'mp_purchase.transaction_id = mp_generalentry.id');
         $this->db->where('mp_purchase.supplier_id', $account_id);
         $this->db->where('mp_purchase.status', 0);
+        $this->db->where('mp_purchase.payment_type_id !=','Cheque');
+        $this->db->where('mp_generalentry.generated_source','create_purchases');
+     
 		if ($period != 'all')
 		{
 			$this->db->where('mp_generalentry.date >=', $date1);
@@ -1964,7 +1976,8 @@ class Crud_model extends CI_Model
 		$query = $this->db->get();
 		if ($query->num_rows() > 0)
 		{
-			$result = $query->result();
+            $result = $query->result();
+           
 			foreach($result as $single_transaction)
 			{
 				$trans_arr[] = $single_transaction;
@@ -1977,10 +1990,13 @@ class Crud_model extends CI_Model
         mp_generalentry.generated_source,
         mp_purchase.*
         ");
+
 		$this->db->from('mp_generalentry');
 		$this->db->join('mp_purchase', 'mp_purchase.transaction_id = mp_generalentry.id');
         $this->db->where('mp_purchase.supplier_id', $account_id);
         $this->db->where('mp_purchase.status', 1);
+        $this->db->where('mp_generalentry.generated_source','purchases_return');
+        $this->db->where('mp_purchase.payment_type_id !=','Cheque');
 		if ($period != 'all')
 		{
 			$this->db->where('mp_generalentry.date >=', $date1);
@@ -2005,7 +2021,9 @@ class Crud_model extends CI_Model
         ");
 		$this->db->from('mp_generalentry');
 		$this->db->join('mp_return', 'mp_return.transaction_id = mp_generalentry.id');
-		$this->db->where('mp_return.cus_id', $account_id);
+        $this->db->where('mp_return.cus_id', $account_id);
+        $this->db->where('mp_generalentry.generated_source','return_pos');
+        
 		if ($period != 'all')
 		{
 			$this->db->where('mp_generalentry.date >=', $date1);
@@ -2029,7 +2047,9 @@ class Crud_model extends CI_Model
         ");
 		$this->db->from('mp_generalentry');
 		$this->db->join('mp_invoices', 'mp_invoices.transaction_id = mp_generalentry.id');
-		$this->db->where('mp_invoices.cus_id', $account_id);
+        $this->db->where('mp_invoices.cus_id', $account_id);
+        $this->db->where('mp_generalentry.generated_source','pos');
+        $this->db->where('mp_invoices.payment_method != ',1);
 		if ($period != 'all')
 		{
 			$this->db->where('mp_generalentry.date >=', $date1);
@@ -2056,7 +2076,9 @@ class Crud_model extends CI_Model
 		$this->db->where('mp_generalentry.date >=', $date1);
 		$this->db->where('mp_generalentry.date <=', $date2);
 		$this->db->where('mp_payment_voucher.payee_id', $account_id);
-		$this->db->where('mp_payment_voucher.type !=', 2);
+        $this->db->where('mp_payment_voucher.type !=', 2);
+       // $this->db->where('mp_generalentry.generated_source = "credit_voucher" OR mp_generalentry.generated_source = "debit_voucher" OR mp_generalentry.generated_source = "Opening_balance" ');
+
 		$query = $this->db->get();
 		if ($query->num_rows() > 0)
 		{
@@ -2074,6 +2096,47 @@ class Crud_model extends CI_Model
 		return $trans_arr;
 	}
 
+    //USED MULTIPLE HEADS
+    function fetch_account_heads($assets,$libility,$equity,$revenue,$expense)
+    {
+        $this->db->select("*");
+        $this->db->from('mp_head');
+        
+        if($assets != '')
+        {
+            $this->db->or_where('nature','Assets');
+        }
+
+        if($libility != '')
+        {
+            $this->db->or_where('nature','Libility');
+        }
+
+        if($equity != '')
+        {
+            $this->db->or_where('nature','Equity');
+        }
+
+        if($revenue != '')
+        {
+            $this->db->or_where('nature','Revenue');
+        }
+
+        if($expense != '')
+        {
+            $this->db->or_where('nature','Expense');
+        }
+
+		$query = $this->db->get();
+		if ($query->num_rows() > 0)
+		{
+			return $query->result();
+		}
+		else
+		{
+			return NULL;
+		}
+    }
     // USED TO FETCH THE RECORD OF PRODUCTS/SERVICES
 	function fetch_product_records()
 	{

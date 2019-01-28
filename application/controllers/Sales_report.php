@@ -20,7 +20,7 @@ class Sales_report extends CI_Controller
 		$data['table_name'] = 'Product and other items sales report :';
 
 		// DEFINES WHICH PAGE TO RENDER
-		$data['main_view'] = 'medicine_sales';
+		$data['main_view'] = 'sales_report_page';
 
 		// DEFINES THE TABLE HEAD
 		$data['table_heading_names_of_coloums'] = array(
@@ -30,7 +30,7 @@ class Sales_report extends CI_Controller
 			'Product Name',
 			'Weight',
 			'Price',
-			'Qty',
+			'Qty/Packs',
 			'Subtotal'
 		);
 		$collection = array();

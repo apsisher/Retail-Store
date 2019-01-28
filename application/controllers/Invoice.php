@@ -739,7 +739,8 @@ class Invoice extends CI_Controller
 
 				//COMPANY NAME
 				$result = $this->Crud_model->fetch_record_by_id('mp_langingpage',1);
-				$company_name = $result[0]->companyname; 
+				$company_name = $result[0]->companyname;
+				$company_address = $result[0]->address; 
 
 				//PRINTER NAME
 				$result = $this->Crud_model->fetch_attr_record_by_id('mp_printer','set_default',1);
@@ -752,10 +753,6 @@ class Invoice extends CI_Controller
 				  $printer_name = '';
 				}
 				
-            	//ADDRESS 
-				$result = $this->Crud_model->fetch_record_by_id('mp_contactabout',1);
-				$address = $result[0]->address;
-				
 
 				
 				// if($printer_name != '')
@@ -763,7 +760,7 @@ class Invoice extends CI_Controller
 				// 	//BUSINESS AND OTHER INFO THAT MENTIONED ON THE TOP
 				// 	$general_info = array(
 				// 	'name' => $company_name ,
-				// 	'address' => $address,
+				// 	'address' => $company_address,
 				// 	'receipt' => $data['invoice_id'],
 				// 	'date' => date('Y-m-d'),
 				// 	'customer' => $cus_name,

@@ -149,7 +149,7 @@ class Sales_model extends CI_Model
             //1ST ENTRY
             $sub_data  = array(
             'parent_id'   => $transaction_id, 
-            'accounthead' => 25, 
+            'accounthead' => 20, 
             'amount'      => $data_fields['total_tax'], 
             'type'        => 1
             );
@@ -359,7 +359,7 @@ class Sales_model extends CI_Model
             //1ST ENTRY
             $sub_data  = array(
             'parent_id'   => $data_fields['transaction_id'], 
-            'accounthead' => 25, 
+            'accounthead' => 20, 
             'amount'      => $data_fields['total_tax'], 
             'type'        => 1
             );

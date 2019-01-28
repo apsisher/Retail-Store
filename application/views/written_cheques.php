@@ -118,7 +118,7 @@
                                         <?php echo $cheque->customer_name; ?>
                                     </td>
                                     <td>
-                                        <?php echo $cheque->amount; ?>
+                                        <?php echo $cheque->total_paid; ?>
                                     </td>
                                     <td>
                                         <?php echo $cheque->ref_no; ?>

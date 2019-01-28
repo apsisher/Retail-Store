@@ -294,7 +294,7 @@ class Bank extends CI_Controller
         $data['customer_list'] = $this->Crud_model->fetch_attr_record_by_id('mp_payee', 'cus_status', '0');
         
         //USED TO FETCH ACCOUNT HEADS
-        $data['head_list'] = $this->Crud_model->fetch_record('mp_head', NULL);
+        $data['head_list'] = $this->Crud_model->fetch_account_heads('yes','yes','yes','','');
         
         // DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
         $this->load->view('main/index.php', $data);
@@ -320,8 +320,8 @@ class Bank extends CI_Controller
         $data['customer_list'] = $this->Crud_model->fetch_attr_record_by_id('mp_payee', 'cus_status', '0');
         
         //USED TO FETCH ACCOUNT HEADS
-        $data['head_list'] = $this->Crud_model->fetch_record('mp_head', NULL);
-        
+        $data['head_list'] = $this->Crud_model->fetch_account_heads('yes','yes','yes','','');
+       
         // DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
         $this->load->view('main/index.php', $data);
     }
@@ -930,7 +930,7 @@ class Bank extends CI_Controller
         $data['customer_list'] = $this->Crud_model->fetch_attr_record_by_id('mp_payee', 'cus_status', '0');
         
         //USED TO FETCH ACCOUNT HEADS
-        $data['head_list'] = $this->Crud_model->fetch_record('mp_head', NULL);
+        $data['head_list'] = $this->Crud_model->fetch_account_heads('yes','yes','yes','','');
         
         // DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
         $this->load->view('main/index.php', $data);

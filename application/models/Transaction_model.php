@@ -41,10 +41,10 @@ class Transaction_model extends CI_Model
         {
             $debithead = 2;
             $debithead2 = 4; //AR
-            $credithead  = 3;
+            $credithead  = 19;
 
             $anotherdebithead = 18; //COG
-            $anothercredithead = 19; // SALES
+            $anothercredithead = 3; // INVENTORY
             $cost         = $data['net_cost'];
 
             $debitamount = $data['bill_paid'];
@@ -55,10 +55,10 @@ class Transaction_model extends CI_Model
         else if( $data['bill_paid'] == 0)
         {
             $debithead = 4;
-            $credithead = 3;
+            $credithead = 19;
 
             $anotherdebithead = 18; //COG
-            $anothercredithead = 19; // SALES
+            $anothercredithead = 3; // INVENTORY
             $cost         = $data['net_cost'];
 
             $debitamount = $data['total_bill'];
@@ -116,18 +116,18 @@ class Transaction_model extends CI_Model
             //2ST ENTRY
             $sub_data  = array(
             'parent_id'   => $transaction_id, 
-            'accounthead' => $credithead, 
+            'accounthead' => $anothercredithead, 
             'amount'      => $cost, 
             'type'        => 1
             );
 
             $this->db->insert('mp_sub_entry',$sub_data);
 
-            //INVENTORY
+            //SALES
             //2ST ENTRY
             $sub_data  = array(
                 'parent_id'   => $transaction_id, 
-                'accounthead' => $anothercredithead, 
+                'accounthead' => $credithead, 
                 'amount'      => $creditamount, 
                 'type'        => 1
                 );
@@ -449,7 +449,7 @@ class Transaction_model extends CI_Model
             'total_paid'          => $data_fields['amount'],
             'total_bill'          => $data_fields['amount'],
             'transaction_status'  => 0,
-            'transaction_type'    => 'bank_collection',
+            'transaction_type'    => 'recieved',
             'cleared_date'        => date('Y-m-d')
             );
 
@@ -1191,21 +1191,7 @@ class Transaction_model extends CI_Model
                 $this->db->insert('mp_sub_entry',$sub_data);
             }
 
-            if($data_fields['credithead'] == 16)
-            {
-               //TRANSACTION DETAILS 
-                $sub_data  = array(
-                'transaction_id'      => $tran_id, 
-                'bank_id'             => $data_fields['bank_id'], 
-                'payee_id'            => $data_fields['supplier_id'], 
-                'method'              => $data_fields['payment_type_id'],
-                'total_paid'          => $data_fields['cash'],
-                'ref_no'              => $data_fields['ref_no'],
-                'transaction_status'  => 1,
-                'transaction_type'    => 'paid'
-                );
-                $this->db->insert('mp_bank_transaction',$sub_data); 
-            }
+            
 
             // ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY
             $args = array(
@@ -1283,7 +1269,35 @@ class Transaction_model extends CI_Model
                     $this->db->where(['source' => 'purchase']);
                     $this->db->where(['agentid' => $user_name['id']]);
                     $this->db->delete('mp_temp_purchase');
-                }    
+                }  
+                
+                if($data_fields['credithead'] == 16)
+                {
+
+                    //TRANSACTION DETAILS 
+                    $sub_data  = array(
+                    'transaction_id'      => $tran_id, 
+                    'bank_id'             => $data_fields['bank_id'], 
+                    'method'              => $data_fields['payment_type_id'],
+                    'total_bill'          => $data_fields['total_amount'],
+                    'total_paid'          => $data_fields['cash'],
+                    'ref_no'              => $data_fields['ref_no'],
+                    'transaction_status'  => 0,
+                    'transaction_type'    => 'paid',
+                    'attachment'          => 'default.jpg'
+                    );
+
+                    $this->db->insert('mp_bank_transaction',$sub_data); 
+                    
+                    
+                    //TRANSACTION DETAILS 
+                    $sub_data_trans  = array(
+                        'transaction_id'      => $tran_id, 
+                        'payee_id'            => $data_fields['supplier_id']
+                    );
+
+                    $this->db->insert('mp_bank_transaction_payee',$sub_data_trans); 
+                }
             }
             else
             {
@@ -1294,6 +1308,7 @@ class Transaction_model extends CI_Model
         }
         else if($data_fields['status'] == 1)
         {
+            
 
             $data1  = array(
                 'date'             => date('Y-m-d'), 
@@ -1306,7 +1321,7 @@ class Transaction_model extends CI_Model
 
             if($data_fields['total_amount'] == $data_fields['cash'])
             {    
-                $debithead    = 2; 
+                $debithead    = $data_fields['credithead']; 
                 $credithead   = 3;  
 
                 $debitamount  = $data_fields['total_amount'];
@@ -1335,7 +1350,7 @@ class Transaction_model extends CI_Model
             }
             else if($data_fields['total_amount'] > $data_fields['cash'])
             {   
-                $debithead     = 2; 
+                $debithead     = $data_fields['credithead']; 
                 $debithead2    = 4; 
                 $credithead    = 3;  
 
@@ -1374,22 +1389,7 @@ class Transaction_model extends CI_Model
                 $this->db->insert('mp_sub_entry',$sub_data);
             }
 
-            if($data_fields['credithead'] == 16)
-            {
-               //TRANSACTION DETAILS 
-                $sub_data  = array(
-                'transaction_id'      => $tran_id, 
-                'bank_id'             => $data_fields['bank_id'], 
-                'payee_id'            => $data_fields['supplier_id'], 
-                'method'              => $data_fields['payment_type_id'],
-                'total_paid'       => $data_fields['cash'],
-                'ref_no'              => $data_fields['ref_no'],
-                'transaction_status'  => 1,
-                'transaction_type'    => 'recieved'
-                );
-                $this->db->insert('mp_bank_transaction',$sub_data); 
-
-            }
+            
 
             // ASSIGN THE VALUES OF TEXTBOX TO ASSOCIATIVE ARRAY
             $args = array(
@@ -1450,13 +1450,42 @@ class Transaction_model extends CI_Model
                     $this->db->where(['source' => 'preturn']);
                     $this->db->where(['agentid' => $user_name['id']]);
                     $this->db->delete('mp_temp_purchase');
-                }    
+                }  
+                
+                if($data_fields['credithead'] == 16)
+                {
+
+                    //TRANSACTION DETAILS 
+                    $sub_data  = array(
+                    'transaction_id'      => $tran_id, 
+                    'bank_id'             => $data_fields['bank_id'], 
+                    'method'              => $data_fields['payment_type_id'],
+                    'total_bill'          => $data_fields['total_amount'],
+                    'total_paid'          => $data_fields['cash'],
+                    'ref_no'              => $data_fields['ref_no'],
+                    'transaction_status'  => 1,
+                    'transaction_type'    => 'recieved',
+                    'attachment'          => 'default.jpg'
+                    );
+
+                    $this->db->insert('mp_bank_transaction',$sub_data); 
+                    
+                    //TRANSACTION DETAILS 
+                    $sub_data  = array(
+                        'transaction_id'      => $tran_id, 
+                        'payee_id'            => $data_fields['supplier_id']
+                    );
+
+                    $this->db->insert('mp_bank_transaction_payee',$sub_data); 
+
+                }
             }
             else
             {
                 $this->db->trans_rollback();
                 $data_fields = NULL;    
             }
+
         }
         
         
@@ -1496,10 +1525,10 @@ class Transaction_model extends CI_Model
         if($data['total_bill'] == $data['bill_paid'])
         {
             $debithead = $data['credithead']; // CASH
-            $credithead = 19; // SALES
+            $credithead = 3; //  INVENTORY
 
             $anotherdebithead = 18; //COG
-            $anothercredithead = 3; // INVENTORY
+            $anothercredithead = 19; // SALES 
 
             $debitamount = $data['total_bill'];
             $creditamount = $data['bill_paid'];
@@ -1686,14 +1715,22 @@ class Transaction_model extends CI_Model
             $sub_data  = array(
             'transaction_id'      => $transaction_id, 
             'bank_id'             => $data['bank_id'], 
-            'payee_id'            => $data['cus_id'], 
             'method'              => $pay_method,
-            'total_paid'       => $data['bill_paid'],
+            'total_bill'          => $data['total_bill'],
+            'total_paid'          => $data['bill_paid'],
             'ref_no'              => $data['ref_no'],
             'transaction_status'  => 1,
             'transaction_type'    => 'recieved'
             );
             $this->db->insert('mp_bank_transaction',$sub_data); 
+
+            //TRANSACTION DETAILS 
+            $sub_data  = array(
+                'transaction_id' => $transaction_id, 
+                'payee_id'       => $data['cus_id']
+                );
+
+            $this->db->insert('mp_bank_transaction_payee',$sub_data); 
         }
 
 
@@ -2292,6 +2329,7 @@ class Transaction_model extends CI_Model
              'transaction_id'      => $transaction_id, 
              'bank_id'             => $data_fields['bank_id'], 
              'method'              => $data_fields['method'],
+             'total_bill'          => $data_fields['amount'],
              'total_paid'          => $data_fields['amount'],
              'ref_no'              => $data_fields['refno'],
              'transaction_status'  => 1,
@@ -2401,6 +2439,7 @@ class Transaction_model extends CI_Model
                  'cleared_date'        => $data_fields['end_date'],
                  'bank_id'             => $bank_id,
                  'total_bill'          => $data_fields['end_balance'],
+                 'total_paid'          => $data_fields['end_balance'],
                  'transaction_status'  => 0,
                  'transaction_type'    => 'opening_account'
              );
@@ -2759,7 +2798,7 @@ class Transaction_model extends CI_Model
              'payee_id'        => $data_fields['payee_id'], 
              'receipt_date'    => $data_fields['date'],
              'memo'            => $data_fields['description'],
-             'total_bill'      => $data_fields['creditamount']
+             'total_paid'      => $data_fields['creditamount']
          );
  
          $this->db->where('transaction_id', $data_fields['transaction_id']);
