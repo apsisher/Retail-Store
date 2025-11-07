@@ -99,17 +99,7 @@
 </section>
 <script type="text/javascript">
     var timmer;
-    function calculate_func(val)
-    {
-        clearTimeout(timmer);
-        timmer = setTimeout(function callback()
-          { 
-             var grand_total = $('#grand_total').val();         
-             var balance =  grand_total-val;
-             $('#balance_field').val(balance);      
-
-          }, 800);
-    }
+    
 
     $('#payment_id').change(function(){
         var method = $('#payment_id').val();

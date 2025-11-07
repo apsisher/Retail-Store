@@ -66,7 +66,7 @@
 				  <div class="form-group">  
 						<?php
 							echo form_label('Statement ending balance :');
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'ending_balance','placeholder'=>'e.g 5000','reqiured'=>'');
+							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'any','name'=>'ending_balance','placeholder'=>'e.g 5000','reqiured'=>'');
 							echo form_input($data);	
 						 ?>	
 				  </div>

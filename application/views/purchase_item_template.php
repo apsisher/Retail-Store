@@ -25,32 +25,32 @@ if($temp_data != NULL)
 {
     foreach ($temp_data as $single_val) 
     {
-         $total_gross = number_format($total_gross+($single_val->pack_cost*$single_val->qty),2,'.','');
+         $total_gross = number_format($total_gross+($single_val->pack_cost*$single_val->qty),3,'.','');
  
  ?>
     <tr > 
         <td><?php echo $single_val->product_name; ?></td>
         <td><?php echo $single_val->weight.' '.$single_val->unit_type; ?></td>
         <td>
-            <input type="number" onkeyup="amend_qty('qty',this.value,'<?php echo $single_val->id; ?>')" class="supply_fields" value="<?php echo $single_val->qty; ?>" name="supply_qty" id="supply_qty" />  
+            <input type="number" onkeyup="amend_qty('qty',this.value,'<?php echo $single_val->id; ?>','purchase_qty')" class="supply_fields" value="<?php echo $single_val->qty; ?>" name="purchase_qty" id="supply_qty" />  
         </td>
          <td>
-            <input type="number"  onkeyup="amend_qty('cost',this.value,'<?php echo $single_val->id; ?>')"   class="supply_fields" step=".01" value="<?php echo $single_val->cost; ?>" name="purchase_cost" id="purchase_cost">
+            <input type="number"  onkeyup="amend_qty('cost',this.value,'<?php echo $single_val->id; ?>','purchase_cost')"   class="supply_fields" step="any" value="<?php echo $single_val->cost; ?>" name="purchase_cost" id="purchase_cost">
         </td>   
          <td>
-            <input type="number" onkeyup="amend_qty('retail',this.value,'<?php echo $single_val->id; ?>')"   class="supply_fields" step=".01" value="<?php echo $single_val->retail; ?>" name="purchase_retail" id="purchase_retail">
+            <input type="number" onkeyup="amend_qty('retail',this.value,'<?php echo $single_val->id; ?>','purchase_retail')"   class="supply_fields" step="any" value="<?php echo $single_val->retail; ?>" name="purchase_retail" id="purchase_retail">
         </td>         
         <td>
-            <input type="number" onkeyup="amend_qty('pack_cost',this.value,'<?php echo $single_val->id; ?>')"  class="supply_fields" step=".01" value="<?php echo $single_val->pack_cost; ?>" name="purchase_cost_pack" id="purchase_cost_pack">
+            <input type="number" onkeyup="amend_qty('pack_cost',this.value,'<?php echo $single_val->id; ?>','purchase_cost_pack')"  class="supply_fields" step="any" value="<?php echo $single_val->pack_cost; ?>" name="purchase_cost_pack" id="purchase_cost_pack">
         </td>
         <td>
-            <input type="number" onkeyup="amend_qty('pack_retail',this.value,'<?php echo $single_val->id; ?>')"  class="supply_fields" step=".01" value="<?php echo $single_val->pack_retail; ?>" name="purchase_cost_pack" id="purchase_cost_pack">  
+            <input type="number" onkeyup="amend_qty('pack_retail',this.value,'<?php echo $single_val->id; ?>','purchase_retail_pack')"  class="supply_fields" step="any" value="<?php echo $single_val->pack_retail; ?>" name="purchase_retail_pack" id="purchase_retail_pack">  
         </td>
         <td>
-            <input type="date" onchange="amend_qty('manu_date',this.value,'<?php echo $single_val->id; ?>')"  class="supply_fields" value="<?php echo $single_val->manu_date; ?>" name="manu_date" id="manu_date">  
+            <input type="date" onchange="amend_qty('manu_date',this.value,'<?php echo $single_val->id; ?>','manu_date')"  class="supply_fields" value="<?php echo $single_val->manu_date; ?>" name="manu_date" id="manu_date">  
         </td>
         <td>
-            <input type="date" onchange="amend_qty('expire_date',this.value,'<?php echo $single_val->id; ?>')"  class="supply_fields" value="<?php echo $single_val->expire_date; ?>"  name="expire_date" id="expire_date">  
+            <input type="date" onchange="amend_qty('expire_date',this.value,'<?php echo $single_val->id; ?>','expire_date')"  class="supply_fields" value="<?php echo $single_val->expire_date; ?>"  name="expire_date" id="expire_date">  
         </td>
        
         <td >
@@ -72,7 +72,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Total'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'before_total','id'=>'before_total','step'=>'.01','value'=>$total_gross);
+                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'before_total','id'=>'before_total','step'=>'any','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div>
@@ -82,7 +82,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Offerd Discount %'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'offered_discount','onkeyup'=>'checkDiscount(this.value)','id'=>'offered_discount','step'=>'.01','placeholder'=>'10');
+                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'offered_discount','onkeyup'=>'checkDiscount(this.value)','id'=>'offered_discount','step'=>'any','placeholder'=>'10');
                     echo form_input($data);
                 ?>
             </div>                
@@ -91,7 +91,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Grand Total'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pur_total','id'=>'grand_total','step'=>'.01','value'=>$total_gross);
+                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pur_total','id'=>'grand_total','step'=>'any','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div>
@@ -135,7 +135,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Cash Paid'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','id'=>'pur_paid','step'=>'.01','value'=>$total_gross);
+                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','id'=>'pur_paid','step'=>'any','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div>
@@ -145,7 +145,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Balance'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','name'=>'pur_balance','step'=>'.01','value'=>0);
+                    $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','name'=>'pur_balance','step'=>'any','value'=>0);
                     echo form_input($data);
                 ?>
             </div>
@@ -230,7 +230,6 @@ if($temp_data != NULL)
 <script type="text/javascript">
     $('#payment_id').change(function()
     {
-       
         var method = $('#payment_id').val();
         if(method == 'Cheque')
         {

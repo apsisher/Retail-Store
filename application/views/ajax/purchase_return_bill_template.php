@@ -23,7 +23,7 @@
           { 
              var net_total = $('#net_total_amount_input').val();      
              var balance =  net_total-val;
-             $('#balance_field').val(balance.toFixed(2));      
+             $('#balance_field').val(balance.toFixed(3));      
 
           }, 100);
     }
@@ -47,7 +47,7 @@
                var newamt = parseFloat(before_total-dis_amt); 
 
                
-               $('#grand_total').val(newamt.toFixed(2));
+               $('#grand_total').val(newamt.toFixed(3));
             }
 
           },1000)
@@ -60,7 +60,7 @@
 
         var cash_given = amt-parseFloat(netamt);
         
-        $('#cash_given_to_customer').html(cash_given.toFixed(2));
+        $('#cash_given_to_customer').html(cash_given.toFixed(3));
     }
 
     //USED TO OPEN CUSTOMER PAYMENT MODEL 

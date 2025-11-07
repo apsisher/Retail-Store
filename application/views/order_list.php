@@ -19,46 +19,49 @@
                     <small>By default it will fetch the orders of current month.  </small>
                 </div>
                 <div class="box-body">
-                    <div class="row">
-                        <?php
-                            $attributes = array('id'=>'supply_form','method'=>'post',);
-                        ?>
-                        <?php echo form_open('order_list',$attributes); ?>
-                        <div class="col-md-12 ">
-                            <div class="form-group margin ">
-                                <?php echo form_label('Date From:'); ?>
-                                <div class="input-group date ">
-                                    <div class="input-group-addon   ">
-                                        <i class="fa fa-calendar "></i>
-                                    </div>
+                <div class="row">
+                    <?php
+                        $attributes = array('id'=>'supply_form','method'=>'post',);
+                    ?>
+                    <?php echo form_open('order_list',$attributes); ?>
+                    <div class="row no-print">
+                        <div class="col-md-3 col-sm-4 ">
+                            <div class="form-group">
+                                <label for="date_from" class="col-sm-5 control-label">
+                                    Date From
+                                </label>
+                                <div class="col-sm-7">
                                     <?php
-                                        $data = array('class'=>'form-control  input-lg','type'=>'date','id'=>'datepicker','name'=>'date1','placeholder'=>'e.g 12-08-2018','reqiured'=>'');
+                                        $data = array('class'=>'form-control','type'=>'date','name'=>'date1','placeholder'=>'e.g 12-08-2018','reqiured'=>'');
                                         echo form_input($data);
                                     ?>
-                                </div>
+                                </div>   
+                            </div>
+                        </div> 
+                        <div class="col-md-3 col-sm-4">
+                            <div class="form-group">
+                                <label for="date_from" class="col-sm-4 control-label">
+                                    Date To
+                                </label>
+                                <div class="col-sm-8 col-md-8">
+                                    <?php
+                                        $data = array('class'=>'form-control' ,'type'=>'date','name'=>'date2','placeholder'=>'e.g 12-08-2018','reqiured'=>'');
+                                        echo form_input($data);
+                                    ?>
+                                </div>   
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group margin">
-                                <?php echo form_label('Date To:'); ?>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <?php
-                                            $data = array('class'=>'form-control  input-lg' ,'type'=>'date','id'=>'datepicker','name'=>'date2','placeholder'=>'e.g 12-08-2018','reqiured'=>'');
-                                            echo form_input($data);
-                                        ?>
-                                    </div>
-                            </div>
-                        </div>
-                            <div class="col-md-12">
+                        <div class="col-md-3 col-sm-4">
+                            <div class="form-group">
                                 <?php
-                                    $data = array('class'=>'btn btn-info btn-lg btn-flat margin  pull-right','type' => 'submit','name'=>'searchecord','value'=>'true', 'content' => '<i class="fa fa-search" aria-hidden="true"></i> Search Orders');
+                                    $data = array('class'=>'btn btn-info','type' => 'submit','name'=>'btnSubmit','value'=>'true', 'content' => '<i class="fa fa-search" aria-hidden="true"></i> Search order');
                                     echo form_button($data);
-                                 ?>
+                                ?>
                             </div>
-                            <?php echo form_close(); ?>
+                        </div>
+                    </div>   
+                    <hr /> 
+                    <?php echo form_close(); ?>
                     </div>
                     <div class="col-md-12 table-responsive">
                         <table id="example1" class="table table-bordered table-striped">
@@ -68,9 +71,9 @@
                                     foreach ($table_heading_names_of_coloums as $table_head)
                                     {
                                     ?>
-                                        <th>
+                                        <td>
                                             <?php echo $table_head; ?>
-                                        </th>
+                                        </td>
                                     <?php
                                     }
                                     ?>
@@ -90,13 +93,34 @@
                                             <?php echo $counter++; ?>
                                         </td>
                                         <td>
-                                            <?php echo $single_order->add_date; ?>
+                                            <?php echo $single_order->date; ?>
                                         </td>
                                         <td>
                                             <?php echo $single_order->salesman_name; ?>
                                         </td> 
                                         <td>
                                             <?php echo $single_order->agent_name; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->total_amount; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->cash; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->credit_amount; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->cheque_amount; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->schemes; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->bank_deposit; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_order->return_stock_val; ?>
                                         </td>
                                         <td>
                                             <div class="btn-group pull no-print pull-right">
@@ -107,7 +131,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li>
-                                                        <a href="<?php echo base_url('order_list/generate_orderlist/'.$single_order->add_date.'/'.$single_order->salesman_id); ?>" >
+                                                        <a href="<?php echo base_url('order_list/generate_orderlist/'.$single_order->main_order_id); ?>" >
                                                              <i class="fa fa-pencil"></i> Generate order list
                                                         </a>
                                                     </li>

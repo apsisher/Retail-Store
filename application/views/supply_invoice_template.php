@@ -26,15 +26,15 @@ if($temp_data != NULL)
     {
         $total_discount = $total_discount + ((($single_val->price * $single_val->pack) / 100) * $single_val->discount);
         $total_cost = $total_cost +  ($single_val->purchase * $single_val->pack); 
-        $sub_total_tax = $single_val->qty * $single_val->tax;
-        $total_tax = number_format($total_tax + $sub_total_tax,2,'.','');
-        $total_gross = number_format($total_gross+($single_val->price*$single_val->pack),2,'.','');
+        //$sub_total_tax = $single_val->qty * $single_val->tax;
+        $total_tax = number_format($single_val->tax,3,'.','');
+        $total_gross = number_format($total_gross+($single_val->price*$single_val->pack),3,'.','');
  ?>
     <tr > 
         <td><?php echo $single_val->product_name; ?></td>
         <td><?php echo $single_val->mg.' '.$single_val->unit_type; ?></td>
          <td>
-            <input type="number" onkeyup="amend_amount(this.value,'<?php echo $single_val->id; ?>')" class="supply_fields" step=".01" value="<?php echo $single_val->price; ?>" name="supply_amount" id="supply_amount">
+            <input type="number" onkeyup="amend_amount(this.value,'<?php echo $single_val->id; ?>')" class="supply_fields" step="any" value="<?php echo $single_val->price; ?>" name="supply_amount" id="supply_amount">
         </td>   
          <td>
             <input type="number" onkeyup="amend_qty(this.value,'<?php echo $single_val->id; ?>')" class="supply_fields" value="<?php echo $single_val->pack; ?>" name="supply_qty" id="supply_qty" />
@@ -43,7 +43,7 @@ if($temp_data != NULL)
             <?php echo $single_val->qty; ?>
         </td>
         <td>
-            <input type="number" step=".01"  class="supply_fields" value="<?php echo $single_val->discount; ?>" name="discount_offered" onkeyup="amend_discount(this.value,'<?php echo $single_val->id; ?>')" id="discount_offered">
+            <input type="number" step="any"  class="supply_fields" value="<?php echo $single_val->discount; ?>" name="discount_offered" onkeyup="amend_discount(this.value,'<?php echo $single_val->id; ?>')" id="discount_offered">
         </td>
         <td >
             <a onclick="delete_item('<?php echo $single_val->id; ?>')" ><i class="fa fa-trash margin" aria-hidden='true'></i>
@@ -69,25 +69,25 @@ if($temp_data != NULL)
             </div>
             <div class="col-md-4 col-sm-12 col-xs-12">
                 Total Bill (<?php echo $currency; ?>):
-                <input disabled="disabled" type="number" name="gross_total_bill" id="gross_total_bill" class=" amount-box  text-center" value="<?php echo number_format($total_tax+$total_gross,'2','.',''); ?>" />
+                <input disabled="disabled" type="number" name="gross_total_bill" id="gross_total_bill" class=" amount-box  text-center" value="<?php echo number_format($total_tax+$total_gross,'3','.',''); ?>" />
             </div>
         </div> 
         <div class="row total-grid-values">            
             <div class="col-md-4 col-sm-12 col-xs-12">
                 Discount (<?php echo $currency; ?>) :
-                <input type="number"  name="discountfield" id="discountfield" step=".01" class=" amount-box text-right" value="<?php echo number_format($total_discount,'2','.',''); ?>" />
+                <input type="number"  name="discountfield" id="discountfield" step="any" class=" amount-box text-right" value="<?php echo number_format($total_discount,'3','.',''); ?>" />
             </div>  
             <div class="col-md-4 col-sm-12 col-xs-12">
                 Total (after dis)  (<?php echo $currency; ?>):
-               <h4 class="" id="net_amount"> <?php echo number_format(($total_tax+$total_gross)-$total_discount,'2','.',''); ?>
+               <h4 class="" id="net_amount"> <?php echo number_format(($total_tax+$total_gross)-$total_discount,'3','.',''); ?>
                </h4>
-                <input type="hidden" id="net_total_amount_input" name="total_bill" step=".01" value="<?php echo number_format(($total_tax+$total_gross)-$total_discount,'2','.',''); ?>" />
-                <input type="hidden" name="bill_cost" id="bill_cost" class=" text-center" value="<?php echo number_format($total_cost,'2','.',''); ?>" />
+                <input type="hidden" id="net_total_amount_input" name="total_bill" step="any" value="<?php echo number_format(($total_tax+$total_gross)-$total_discount,'3','.',''); ?>" />
+                <input type="hidden" name="bill_cost" id="bill_cost" class=" text-center" value="<?php echo number_format($total_cost,'3','.',''); ?>" />
             
             </div>
             <div class="col-md-4 privious_balance pull-left">
                 Previous (<?php echo $currency; ?>):
-                <input type="number" disabled="disabled" name="privious_balance" id="privious_balance" class="text-center" step=".01" value="0.00" /> <br>
+                <input type="number" disabled="disabled" name="privious_balance" id="privious_balance" class="text-center" step="any" value="0.00" /> <br>
             </div>
         </div>        
         <div class="row total-grid-values">
@@ -109,7 +109,7 @@ if($temp_data != NULL)
                 <div class="form-group">
                     <?php echo form_label('Cash Paid'); ?> (<?php echo $currency; ?>)
                     <?php
-                        $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','id'=>'cash_recieved','name'=>'cash_recieved','value'=>number_format(($total_tax+$total_gross)-$total_discount,'2','.',''),'step'=>'.01','reqiured'=>'');
+                        $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','id'=>'cash_recieved','name'=>'cash_recieved','value'=>number_format(($total_tax+$total_gross)-$total_discount,'3','.',''),'step'=>'any','reqiured'=>'');
                         echo form_input($data);
                     ?>
                 </div>
@@ -118,7 +118,7 @@ if($temp_data != NULL)
                 <div class="form-group">
                     <?php echo form_label('Balance'); ?> (<?php echo $currency; ?>)
                     <?php
-                        $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','value'=>'0','disabled'=>'disabled','name'=>'cash_balance','step'=>'.01','reqiured'=>'');
+                        $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','value'=>'0','disabled'=>'disabled','name'=>'cash_balance','step'=>'any','reqiured'=>'');
                         echo form_input($data);
                     ?>
                 </div>

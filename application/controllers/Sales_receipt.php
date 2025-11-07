@@ -1,7 +1,7 @@
 <?php
 /*
 *  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
+*  @Mail      :   
 *  @Created   : 11th December, 2018
 *  @Developed : Team Spantik Lab
 *  @URL       : www.spantiklab.com

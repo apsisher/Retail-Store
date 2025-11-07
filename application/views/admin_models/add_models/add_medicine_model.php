@@ -109,21 +109,21 @@
 					<div class="form-group">
 						<?php echo form_label('Cost Price:'); ?>
 						<?php				
-								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'purchase','placeholder'=>'e.g 150','step'=>'.01','reqiured'=>'');
+								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'purchase','placeholder'=>'e.g 150','step'=>'any','reqiured'=>'');
 								echo form_input($data);			
 						?>
 					</div>
 					<div class="form-group">
 						<?php echo form_label('Selling Price:'); ?>
 						<?php
-								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'retail','placeholder'=>'e.g 200','step'=>'.01','reqiured'=>'');
+								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'retail','placeholder'=>'e.g 200','step'=>'any','reqiured'=>'');
 								echo form_input($data);
 						?>
 					</div>
 					<div class="form-group">
 						<?php echo form_label('Discount Offer(%)'); ?>
 						<?php
-								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'discount','placeholder'=>'e.g 10','step'=>'.01','reqiured'=>'');
+								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'discount','placeholder'=>'e.g 10','step'=>'any','reqiured'=>'');
 								echo form_input($data);
 						?>
 					</div>
@@ -151,7 +151,7 @@
 					<div class="form-group">
 						<?php echo form_label('Sales Tax (%)'); ?>
 						<?php
-								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'tax','placeholder'=>'e.g 12','step'=>'.01','reqiured'=>'');
+								$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'tax','placeholder'=>'e.g 12','step'=>'any','reqiured'=>'');
 								echo form_input($data);
 						?>
 					</div>

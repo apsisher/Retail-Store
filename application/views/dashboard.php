@@ -3,7 +3,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3><label class="label "><?php echo number_format($cash_in_hand,2,'.','');?></label></h3>
+                    <h3><label class="label "><?php echo number_format($cash_in_hand,3,'.','');?></label></h3>
 
                     <h4 class="paragraph"><?php echo get_phrase('Cash_in_hand'); ?>   <?php echo $currency; ?></h4>
                 </div>
@@ -19,7 +19,7 @@
                     <?php 
                     if($payables < 0)
                     {
-                        $payables = '('.-(number_format($payables,2,'.','')).')';
+                        $payables = '('.-(number_format($payables,3,'.','')).')';
                     }
 
                      ?>
@@ -49,7 +49,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-green ">
                 <div class="inner">
-                    <h3><label class="label"><?php echo number_format($account_recieveble,2,'.','');?></label></h3>
+                    <h3><label class="label"><?php echo number_format($account_recieveble,3,'.','');?></label></h3>
 
                     <h4 class="paragraph">Accounts receivable <?php echo $currency; ?></h4>
                 </div>
@@ -74,7 +74,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-blue">
                 <div class="inner">
-                    <h3><label class="label"><?php  echo number_format($cash_in_bank,2,'.',''); ?></label></h3>
+                    <h3><label class="label"><?php  echo number_format($cash_in_bank,3,'.',''); ?></label></h3>
                     <h4 class="paragraph">Cash in Bank <?php echo $currency; ?></h4>
                 </div>
                 <div class="icon">
@@ -86,7 +86,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3><label class="label"><?php  echo number_format($expense_amount,2,'.',''); ?></label></h3>
+                    <h3><label class="label"><?php  echo number_format($expense_amount,3,'.',''); ?></label></h3>
                     <h4 class="paragraph">Expense This Month <?php echo $currency; ?></h4>
 
                 </div>
@@ -99,7 +99,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3><label class="label"><?php  echo number_format($purchase_amount,2,'.',''); ?></label></h3>
+                    <h3><label class="label"><?php  echo number_format($purchase_amount,3,'.',''); ?></label></h3>
                     <h4 class="paragraph">Purchases This Month <?php echo $currency; ?></h4>
                 </div>
                 <div class="icon">
@@ -115,7 +115,7 @@
                 <div class="inner">
                     <h3><label class="label"><?php echo $product_Count;?></label></h3>
 
-                    <h4 class="paragraph">Products in Stock</h4>
+                    <h4 class="paragraph">Products Qty</h4>
                 </div>
                 <div class="icon">
                     <i class="fa fa-shopping-basket" aria-hidden="true"></i>
@@ -151,7 +151,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-blue ">
                 <div class="inner">
-                    <h3><label class="label"><?php  echo number_format($total_retial_cost,2,'.',''); ?></label></h3>
+                    <h3><label class="label"><?php  echo number_format($total_retial_cost,3,'.',''); ?></label></h3>
 
                     <h4 class="paragraph">Worth of items in stock <?php echo $currency; ?></h4>
                 </div>
@@ -166,7 +166,7 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3><label class="label"><?php  echo number_format($amount_return,2,'.',''); ?></label></h3>
+                    <h3><label class="label"><?php  echo number_format($amount_return,3,'.',''); ?></label></h3>
                     <h4 class="paragraph">Return this month <?php echo $currency; ?></h4>
                 </div>
                 <div class="icon">
@@ -338,7 +338,7 @@
                             {
                         ?>
                                 <li>
-                                    <img width="100" height="100" src="<?php echo base_url(); ?>uploads/customers/<?php echo $single_supplier->cus_picture; ?>" alt="User Image">
+                                    <img style="width:100px; height:100px;" src="<?php echo base_url(); ?>uploads/supplier/<?php echo $single_supplier->cus_picture; ?>" alt="User Image">
                                     <a class="users-list-name" href="#"><?php echo $single_supplier->customer_name; ?></a>
                                     <span class="users-list-date"><?php echo $single_supplier->cus_contact_1; ?></span>
                                 </li>

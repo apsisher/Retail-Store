@@ -134,28 +134,28 @@
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg qty','type'=>'number','name'=>'qty[]','id'=>'quantity_item','step'=>'.01','reqiured'=>'','value'=>$single_item->qty);
+                                          $data = array('class'=>'form-control input-lg qty','type'=>'number','name'=>'qty[]','id'=>'quantity_item','step'=>'any','reqiured'=>'','value'=>$single_item->qty);
                                           echo form_input($data);
                                       ?>
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg price','type'=>'number','name'=>'price[]','id'=>'price','step'=>'.01','reqiured'=>'','value'=>$single_item->price);
+                                          $data = array('class'=>'form-control input-lg price','type'=>'number','name'=>'price[]','id'=>'price','step'=>'any','reqiured'=>'','value'=>$single_item->price);
                                           echo form_input($data);
                                       ?>
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg sales_tax','type'=>'number','name'=>'tax[]','readonly'=>'readonly','id'=>'sales_tax','step'=>'.01','reqiured'=>'','value'=>$single_item->qty*$single_item->tax);
+                                          $data = array('class'=>'form-control input-lg sales_tax','type'=>'number','name'=>'tax[]','readonly'=>'readonly','id'=>'sales_tax','step'=>'any','reqiured'=>'','value'=>$single_item->qty*$single_item->tax);
 
                                           echo form_input($data); 
-                                          $data = array('class'=>'single_tax','type'=>'hidden','name'=>'single_tax[]','id'=>'single_tax','step'=>'.01','reqiured'=>'','value'=>$single_item->tax);
+                                          $data = array('class'=>'single_tax','type'=>'hidden','name'=>'single_tax[]','id'=>'single_tax','step'=>'any','reqiured'=>'','value'=>$single_item->tax);
                                           echo form_input($data);
                                       ?>
                                  </td>   
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg item_Subtotal','type'=>'number','name'=>'subtotal[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>$single_item->price*$single_item->qty);
+                                          $data = array('class'=>'form-control input-lg item_Subtotal','type'=>'number','name'=>'subtotal[]','id'=>'amount','step'=>'any','reqiured'=>'','value'=>$single_item->price*$single_item->qty);
                                           echo form_input($data);
                                       ?>
                                  </td>                           
@@ -185,7 +185,7 @@
                                  <td class=" expense-total-settings">Sub total</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'sub_total','step'=>'.01','value'=>$total_sub,'readonly'=>'readonly','class'=>'subtotal_amount bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'sub_total','step'=>'any','value'=>$total_sub,'readonly'=>'readonly','class'=>'subtotal_amount bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -195,7 +195,7 @@
                                  <td class="expense-total-settings">Tax</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_tax','step'=>'.01','value'=>$total_tax,'readonly'=>'readonly','id'=>'taxfield','class'=>' bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_tax','step'=>'any','value'=>$total_tax,'readonly'=>'readonly','id'=>'taxfield','class'=>' bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -205,7 +205,7 @@
                                  <td class=" expense-total-settings">PO Total </td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'.01','value'=>$total_sub+$total_tax,'readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'any','value'=>$total_sub+$total_tax,'readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -284,9 +284,9 @@
 
     var  taxamount = CalculatedAmountTax(1*price,tax);
 
-    tableRow.find('.sales_tax').val(taxamount.toFixed(2));
+    tableRow.find('.sales_tax').val(taxamount.toFixed(3));
 
-    tableRow.find('.single_tax').val(taxamount.toFixed(2));
+    tableRow.find('.single_tax').val(taxamount.toFixed(3));
 
     calculateSubTotal();
    
@@ -305,7 +305,7 @@
 
     var  taxamount = quantity_item*tax;
 
-    tableRow.find('.sales_tax').val(taxamount.toFixed(2));
+    tableRow.find('.sales_tax').val(taxamount.toFixed(3));
 
     tableRow.find('#amount').val(quantity_item*price);
 
@@ -328,10 +328,10 @@
             totalTaxAmount += tax_Amount;
         });
 
-        $('.subtotal_amount').val(totalGrossAmount.toFixed(2));
-        $('#taxfield').val(totalTaxAmount.toFixed(2));
-        $('.total_bill').val((totalGrossAmount+totalTaxAmount).toFixed(2));
-        $('.balance_due').val((totalGrossAmount+totalTaxAmount).toFixed(2));
+        $('.subtotal_amount').val(totalGrossAmount.toFixed(3));
+        $('#taxfield').val(totalTaxAmount.toFixed(3));
+        $('.total_bill').val((totalGrossAmount+totalTaxAmount).toFixed(3));
+        $('.balance_due').val((totalGrossAmount+totalTaxAmount).toFixed(3));
    }
 
     function CalculatedAmountTax(retail,tax)

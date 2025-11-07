@@ -26,7 +26,7 @@ p{
                 </div>
                 <div class="box-body">
                     <?php
-                    if($order_list != NULL)
+                    if($order_details != NULL)
                     {
                     ?>
                     <div class="col-md-12">
@@ -39,8 +39,8 @@ p{
                         
                     </div>                 
                     <div class="col-md-12">
-                        <div class="col-md-6 text-left">Sales man : <?php echo $order_list[0]->name; ?></div>
-                        <div class="col-md-6 text-right">Date : <?php echo $order_list[0]->add_date; ?></div>
+                        <div class="col-md-6 text-left">Salesman : <?php echo $order_details[0]->salesman_name; ?></div>
+                        <div class="col-md-6 text-right">Date : <?php echo $order_details[0]->date; ?></div>
                     </div>
                     <div class="col-md-12 table-responsive">
                         <table id="" class="table table-hover table-bordered table-striped">
@@ -57,14 +57,18 @@ p{
                                     <td>Rate (<?php echo $company_info[0]->currency; ?>)</td>
                                     <td>Total (<?php echo $company_info[0]->currency; ?>)</td>
                                     <td>Closing Stock</td>
+                                    <td>Lose items</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                            <?php 
                                     
-                                $counter = 1;
-                                $total = 0;
-                                foreach ($order_list as $single_list)
+                            $counter = 1;
+                            $total = 0;
+                            if($sub_order != NULL)
+                            {
+                                
+                                foreach ($sub_order as $single_list)
                                 {
                                     $discount =  (($single_list->price * $single_list->pack) / 100) * $single_list->discount;
                                     
@@ -105,18 +109,69 @@ p{
                                         <td>
                                             
                                         </td>
+                                        <td>
+                                            
+                                        </td>
                                     </tr>
                                     <?php
-                                        }
-                                     ?>
-                                    <tr>
-                                        <td colspan="9"></td>
-                                        <td ><b><?php echo  $total; ?></b></td>
-                                        <td ></td>
-                                    </tr>
+                                    }
+                                }
+                                ?>
                             </tbody>
                         </table>
-                        
+                        <table class="table table-hover table-bordered table-striped">
+                        <?php
+                            $attributes = array('id'=>'order_summary','method'=>'post',);
+                        ?>
+                        <?php echo form_open('order_list/update_summary',$attributes); ?>
+                            <tr>
+                                <th colspan="2">Order Summary (Note all amounts are in <?php echo $company_info[0]->currency; ?>)</th>
+                            </tr>
+                            <tr>
+                              <td>Total amount</td>
+                              <th> <?php echo $order_details[0]->total_amount; ?></th>
+                            </tr> 
+                            <tr>
+                              <td>Cash</td>
+                              <th><input type="number" step="any" name="cash_amount" value="<?php echo $order_details[0]->cash; ?>" class="order-summary-box form-control" /></th>
+                            </tr>  
+                            <tr>
+                              <td>Credit Amount </td>
+                              <th><input type="number" step="any" name="credit_amount" value="<?php echo $order_details[0]->credit_amount; ?>" class="order-summary-box form-control" /></th>
+                            </tr>  
+                            <tr>
+                              <td>Cheque Amount</td>
+                              <th><input type="number" step="any" name="cheque_amount" value="<?php echo $order_details[0]->cheque_amount; ?>" class="order-summary-box form-control" /></th>
+                            </tr>  
+                            <tr>
+                              <td>Schemes</td>
+                              <th><input type="number" step="any" name="schemes" value="<?php echo $order_details[0]->schemes; ?>" class="order-summary-box form-control" /></th>
+                            </tr>  
+                            <tr>
+                              <td>Bank Deposit</td>
+                              <th><input type="number" step="any" name="bank_deposits" value="<?php echo $order_details[0]->bank_deposit; ?>" class="order-summary-box form-control" /></th>
+                            </tr>  
+                            <tr>
+                              <td>Return Stock Value</td>
+                              <th><input type="number" step="any" name="stock_return" value="<?php echo $order_details[0]->return_stock_val; ?>" class="order-summary-box form-control" /></th>
+                            </tr> 
+                            <tr>
+                              <th>Net Total</th>
+                              <th > <?php echo $order_details[0]->total_amount; ?></th>
+                            </tr> 
+                            <tr class="no-print">
+                              <th></th>
+                              <th >
+                              <input type="hidden" step="any" name="order_id" value="<?php echo $order_details[0]->main_order_id; ?>" />
+                                <?php
+                                    $data = array('class'=>'btn btn-info','type' => 'submit','name'=>'btnSubmit','value'=>'true', 'content' => '<i class="fa fa-save" aria-hidden="true"></i> Update');
+                                    echo form_button($data);
+                                ?>
+                              </th>
+                            </tr>     
+                         </table>  
+                            
+                            <?php echo form_close(); ?>         
                         </div>
                         <?php
                             }             

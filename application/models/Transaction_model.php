@@ -1,17 +1,12 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 class Transaction_model extends CI_Model
 {
     //USED TO INSERT SALE AND ACCOUNTS TRANSACTION
     function single_pos_transaction($data)
     {
+        $user_name = $this->session->userdata('user_id');
+
         $this->db->trans_start();
 
         // PASSING ARRAY OF VALUES RECIEVED FROM TEXTBOX TO generate PRINT
@@ -165,7 +160,7 @@ class Transaction_model extends CI_Model
                 'product_name' => $single_item->product_name, 
                 'mg'           => $single_item->mg, 
                 'price'        => $single_item->price, 
-                'discount'        => $single_item->discount, 
+                'discount'     => $single_item->discount, 
                 'purchase'     => $single_item->purchase, 
                 'qty'          => $single_item->qty, 
                 'tax'          => $single_item->tax 
@@ -179,9 +174,15 @@ class Transaction_model extends CI_Model
            // $data['cus_previous'] = $this->Accounts_model->previous_balance($data['cus_id']);
             $data['item_data']    = $result;
             $data['invoice_id']   = $order_id;
-
-        //USED TO CLEAR TEMP INVOICE
-        $this->db->truncate('mp_temp_barcoder_invoice');  
+        
+            //USED TO CLEAR TEMP INVOICE
+            $db_debug = $this->db->db_debug;
+            $this->db->db_debug = FALSE;
+            $this->db->where(['source' => 'pos']);
+            $this->db->where(['agentid' => $user_name['id']]);
+            $this->db->delete('mp_temp_barcoder_invoice');
+            $this->db->db_debug = $db_debug;
+        
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE)
         {

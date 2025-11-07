@@ -53,7 +53,9 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/colorpicker/bootstrap-colorpicker.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/dist/css/custom.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">  
- 
+    
+    
+  <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/dist/css/stellarnav.css">
   <!-- jQuery 2.2.3 -->
   <script src="<?php echo base_url(); ?>assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
   <!-- Bootstrap 3.3.6 -->
@@ -123,6 +125,20 @@
 <!-- ChartJS 1.0.1 -->
 <script src="<?php echo base_url(); ?>assets/plugins/chartjs/Chart.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/dist/js/stellarnav.min.js"></script>
+
+<!-- For All Plug-in Activation & Others -->
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+			jQuery('.stellarnav').stellarNav({
+				theme: 'light',
+				breakpoint: 1440,
+				position: 'left'
+			});
+		});
+</script>
+
 <!-- Page Script -->
 <script>
    //Colorpicker

@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Homepage extends CI_Controller
 {
@@ -115,6 +108,7 @@ class Homepage extends CI_Controller
 		$data['result_sales_arr'] = json_encode($result_sales_this_year_and_total_profit[0]);
 		
 		$data['result_profit_this_year'] = json_encode($result_sales_this_year_and_total_profit[1]);
+		
 		$data['result_expense_this_year'] = json_encode($result_sales_this_year_and_total_profit[2]);
 
 		// DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
@@ -125,6 +119,6 @@ class Homepage extends CI_Controller
 	public function sign_out()
 	{
 		$this->session->unset_userdata('user_id');
-		redirect('/Login');
+		redirect('Login');
 	}
 }

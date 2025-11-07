@@ -245,7 +245,7 @@
                             <div class="form-group">
                                 <?php echo form_label('Sales Tax Per Unit (%) :'); ?>
                                 <?php
-                                        $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'tax','value'=>'0','step'=>'.01','reqiured'=>'');
+                                        $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'tax','value'=>'0','step'=>'any','reqiured'=>'');
                                         echo form_input($data);
                                 ?>
                             </div>

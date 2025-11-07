@@ -83,13 +83,13 @@
                                 <?php echo $single_item->mg.' '.$single_item->unit_type; ?>
                             </td>
                             <td>
-                                <?php echo number_format($single_item->price,'2','.',''); ?>
+                                <?php echo number_format($single_item->price,'3','.',''); ?>
                             </td>
                             <td>
                                 <?php echo $single_item->qty; ?>
                             </td>
                             <td>
-                                <?php echo number_format($subtotal,'2','.','');?>
+                                <?php echo number_format($subtotal,'3','.','');?>
                             </td>
                         </tr>
                     <?php
@@ -107,19 +107,19 @@
                         <tr class="text-left" style="border-bottom: 2px dotted #eee;">
                             <th  style="width:50%">Subtotal (<?php echo $currency;?>):</th>
                             <td class="text-center">
-                                <?php echo number_format($total,'2','.',''); ?>
+                                <?php echo number_format($total,'3','.',''); ?>
                             </td>
                         </tr>
                          <tr  style="border-bottom: 2px dotted #eee;">
                             <th style="width:50%"> Discount (<?php echo $currency;?>):</th>
                             <td class="text-center">
-                              <?php echo number_format($return_data[0]->discount_given,'2','.',''); ?>
+                              <?php echo number_format($return_data[0]->discount_given,'3','.',''); ?>
                             </td>
                         </tr>
                         <?php 
                           $total_after_dis = $total-$return_data[0]->discount_given;
 
-                          $total_after_dis = number_format($total_after_dis,2,'.','');
+                          $total_after_dis = number_format($total_after_dis,3,'.','');
                       ?>  
                      <tr  style="border-bottom: 2px dotted #eee;">
                         <th  style="width:50%">After Discount(
@@ -132,7 +132,7 @@
                         <th style="width:50%">Tax (
                             <?php echo $currency ;?>):</th>
                         <td class="text-center">
-                            <?php echo number_format($total_tax,'2','.',''); ?>
+                            <?php echo number_format($total_tax,'3','.',''); ?>
                         </td>
                     </tr>    
                         <?php
@@ -142,14 +142,14 @@
                         <th>Total (
                             <?php echo $currency ;?>):</th>
                         <td class="text-center">
-                            <?php echo number_format($new_amount,'2','.',''); ?>
+                            <?php echo number_format($new_amount,'3','.',''); ?>
                         </td>
                     </tr>
                                 
                                 <tr  style="border-bottom: 2px dotted #eee;">
                                     <td colspan="7"  >
                                          <b>[ Total bill : <?php echo $total_after_dis; ?> </b> /- ] [ <b>
-                                         <b> Cash return :</b> <?php echo $return_data[0]->total_paid; ?> /- ] [ <b>  Cash balance:</b> <?php echo number_format($total_after_dis-$return_data[0]->total_paid,'2','.',''); ?> /- ]
+                                         <b> Cash return :</b> <?php echo $return_data[0]->total_paid; ?> /- ] [ <b>  Cash balance:</b> <?php echo number_format($total_after_dis-$return_data[0]->total_paid,'3','.',''); ?> /- ]
                                     </td>
                                 </tr>
                               

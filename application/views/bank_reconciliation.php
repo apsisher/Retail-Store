@@ -164,7 +164,7 @@
                             <td></td>
                             <td></td>        
                             <td></td>          
-                            <td><b><?php echo number_format($total_deposit,2,'.',''); ?></b></td>          
+                            <td><b><?php echo number_format($total_deposit,3,'.',''); ?></b></td>          
                      </tr> 
                      <tr class="clickable-row " data-href="">
                         <td colspan="6" class=""><i class="fa fa-minus-circle" aria-hidden="true"></i> 
@@ -205,7 +205,7 @@
                             <td></td>
                             <td></td>        
                             <td></td>          
-                            <td><b><?php echo number_format($total_out,2,'.',''); ?></b></td>          
+                            <td><b><?php echo number_format($total_out,3,'.',''); ?></b></td>          
                      </tr> 
                    
                     <tr class="clickable-row " data-href="">
@@ -241,7 +241,7 @@
                             <td></td>
                             <td></td>        
                             <td></td>          
-                            <td><b><?php echo number_format($total_collection,2,'.',''); ?></b></td>          
+                            <td><b><?php echo number_format($total_collection,3,'.',''); ?></b></td>          
                      </tr> 
                     <tr class="clickable-row " data-href="">
                         <td colspan="5" ><i class="fa fa-minus-circle" aria-hidden="true"></i> Deduct</td>    
@@ -273,7 +273,7 @@
                             <td></td>
                             <td></td>        
                             <td></td>          
-                            <td><b><?php echo number_format($total_deduction,2,'.',''); ?></b></td>          
+                            <td><b><?php echo number_format($total_deduction,3,'.',''); ?></b></td>          
                      </tr> 
                       <tr class="clickable-row " data-href="">
                         <td class="">Balance Per depositor's records <?php echo $period; ?> </td>

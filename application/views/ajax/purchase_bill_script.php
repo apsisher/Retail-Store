@@ -20,13 +20,13 @@ function amend_amount(val,item_id)
             }
         });
 
-    }, 600);
+    }, 1000);
 }
 
 //USE TO CHANGE THE QUANTITY
-function amend_qty(attr,val,item_id)
+function amend_qty(attr,val,item_id,id)
 {       
-   
+         
         clearTimeout(timmer);
         timmer = setTimeout(function callback(){
         //get_search_result(search_item);
@@ -39,17 +39,19 @@ function amend_qty(attr,val,item_id)
             {
                 jQuery('#inner_invoice_area').html(response);
                  $('#barcode_scan_area').val('');
-                 $('#barcode_scan_area').focus();
+                
                  $('.search_result').css("display", "none");
+                
             }
         });
-    }, 600);
+    }, 2000);
+
+ //   $('#purchase_qty').focus();
 }
 
 //USE TO CHANGE THE DSICOUNT
 function amend_discount(val,item_id)
 {       
-
        clearTimeout(timmer);
         timmer = setTimeout(function callback(){
         //get_search_result(search_item);
@@ -61,11 +63,11 @@ function amend_discount(val,item_id)
             {
                 jQuery('#inner_invoice_area').html(response);
                  $('#barcode_scan_area').val('');
-                 $('#barcode_scan_area').focus();
+                // $('#barcode_scan_area').focus();
                  $('.search_result').css("display", "none");
             }
         });
-    }, 600);
+    }, 1000);
 }
 
     //USED TO ADD ITEM IN TEMP TABLE

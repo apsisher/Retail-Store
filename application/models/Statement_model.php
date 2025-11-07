@@ -1,7 +1,7 @@
 <?php
 /*
 *  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
+*  @Mail      :   
 *  @Created   : 11th December, 2018
 *  @Developed : Team Spantik Lab
 *  @URL       : www.spantiklab.com
@@ -167,7 +167,7 @@ class Statement_model extends CI_Model
 
                         }
 
-                        $total_ledger = number_format($total_ledger,'2','.','');
+                        $total_ledger = number_format($total_ledger,'3','.','');
 
                         $form_content .= '<tr class="clickable-row" data-href="'.base_url('prints/transaction/'.$single_ledger->parent_id).'">
                         <td>'.$single_ledger->date.'</td><td>'. $single_ledger->naration.'</td><td>
@@ -230,7 +230,7 @@ class Statement_model extends CI_Model
         }
         else
         {
-            $count_total_amt = number_format($count_total_amt,'2','.','');
+            $count_total_amt = number_format($count_total_amt,'3','.','');
         }
         
         return $count_total_amt;
@@ -342,11 +342,11 @@ class Statement_model extends CI_Model
 
                         $amount = ($amount < 0 ? -$amount  : $amount );
                         $total_revenue = $total_revenue+$amount;
-                        $from_creator .= '<tr><td><h4>'.$single_head->name.'</h4></td><td class="pull-right"><h4>'.number_format($amount,'2','.','').'</h4></td></tr>'; 
+                        $from_creator .= '<tr><td><h4>'.$single_head->name.'</h4></td><td class="pull-right"><h4>'.number_format($amount,'3','.','').'</h4></td></tr>'; 
                     }
                 }
 
-                    $from_creator .= '<tr><td> Total Revenue </td><td class="pull-right"><h4><b>'.number_format($total_revenue,'2','.','').'</b></h4></td></tr>';
+                    $from_creator .= '<tr><td> Total Revenue </td><td class="pull-right"><h4><b>'.number_format($total_revenue,'3','.','').'</b></h4></td></tr>';
             }
         }
         $this->db->select("*");
@@ -368,13 +368,13 @@ class Statement_model extends CI_Model
                     if( $amount != 0)
                     {
                         $total_expense = $total_expense+$amount;
-                        $from_creator .= '<tr><td><h4>'.$single_head->name.'</h4></td><td class="pull-right"><h4>'.number_format($amount,'2','.','').'</h4></td></tr>';
+                        $from_creator .= '<tr><td><h4>'.$single_head->name.'</h4></td><td class="pull-right"><h4>'.number_format($amount,'3','.','').'</h4></td></tr>';
                     }
 
                 }
-                    $from_creator .= '<tr><td> Total Expense </td><td class="pull-right">'.number_format($total_expense,'2','.','').'</td></tr>'; 
+                    $from_creator .= '<tr><td> Total Expense </td><td class="pull-right">'.number_format($total_expense,'3','.','').'</td></tr>'; 
 
-                    $from_creator .= '<tr class="total-income"><td> Total Net Lost / Profit </td><td class="pull-right">'.number_format($total_revenue-$total_expense,'2','.','').'</td></tr>';
+                    $from_creator .= '<tr class="total-income"><td> Total Net Lost / Profit </td><td class="pull-right">'.number_format($total_revenue-$total_expense,'3','.','').'</td></tr>';
             }
         }
 

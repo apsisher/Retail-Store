@@ -22,7 +22,7 @@
           { 
              var net_total = $('#net_total_amount_input').val();      
              var balance =  net_total-val;
-             $('#balance_field').val(balance.toFixed(2));      
+             $('#balance_field').val(balance.toFixed(3));      
 
           }, 100);
     }
@@ -39,16 +39,16 @@
             if(dis_amt > 0)
             {
                var newamt = parseFloat(total_gross_amt-dis_amt)+parseFloat(total_tax_amt); 
-               $('#net_amount').html(newamt.toFixed(2));
-               $('#net_total_amount_input').val(newamt.toFixed(2));
-               $('#cash_recieved').val(newamt.toFixed(2));
+               $('#net_amount').html(newamt.toFixed(3));
+               $('#net_total_amount_input').val(newamt.toFixed(3));
+               $('#cash_recieved').val(newamt.toFixed(3));
             }
             else
             {   
                 var pre_val =  parseFloat(total_gross_amt)+parseFloat(total_tax_amt);
-                 $('#net_amount').html(pre_val.toFixed(2));
-                 $('#net_total_amount_input').val(pre_val.toFixed(2));
-                 $('#cash_recieved').val(pre_val.toFixed(2));
+                 $('#net_amount').html(pre_val.toFixed(3));
+                 $('#net_total_amount_input').val(pre_val.toFixed(3));
+                 $('#cash_recieved').val(pre_val.toFixed(3));
             }
 
           },100)
@@ -60,7 +60,7 @@
         var netamt =  $('#net_total_amount_input').val();
 
         var cash_given = amt-parseFloat(netamt);
-        $('#cash_given_to_customer').html(cash_given.toFixed(2));
+        $('#cash_given_to_customer').html(cash_given.toFixed(3));
     }
 
     //USED TO OPEN CUSTOMER PAYMENT MODEL 

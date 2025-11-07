@@ -110,14 +110,14 @@
                                 <?php echo $invoice_data[$counter]->mg; ?>
                             </td>
                             <td>
-                                 <input type="number" readonly class="form-control no-border edit_product_price set-input-width" value="<?php echo number_format($invoice_data[$counter]->price,'2','.',''); ?>"  name="product_price[]" />
+                                 <input type="number" readonly class="form-control no-border edit_product_price set-input-width" value="<?php echo number_format($invoice_data[$counter]->price,'3','.',''); ?>"  name="product_price[]" />
                             </td>
                              
                             <td>
                                 <input type="number" class="form-control  edit_product_quantity set-input-width" value="<?php echo $invoice_data[$counter]->qty; ?>" id="<?php echo 'quantity'.$invoice_data[$counter]->id; ?>" onkeyup="checkquantity(<?php echo $invoice_data[$counter]->id; ?>,<?php echo $invoice_data[$counter]->qty; ?>,this.value)" name="product_quantity[]">
                             </td> 
                             <td>
-                                 <input type="number" class="form-control no-border edit_product_discount set-input-width"  onkeyup="calculatediscount(<?php echo $invoice_data[$counter]->id; ?>,<?php echo $invoice_data[$counter]->discount; ?>,this.value)" value="<?php echo number_format($invoice_data[$counter]->discount,'2','.',''); ?>"  name="edit_product_discount[]" />
+                                 <input type="number" class="form-control no-border edit_product_discount set-input-width"  onkeyup="calculatediscount(<?php echo $invoice_data[$counter]->id; ?>,<?php echo $invoice_data[$counter]->discount; ?>,this.value)" value="<?php echo number_format($invoice_data[$counter]->discount,'3','.',''); ?>"  name="edit_product_discount[]" />
                             </td>
                             
                         </tr>
@@ -139,7 +139,7 @@
                         
                            <tr>
                                 <th colspan="3">Amount Paid (<?php echo $currency; ?>)</th>  
-                                <td><input type="number" step=".01" style="width:100px; float:right; " class="form-control amountpaid " value="<?php echo $invoice_data[0]->bill_paid; ?>" name="amountpaid"/></td>
+                                <td><input type="number" step="any" style="width:100px; float:right; " class="form-control amountpaid " value="<?php echo $invoice_data[0]->bill_paid; ?>" name="amountpaid"/></td>
                             </tr>
                             <tr>
                                 <td colspan="5"><b>Description(opt)</b><input type="text"  class="form-control edit_description input-lg" placeholder="Plz Provide the reason of edit" value="<?php echo $invoice_data[0]->description; ?>" name="edit_description"/>

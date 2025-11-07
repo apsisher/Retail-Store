@@ -167,8 +167,8 @@
                              <tr>
                                 <th colspan="5">Total</th>
                                  <th ></th>
-                                <th  ><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_bill,'2','.','') ?></th>
-                                <th  colspan="3"><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_paid,'2','.','') ?></th>
+                                <th  ><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_bill,'3','.','') ?></th>
+                                <th  colspan="3"><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_paid,'3','.','') ?></th>
                             </tr>
                         </tfoot>
                     </table>

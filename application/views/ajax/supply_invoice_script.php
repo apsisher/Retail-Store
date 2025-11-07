@@ -47,7 +47,6 @@ function amend_qty(val,item_id)
 //USE TO CHANGE THE DSICOUNT
 function amend_discount(val,item_id)
 {       
-
        clearTimeout(timmer);
         timmer = setTimeout(function callback(){
         //get_search_result(search_item);
@@ -63,7 +62,7 @@ function amend_discount(val,item_id)
                  $('.search_result').css("display", "none");
             }
         });
-    }, 600);
+    }, 1000);
 }
 
     //USED TO ADD ITEM IN TEMP TABLE

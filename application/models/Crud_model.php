@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 class Crud_model extends CI_Model
 {
     public function insert_data($tablename, $arg1)
@@ -963,7 +956,7 @@ class Crud_model extends CI_Model
         }
         else
         {
-            $count_total_amt = number_format($count_total_amt,'2','.','');
+            $count_total_amt = number_format($count_total_amt,'3','.','');
         }
         
         return $count_total_amt;
@@ -1227,7 +1220,7 @@ class Crud_model extends CI_Model
 
             foreach ($result_parts as $single_part) 
             {
-               $sum_amt += $single_part->quantity*$single_part->retail;
+               $sum_amt += $single_part->quantity*$single_part->purchase;
             }
         }
         return $sum_amt;
@@ -1526,18 +1519,39 @@ class Crud_model extends CI_Model
         }
     }
 
+    //USED TO FETCH THE RECORD THROUGH PROVIDED ID AND ATTTRIBUTE NAME FOR ORDERS LIST
+    public function fetch_single_salesmen_orders($id)
+    {
+        $this->db->select("mp_order_list_total.date,mp_order_list_total.id as main_order_id,mp_order_list_total.agentid,mp_order_list_total.salesman_id,mp_order_list_total.total_amount,mp_order_list_total.cash,mp_order_list_total.credit_amount,mp_order_list_total.cheque_amount,mp_order_list_total.schemes,mp_order_list_total.bank_deposit,mp_order_list_total.return_stock_val,mp_salesman.name as salesman_name,mp_users.user_name as agent_name");
+        $this->db->from('mp_order_list_total');
+        //$this->db->join('mp_sales_orderlist', "mp_sales_orderlist.order_id = mp_order_list_total.id");
+        $this->db->join('mp_salesman', "mp_order_list_total.salesman_id = mp_salesman.id");
+        $this->db->join('mp_users', "mp_order_list_total.agentid = mp_users.id");
+        $this->db->where('mp_order_list_total.id', $id);
+
+         $query = $this->db->get();
+  
+        if ($query->num_rows() > 0)
+        {
+            return $query->result();
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 
     //USED TO FETCH THE RECORD THROUGH PROVIDED ID AND ATTTRIBUTE NAME FOR ORDERS LIST
     public function fetch_verified_orders($date1,$date2)
     {
-        $this->db->select("mp_temp_barcoder_order.*,mp_salesman.name as salesman_name,mp_users.user_name as agent_name");
-        $this->db->from('mp_temp_barcoder_order');
-        $this->db->join('mp_salesman', "mp_temp_barcoder_order.salesman_id = mp_salesman.id");
-        $this->db->join('mp_users', "mp_temp_barcoder_order.agentid = mp_users.id");
-        $this->db->where('mp_temp_barcoder_order.status','verified');
-        $this->db->group_by('mp_temp_barcoder_order.add_date');
-        $this->db->group_by('mp_temp_barcoder_order.salesman_id');
-        $this->db->order_by('id','ASC');
+        $this->db->select("mp_order_list_total.date,mp_order_list_total.id as main_order_id,mp_order_list_total.agentid,mp_order_list_total.salesman_id,mp_order_list_total.total_amount,mp_order_list_total.cash,mp_order_list_total.credit_amount,mp_order_list_total.cheque_amount,mp_order_list_total.schemes,mp_order_list_total.bank_deposit,mp_order_list_total.return_stock_val,mp_salesman.name as salesman_name,mp_users.user_name as agent_name");
+        $this->db->from('mp_order_list_total');
+        //$this->db->join('mp_sales_orderlist', "mp_sales_orderlist.order_id = mp_order_list_total.id");
+        $this->db->join('mp_salesman', "mp_order_list_total.salesman_id = mp_salesman.id");
+        $this->db->join('mp_users', "mp_order_list_total.agentid = mp_users.id");
+        $this->db->where('mp_order_list_total.date >=', $date1);
+        $this->db->where('mp_order_list_total.date <=', $date2);
+        $this->db->order_by('mp_order_list_total.id','DESC');
 
          $query = $this->db->get();
   
@@ -1630,17 +1644,15 @@ class Crud_model extends CI_Model
         }
     }
 
-    function fetch_order_picklist($date,$salesman_id)
+    function fetch_order_picklist($order_id)
     {
         
-        $this->db->select("mp_temp_barcoder_order.*,mp_salesman.name,mp_payee.customer_name");
-        $this->db->from('mp_temp_barcoder_order');
-        $this->db->join('mp_salesman',"mp_salesman.id = mp_temp_barcoder_order.salesman_id");
-        $this->db->join('mp_brand',"mp_brand.id = mp_temp_barcoder_order.brand_id");
+        $this->db->select("mp_sales_orderlist.*,mp_payee.customer_name");
+        $this->db->from('mp_sales_orderlist');
+        $this->db->join('mp_brand',"mp_brand.id = mp_sales_orderlist.brand_id");
         $this->db->join('mp_payee',"mp_payee.id =  mp_brand.company_id",'RIGHT');
-        $this->db->where('mp_temp_barcoder_order.add_date',$date); 
-        $this->db->where('mp_temp_barcoder_order.salesman_id',$salesman_id); 
-        $this->db->order_by('mp_temp_barcoder_order.id','DESC'); 
+        $this->db->where('mp_sales_orderlist.order_id',$order_id); 
+        $this->db->order_by('mp_sales_orderlist.id','DESC'); 
         $query = $this->db->get();
         
         if ($query->num_rows() > 0)

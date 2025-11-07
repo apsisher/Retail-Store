@@ -37,9 +37,9 @@
                                         foreach ($table_heading_names_of_coloums as $table_head)
                                         {
                                     ?>
-                                        <th>
+                                        <td>
                                             <?php echo $table_head; ?>
-                                        </th>
+                                        </td>
                                     <?php
                                         }
                                      ?>
@@ -90,15 +90,21 @@
                                         </td>
                                         <td>
                                             <?php
-                                                 echo $obj_product_record_list->retail*
+                                                 echo $obj_product_record_list->purchase*
                                                   $obj_product_record_list->quantity;
 
                                                   $total_worth = $total_worth + (
-                                                  $obj_product_record_list->retail* $obj_product_record_list->quantity);
+                                                  $obj_product_record_list->purchase* $obj_product_record_list->quantity);
                                              ?>
                                         </td>
                                         <td>
+                                            <?php echo $obj_product_record_list->pack_cost; ?>
+                                        </td>
+                                        <td>
                                             <?php echo $obj_product_record_list->whole_sale; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $obj_product_record_list->whole_sale - $obj_product_record_list->pack_cost; ?>
                                         </td>
                                         <td>
                                             <?php echo $obj_product_record_list->tax; ?>

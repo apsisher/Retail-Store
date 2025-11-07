@@ -36,7 +36,7 @@
 				  	<div class="form-group">  
 						<?php
 							echo form_label('Price / Rate :');
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'price','reqiured'=>'','value'=>$single_product[0]->price);
+							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'any','name'=>'price','reqiured'=>'','value'=>$single_product[0]->price);
 							echo form_input($data);	
 						 ?>	
 				    </div>        		  
@@ -59,7 +59,7 @@
 				    <div class="form-group">  
 						<?php
 							echo form_label('Tax (%):');
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'sales_tax','reqiured'=>'','value'=>$single_product[0]->sale_tax);
+							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'any','name'=>'sales_tax','reqiured'=>'','value'=>$single_product[0]->sale_tax);
 							echo form_input($data);	
 						 ?>	
 				    </div> 

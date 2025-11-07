@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title> Shop pro v2.0 | Log in </title>
+    <title> Pencil v3.0 | Log in </title>
 
     <link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url();?>assets/img/favicon.png">
     <!-- Tell the browser to be responsive to screen width -->
@@ -30,7 +30,7 @@
 <body class="hold-transition login-page " style="background-image:url('<?php echo base_url(); ?>uploads/systemimgs/bg-login.png'); background-size:cover; position: relative;">
     <div class="login-box">
         <div class="login-logo">
-            <a href="<?php echo base_url('login'); ?>"> <b>SHOP PRO | V2.0 <h4 >By North Soft, Gilgit.</h4> </b></a>
+            <a href="<?php echo base_url('login'); ?>"> <b>PENCIL | V3.0 </b></a>
             
         </div>
         <div class="login-box-body">
@@ -66,7 +66,7 @@
                     <div class="col-xs-12">
                        <table class="table table-bordered">
 								<tr>
-									<td>Email</td><td>northsoft@gmail.com</td>	
+									<td>Email</td><td>pencil@gmail.com</td>	
 								</tr>
 								<tr>
 									<td>Password</td><td>12345</td>	

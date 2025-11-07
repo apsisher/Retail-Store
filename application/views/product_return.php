@@ -91,7 +91,7 @@
                                             <?php echo $single_item->total_paid; ?>
                                         </td>
                                         <td>
-                                            <?php echo number_format((($single_item->total_bill-$single_item->discount_given)-$single_item->total_paid),'2','.',''); ?>
+                                            <?php echo number_format((($single_item->total_bill-$single_item->discount_given)-$single_item->total_paid),'3','.',''); ?>
                                         </td>
                                         <td>
                                             <div class="btn-group no-print pull pull-right">

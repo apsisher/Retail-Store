@@ -8,18 +8,23 @@
 	{
 	  background-color: <?php echo $THEME_COLOR;  ?>;
 	}
-	.link-settting,
-	.icon-settings
+	.header_row a
 	{
 	  color: <?php echo $THEME_COLOR;  ?>;
 	}
+
 	.btn-info,
 	.bg-aqua,
 	.callout.callout-info,
 	.alert-info,
 	.label-info,
 	.modal-info .modal-body,
-	.header_row
+	.stellarnav.light,
+	.stellarnav.light ul ul,
+	.stellarnav.mobile.light ul,
+	.username-bg,
+	::-webkit-scrollbar,
+	::-webkit-scrollbar-thumb
 	{
 	  background-color: <?php echo $THEME_COLOR;  ?>
 	}

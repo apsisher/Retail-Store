@@ -25,8 +25,8 @@ if($temp_data != NULL)
         $total_cost = $total_cost +  ($single_val->purchase * $single_val->qty); 
 
         $sub_total_tax = $single_val->qty * $single_val->tax;
-        $total_tax = number_format($total_tax + $sub_total_tax,2,'.','');
-        $total_gross = number_format($total_gross+($single_val->price*$single_val->qty),2,'.','');
+        $total_tax = number_format($total_tax + $sub_total_tax,3,'.','');
+        $total_gross = number_format($total_gross+($single_val->price*$single_val->qty),3,'.','');
  ?>
     <tr > 
         <td><?php echo $single_val->product_name.' Packsize '.$single_val->packsize; ?></td>
@@ -62,26 +62,26 @@ if($temp_data != NULL)
             <div class="col-md-4 col-sm-12 col-xs-12">
                   Discount (<?php echo $currency;?>): 
 
-                   <input type="number" onkeyup="checkDiscount(this.value)" name="discountfield" id="discountfield" step=".01" class=" amount-box text-right" value="0" />
+                   <input type="number" onkeyup="checkDiscount(this.value)" name="discountfield" id="discountfield" step="any" class=" amount-box text-right" value="0" />
             </div>
         </div> 
         <div class="row total-grid-values">          
             <div class="col-md-4 col-sm-12 col-xs-12">
                Paid Back (<?php echo $currency ;?>):
-                <input type="number" name="bill_paid" id="amount_recieved" step=".01"  class=" amount-box  text-center" value="<?php echo $total_tax+$total_gross; ?>" />
+                <input type="number" name="bill_paid" id="amount_recieved" step="any"  class=" amount-box  text-center" value="<?php echo $total_tax+$total_gross; ?>" />
                 <input type="hidden" name="total_bill" id="total_bill"  value="<?php echo $total_tax+$total_gross; ?>" />
-                <input type="hidden" name="bill_cost" id="bill_cost" class=" text-center" value="<?php echo number_format($total_cost,'2','.',''); ?>" />        
+                <input type="hidden" name="bill_cost" id="bill_cost" class=" text-center" value="<?php echo number_format($total_cost,'3','.',''); ?>" />        
             </div>
             <div class="col-md-4 privious_balance pull-left">
                  Previous (<?php echo $currency ;?>):
-                <input type="number" disabled="disabled" name="privious_balance" id="privious_balance" class="text-center" step=".01" value="0.00" /> <br>
+                <input type="number" disabled="disabled" name="privious_balance" id="privious_balance" class="text-center" step="any" value="0.00" /> <br>
             </div> 
         </div>        
          <div class="row total_amount_area_row">
                 <div class="col-md-5 total_amount_area pull-right">
                     <div class="margin">
                         <p class="text-center"> Total Amount (<?php echo $currency;?>)</p>
-                        <h3 class="text-center" id="net_total_amount"> <?php echo number_format($total_tax+$total_gross,'2','.',''); ?>
+                        <h3 class="text-center" id="net_total_amount"> <?php echo number_format($total_tax+$total_gross,'3','.',''); ?>
                         </h3>
 
                     </div>
@@ -129,16 +129,16 @@ if($temp_data != NULL)
             {
               // var disamt = (total_gross_amt/100)*dis_amt;
                var newamt = parseFloat(total_gross_amt-dis_amt)+parseFloat(total_tax_amt); 
-               $('#net_total_amount').html(newamt.toFixed(2));
-               $('#amount_recieved').val(newamt.toFixed(2));
-               $('#total_bill').val(newamt.toFixed(2));
+               $('#net_total_amount').html(newamt.toFixed(3));
+               $('#amount_recieved').val(newamt.toFixed(3));
+               $('#total_bill').val(newamt.toFixed(3));
             }
             else
             {   
                  var pre_val =  parseFloat(total_gross_amt)+parseFloat(total_tax_amt);
-                 $('#net_total_amount').html(pre_val.toFixed(2));
-                 $('#amount_recieved').val(pre_val.toFixed(2));
-                 $('#total_bill').val(newamt.toFixed(2));
+                 $('#net_total_amount').html(pre_val.toFixed(3));
+                 $('#amount_recieved').val(pre_val.toFixed(3));
+                 $('#total_bill').val(newamt.toFixed(3));
             }
           },500)
     }

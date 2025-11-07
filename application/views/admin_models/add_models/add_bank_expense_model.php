@@ -92,7 +92,7 @@
 						?>
 						<?php echo form_label('Expense amount:'); ?>(<?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?>)
 						<?php			
-							$data = array('class'=>'form-control input-lg','type'=>'text','step'=>'.01','name'=>'expense_total','placeholder'=>'e.g 250','reqiured'=>'');
+							$data = array('class'=>'form-control input-lg','type'=>'text','step'=>'any','name'=>'expense_total','placeholder'=>'e.g 250','reqiured'=>'');
 							echo form_input($data);			
 						?>
 					</div>

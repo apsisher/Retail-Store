@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 ?>
 <script type="text/javascript">
  function find_available(bank_id)

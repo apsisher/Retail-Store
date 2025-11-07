@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Order_list extends CI_Controller
 {
@@ -37,6 +30,13 @@ class Order_list extends CI_Controller
    'Date',
    'Salesman',
    'Agent',
+   'Total amount',
+   'Cash',
+   'Credit amount',
+   'Cheque amount',
+   'Schemes',
+   'Bank Deposit',
+   'Return Stock Val',
    'Action'
   );
 
@@ -898,11 +898,11 @@ class Order_list extends CI_Controller
     }    
 
     //USED TO UPDATE QUANTITY 
-    //Supply/update_qty
+    //Order_list/update_qty
     function update_qty($requested_qty = '' , $id = '')
     {
 
-        $this->load->model('Pos_transaction_model'); 
+        //$this->load->model('Crud_model'); 
           
         $requested_qty = intval($requested_qty);
 
@@ -961,7 +961,7 @@ class Order_list extends CI_Controller
                 'pack' => $pack
               );
 
-              $this->Pos_transaction_model->general_whole_transaction($new_args,$new_data , $temp_args, $temp_data);
+              $this->Crud_model->edit_record_id($temp_args, $temp_data);
           }
 
       }
@@ -1004,8 +1004,62 @@ class Order_list extends CI_Controller
         $this->load->view('order_list_templete.php',$data);
     }
 
+    //USED TO UPDATE COST AND PRICES OF ORDER LIST
+    //Order_list/update_summary
+    function update_summary()
+    {
+       // DEFINES LOAD CRUDS_MODEL FORM MODELS FOLDERS
+       $this->load->model('Crud_model');
+     
+       //SOURCE ID 1 FOR SUPPLY
+       $user_name = $this->session->userdata('user_id');
+       $cash_amount = html_escape($this->input->post('cash_amount'));
+       $credit_amount = html_escape($this->input->post('credit_amount'));
+       $cheque_amount = html_escape($this->input->post('cheque_amount'));
+       $schemes = html_escape($this->input->post('schemes'));
+       $bank_deposits = html_escape($this->input->post('bank_deposits'));
+       $stock_return = html_escape($this->input->post('stock_return'));
+       $order_id = html_escape($this->input->post('order_id'));
+
+       $data = array(
+         'cash' => $cash_amount,
+         'credit_amount' => $credit_amount,
+         'cheque_amount' => $cheque_amount,
+         'schemes' => $schemes,
+         'bank_deposit' => $bank_deposits,
+         'return_stock_val' => $stock_return
+       );
+
+       $args = array(
+        'table_name'=> 'mp_order_list_total',
+        'id'=> $order_id
+       );
+
+       $result = $this->Crud_model->edit_record_id($args, $data);
+
+      if($result)
+      {
+        $array_msg = array(
+          'msg' => '<i style="color:#fff" class="fa fa-check" aria-hidden="true"></i> Updated successfully',
+          'alert' => 'info'
+        );
+        $this->session->set_flashdata('status', $array_msg);
+      } 
+      else
+      {
+        $array_msg = array(
+          'msg' => '<i style="color:#c00" class="fa fa-exclamation-triangle" aria-hidden="true"></i> Sorry cannot update',
+          'alert' => 'danger'
+        );
+        $this->session->set_flashdata('status', $array_msg);
+      } 
+
+      redirect('order_list/generate_orderlist/'.$order_id);
+    } 
+    
+    
     //USED TO CREATE ORDER INVOICE
-    // Order_list/add_order_invoice
+    //Order_list/add_order_invoice
     public function add_order_invoice()
     {
       // DEFINES LOAD CRUDS_MODEL FORM MODELS FOLDERS
@@ -1014,22 +1068,62 @@ class Order_list extends CI_Controller
       //SOURCE ID 1 FOR SUPPLY
       $user_name = $this->session->userdata('user_id');
       $salesman_id = html_escape($this->input->post('salesman_id'));
-      
-      $data  = array(  
-        'salesman_id'  => $salesman_id, 
-        'status'       => 'verified'
-      );
-
-      $args = array(
-        'agentid'    => $user_name['id'],
-        'status'     => 'temp',
-        'table_name' => 'mp_temp_barcoder_order',
-        'add_date'   => date('Y-m-d')
-      );
-
-      $temp_data = $this->Crud_model->edit_order_list($args,$data);
+      $total_bill = html_escape($this->input->post('total_bill'));
     
-      if($temp_data)
+
+      $this->load->model('Crud_model');
+      $result = $this->Crud_model->fetch_attr_record_by_id('mp_temp_barcoder_order','agentid',$user_name['id']);
+
+    if($result != NULL)
+		{
+      $data  = array(  
+        'date'        => date('Y-m-d'),
+        'salesman_id' => $salesman_id,
+        'agentid' => $user_name['id'], 
+        'total_amount' => $total_bill 
+      );
+
+      $this->db->insert('mp_order_list_total',$data);
+      $order_id = $this->db->insert_id();
+
+      foreach ($result as $single_item) 
+      {
+          $data1  = array(
+          'order_id'     => $order_id, 
+          'opening_stock'   => $single_item->opening_stock, 
+          'barcode'  => $single_item->barcode, 
+          'product_no' => $single_item->product_no, 
+          'product_id'           => $single_item->product_id, 
+          'product_name'        => $single_item->product_name, 
+          'mg'        => $single_item->mg, 
+          'price'     => $single_item->price, 
+          'purchase'          => $single_item->purchase, 
+          'qty'          => $single_item->qty,
+          'discount'          => $single_item->discount,
+          'tax'          => $single_item->tax,
+          'source'          => $single_item->source,
+          'pack'          => $single_item->pack,
+          'brand_id'          => $single_item->brand_id,
+          'status'          => $single_item->status
+          );
+
+          $this->db->insert('mp_sales_orderlist',$data1);
+      } 
+
+       //USED TO CLEAR TEMP INVOICE
+       $db_debug = $this->db->db_debug;
+       $this->db->db_debug = FALSE;
+       $this->db->where(['source' => 'supply']);
+       $this->db->where(['agentid' => $user_name['id']]);
+       $this->db->delete('mp_temp_barcoder_order');
+       $this->db->db_debug = $db_debug;
+
+       //USED TO CLEAR TEMP ODER LIST
+      // $this->db->truncate('mp_temp_barcoder_order');  
+    }
+
+      
+      if($order_id != 0)
       {
         $array_msg = array(
           'msg' => '<i style="color:#fff" class="fa fa-check" aria-hidden="true"></i> Created successfully',
@@ -1178,7 +1272,7 @@ class Order_list extends CI_Controller
 
 }
 //USED TO GENERATE ORDER LIST 
-  function generate_orderlist($date,$salesman)
+  function generate_orderlist($order_id)
   {
       // DEFINES PAGE TITLE
       $data['title'] = 'Order List';
@@ -1192,18 +1286,15 @@ class Order_list extends CI_Controller
       // DEFINES TO LOAD THE CATEGORY LIST FROM DATABSE TABLE mp_Categoty
       $this->load->model('Crud_model');
 
-      $data['salesman_name'] =  $this->Crud_model->fetch_record_by_id('mp_salesman',$salesman);
-      // $data['salesman'] =  $this->Crud_model->fetch_salesman($date1,$date2,$store_id);
-      
-      $data['salesman_id'] = $salesman;
-      
-      $data['date'] = $date;
+      //FETCHING SINGLE ORDER OR PARENT ORDERS DETAILS 
+      $data['order_details'] =  $this->Crud_model->fetch_single_salesmen_orders($order_id);
+
+      //FETCHING SINGLE ORDER OR PARENT ORDERS DETAILS 
+      $data['sub_order'] =  $this->Crud_model->fetch_order_picklist($order_id);
 
       //FETCH THE STORE NAME 
       $data['company_info'] =  $this->Crud_model->fetch_record_by_id('mp_langingpage',1);
-      
-      $data['order_list']  = $this->Crud_model->fetch_order_picklist($date,$salesman);  
-
+            
       // DEFINES GO TO MAIN FOLDER FOND INDEX.PHP  AND PASS THE ARRAY OF DATA TO THIS PAGE
       $this->load->view('main/index.php', $data);
   }

@@ -233,6 +233,16 @@
                             </div>
                             <small>Total weight of packsize ? </small>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <?php echo form_label('Pack Size: '); ?>
+                                <?php
+                                    $data = array('class'=>'form-control input-lg','type'=>'number','readonly'=>'readonly','name'=>'packsize','value'=>$product[0]->packsize,'reqiured'=>'');
+                                    echo form_input($data);
+                                ?>  
+                            </div>
+                            <small>Product Packsize </small>
+                        </div>
                     </div>                    
                 </div>
                 <div class="box-body">
@@ -267,7 +277,7 @@
                                 ?>
                                 <?php echo form_label('Sales Tax (%) Per Unit :'); ?>
                                 <?php
-                                        $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'edit_tax','value'=>$product[0]->tax,'step'=>'.01','reqiured'=>'');
+                                        $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'edit_tax','value'=>$product[0]->tax,'step'=>'any','reqiured'=>'');
                                         echo form_input($data);
                                 ?>
                             </div>

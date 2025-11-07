@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Backup extends CI_Controller
 {
@@ -72,7 +65,9 @@ class Backup extends CI_Controller
         	'mp_town',
         	'mp_units',
         	'mp_users',
-            'mp_vehicle'
+			'mp_vehicle',
+			'mp_order_list_total',
+			'mp_sales_orderlist'
 		);
 
         $this->load->dbutil();

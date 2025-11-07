@@ -87,7 +87,7 @@ if($trans_data != NULL)
                         <div class="form-group">
                             <label><i class="fa fa-check-circle"></i> Amount</label>
                             <?php
-                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','step'=>'.01','placeholder'=>'e.g 4000','value'=>$trans_data[0]->total_paid);
+                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','step'=>'any','placeholder'=>'e.g 4000','value'=>$trans_data[0]->total_paid);
                                 echo form_input($data);
                             ?>
                         </div>                                         

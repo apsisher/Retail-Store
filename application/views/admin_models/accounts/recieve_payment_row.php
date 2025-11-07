@@ -29,7 +29,7 @@
                   <?php echo $single_invoice->total_bill; ?>
              </td>      
              <td>
-                <input type="number" value="0" class="form-control  total_payment_received" name="payments[]" step=".01" /> 
+                <input type="number" value="0" class="form-control  total_payment_received" name="payments[]" step="any" /> 
 
                 <input type="hidden" value="<?php echo $single_invoice->id; ?>" name="invoice_id[]"  />
              </td>   

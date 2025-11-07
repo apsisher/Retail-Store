@@ -173,7 +173,7 @@
                         <tr>
                             <th colspan="6">Total</th>
                              
-                            <th colspan="4" ><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_bill,'2','.','') ?></th>
+                            <th colspan="4" ><?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?> <?php echo number_format($total_bill,'3','.','') ?></th>
                         </tr>
                         <?php 
                             }

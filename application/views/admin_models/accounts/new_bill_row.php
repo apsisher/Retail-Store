@@ -29,7 +29,7 @@
    </td>    
    <td>
         <?php
-            $data = array('class'=>'form-control input-lg amount','type'=>'number','name'=>'amount[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>'0');
+            $data = array('class'=>'form-control input-lg amount','type'=>'number','name'=>'amount[]','id'=>'amount','step'=>'any','reqiured'=>'','value'=>'0');
             echo form_input($data);
         ?>
    </td>                           

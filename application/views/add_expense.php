@@ -160,7 +160,7 @@
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg amount','type'=>'number','name'=>'amount[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>'0');
+                                          $data = array('class'=>'form-control input-lg amount','type'=>'number','name'=>'amount[]','id'=>'amount','step'=>'any','reqiured'=>'','value'=>'0');
                                           echo form_input($data);
                                       ?>
                                  </td>                           
@@ -186,7 +186,7 @@
                                  <td class=" expense-total-settings">Total</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'.01','value'=>'0.00','readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'any','value'=>'0.00','readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -196,7 +196,7 @@
                                  <td class=" expense-total-settings">Paid</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_paid','step'=>'.01','value'=>'0.00','class'=>'total_paid bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_paid','step'=>'any','value'=>'0.00','class'=>'total_paid bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -303,8 +303,8 @@ function calculateSubTotal()
         totalAmount +=  $(this).val() - 0;
     });
 
-    $('.total_bill').val((totalAmount).toFixed(2));
-    $('.total_paid').val((totalAmount).toFixed(2));
+    $('.total_bill').val((totalAmount).toFixed(3));
+    $('.total_paid').val((totalAmount).toFixed(3));
  }  
 
  function clearalllines()

@@ -53,7 +53,7 @@
                         <div class="form-group">
                             <?php echo form_label('Total Amount'); ?>
                              <?php
-                                $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'amount','reqiured'=>'','step'=>'.01');
+                                $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'amount','reqiured'=>'','step'=>'any');
                                 echo form_input($data);
                             ?>
                         </div>                      

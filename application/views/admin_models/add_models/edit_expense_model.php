@@ -106,14 +106,14 @@
 					<div class="form-group">
 						<?php echo form_label('Bill Total:'); ?>(<?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?>)
 						<?php			
-							$data = array('class'=>'form-control input-lg','type'=>'text','step'=>'.01','name'=>'bill_total','value'=>$single_expense[0]->total_bill,'reqiured'=>'');
+							$data = array('class'=>'form-control input-lg','type'=>'text','step'=>'any','name'=>'bill_total','value'=>$single_expense[0]->total_bill,'reqiured'=>'');
 							echo form_input($data);			
 						?>
 					</div>
 					<div class="form-group">
 						<?php echo form_label('Bill Paid:'); ?>(<?php echo $this->db->get_where('mp_langingpage', array('id' => 1))->result_array()[0]['currency'] ;?>)
 						<?php				
-							$data = array('class'=>'form-control input-lg','type'=>'number','id'=>'bill_paid','name'=>'bill_paid','step'=>'.01','value'=>$single_expense[0]->total_paid,'reqiured'=>'');
+							$data = array('class'=>'form-control input-lg','type'=>'number','id'=>'bill_paid','name'=>'bill_paid','step'=>'any','value'=>$single_expense[0]->total_paid,'reqiured'=>'');
 							echo form_input($data);			
 						?>
 					</div>

@@ -26,6 +26,7 @@ function amend_amount(val,item_id)
 //USE TO CHANGE THE QUANTITY
 function amend_qty(val,item_id)
 {       
+    
         clearTimeout(timmer);
         timmer = setTimeout(function callback(){
         //get_search_result(search_item);

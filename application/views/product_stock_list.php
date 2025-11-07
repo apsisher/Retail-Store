@@ -41,7 +41,7 @@
                     					foreach ($product as $single_item)
                                         {
                                             $total_stock =  $total_stock+$single_item->quantity;
-                                            $total_worth = $total_worth+($single_item->quantity*$single_item->retail) ;
+                                            $total_worth = $total_worth+($single_item->quantity*$single_item->purchase);
                     				?>
                                     <tr>
                                         <td>
@@ -78,10 +78,16 @@
                                             <?php echo $single_item->retail; ?>
                                         </td>
                                         <td>
-                                            <?php echo $single_item->quantity*$single_item->retail; ?>
+                                            <?php echo $single_item->quantity*$single_item->purchase; ?>
                                         </td>
                                         <td>
                                             <?php echo $single_item->whole_sale; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_item->pack_cost; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $single_item->whole_sale-$single_item->pack_cost; ?>
                                         </td>
                                         <td>
                                             <?php echo $single_item->tax; ?>

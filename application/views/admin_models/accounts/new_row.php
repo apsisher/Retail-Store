@@ -8,13 +8,13 @@
    </td> 
    <td>
         <?php
-            $data = array('class'=>'form-control input-lg','step'=>'.01','type'=>'number','name'=>'debitamount[]','value'=>'','reqiured'=>'','onkeyup'=>'count_debits()');
+            $data = array('class'=>'form-control input-lg','step'=>'any','type'=>'number','name'=>'debitamount[]','value'=>'','reqiured'=>'','onkeyup'=>'count_debits()');
             echo form_input($data);
         ?>
    </td> 
    <td>
         <?php
-            $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'creditamount[]','step'=>'.01','value'=>'','reqiured'=>'','onkeyup'=>'count_credits()');
+            $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'creditamount[]','step'=>'any','value'=>'','reqiured'=>'','onkeyup'=>'count_credits()');
             echo form_input($data);
         ?>
    </td>

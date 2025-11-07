@@ -86,7 +86,7 @@
                            </td> 
                            <td>
                                 <?php
-                                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'debitamount[]','step'=>'.01','value'=>'0','reqiured'=>'','onkeyup'=>'count_debits()');
+                                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'debitamount[]','step'=>'any','value'=>'0','reqiured'=>'','onkeyup'=>'count_debits()');
                                     echo form_input($data);
                                 ?>
                            </td>
@@ -110,7 +110,7 @@
                            </th>
                            <th>
                                <?php 
-                                 $data = array('type'=>'number','name'=>'total_debit_amount','step'=>'.01','value'=>'0.00','disabled'=>'disabled','class'=>'accounts_total_amount','reqiured'=>'');
+                                 $data = array('type'=>'number','name'=>'total_debit_amount','step'=>'any','value'=>'0.00','disabled'=>'disabled','class'=>'accounts_total_amount','reqiured'=>'');
                                     echo form_input($data);
                                 ?>
                            </th>

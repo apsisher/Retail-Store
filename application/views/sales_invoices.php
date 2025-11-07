@@ -249,7 +249,7 @@
                                 <?php echo $Sales_Record[$i][$counter]->mg.' '.$Sales_Record[$i][$counter]->unit_type; ?>
                             </td>
                             <td>
-                                <?php echo number_format($Sales_Record[$i][$counter]->price,'2','.',''); ?>
+                                <?php echo number_format($Sales_Record[$i][$counter]->price,'3','.',''); ?>
                             </td>
                             <td>
                                 <?php
@@ -267,7 +267,7 @@
                                 <?php echo $Sales_Record[$i][$counter]->discount; ?>
                             </td>
                             <td>
-                                <?php echo number_format($subtotal-$total_discount,'2','.','');?>
+                                <?php echo number_format($subtotal-$total_discount,'3','.','');?>
                             </td>
                         </tr>
                         <?php
@@ -285,13 +285,13 @@
                         <tr class="text-left" style="border-bottom: 2px dotted #eee;">
                             <th  style="width:80%">Subtotal (<?php echo $currency;?>):</th>
                             <td class="text-center">
-                                <?php echo number_format($total,'2','.',''); ?>
+                                <?php echo number_format($total,'3','.',''); ?>
                             </td>
                         </tr>
                          <tr  style="border-bottom: 2px dotted #eee;">
                             <th style="width:80%">Total Discount (<?php echo $currency;?>):</th>
                             <td class="text-center">
-                              <?php echo number_format($invoices_Record[$i]->discount,'2','.',''); ?>
+                              <?php echo number_format($invoices_Record[$i]->discount,'3','.',''); ?>
                             </td>
                         </tr>
                         <?php 
@@ -301,14 +301,14 @@
                         <th  style="width:80%">After Discount(
                             <?php echo $currency;?> ):</th>
                         <td class="text-center">
-                            <?php echo number_format($total_after_dis,2,'.',''); ?>
+                            <?php echo number_format($total_after_dis,3,'.',''); ?>
                         </td>
                     </tr>
                      <tr  style="border-bottom: 2px dotted #eee;">
                         <th style="width:80%">Tax (
                             <?php echo $currency ;?>):</th>
                         <td class="text-center">
-                            <?php echo number_format($total_tax,'2','.',''); ?>
+                            <?php echo number_format($total_tax,'3','.',''); ?>
                         </td>
                     </tr>    
                         <?php
@@ -318,7 +318,7 @@
                         <th>Total (
                             <?php echo $currency ;?>):</th>
                         <td class="text-center">
-                            <?php echo number_format($new_amount,'2','.',''); ?>
+                            <?php echo number_format($new_amount,'3','.',''); ?>
                         </td>
                     </tr>
                     <?php

@@ -1107,3 +1107,21 @@
 
 			 document.body.innerHTML = originalContents;
 		}
+
+		//NEW STOCK PRICES AND RETIALS
+		function set_stock_charges()
+		{
+			retail 		 = $('#stock_item_id option:selected').attr('data-retail');
+			purchase 	 = $('#stock_item_id option:selected').attr('data-purchase');
+			packretail 	 = $('#stock_item_id option:selected').attr('data-packretail');
+			packpurchase = $('#stock_item_id option:selected').attr('data-packpurchase');
+
+			$('#cost').val(purchase);
+
+			$('#retial').val(retail);
+			
+			$('#pack_retail').val(packretail);
+			
+			$('#pack_cost').val(packpurchase);
+			
+		} 

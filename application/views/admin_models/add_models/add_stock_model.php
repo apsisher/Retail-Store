@@ -20,15 +20,22 @@
 				    <label >
 				  		 (<a href="<?php echo base_url('product/add_new_product'); ?>">Add new </a>)
 					</label>
-					<select class="form-control select2" name="item_id" id="item_id" style="width: 100%;" >
-						<option data-packsize="0" value="0"> Select Product </option>
+					<select class="form-control select2" onchange="set_stock_charges()" name="item_id" id="stock_item_id" style="width: 100%;" >
+						<option 
+							data-packsize="0" 
+							data-retail="0" 
+							data-purchase="0" 
+							data-packretail="0" 
+							data-packpurchase="0"
+							value="0"
+							> Select Product </option>
 						<?php
 							if($product_record_list != NULL)
 							{	
 								foreach ($product_record_list as $single_product_list)
 								{	
 							?>
-								    <option data-packsize="<?php echo $single_product_list->packsize; ?>" value="<?php echo $single_product_list->id; ?>" ><?php echo 'Product '.$single_product_list->product_name.' | Weight '.$single_product_list->mg.' '.$single_product_list->unit_type.' | Quantity '.$single_product_list->quantity.
+								    <option  data-retail="<?php echo $single_product_list->retail; ?>" data-purchase="<?php echo $single_product_list->purchase; ?>" data-packretail="<?php echo $single_product_list->whole_sale; ?>" data-packpurchase="<?php echo $single_product_list->pack_cost; ?>" data-packsize="<?php echo $single_product_list->packsize; ?>" value="<?php echo $single_product_list->id; ?>" ><?php echo 'Product '.$single_product_list->product_name.' | Weight '.$single_product_list->mg.' '.$single_product_list->unit_type.' | Quantity '.$single_product_list->quantity.
 								  	  ' | Barcode '.$single_product_list->barcode.
 								  	  ' | Min stock level '.$single_product_list->min_stock; ?> 
 								  	</option>	 
@@ -66,28 +73,28 @@
 				<div class="form-group">
 					<?php echo form_label('Cost per item:'); ?>
 					<?php
-						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'cost','value'=>'0','id'=>'cost');
+						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'cost','value'=>'0','id'=>'cost','step'=>'any');
 						echo form_input($data);
 					?>
                 </div> 
 				<div class="form-group">
 					<?php echo form_label('Retail per item:'); ?>
 					<?php
-						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'retail','value'=>'0','step'=>'.01','id'=>'retial');
+						$data = array('class'=>'form-control input-lg','step'=>'any','type'=>'number','name'=>'retail','value'=>'0','step'=>'any','id'=>'retial');
 						echo form_input($data);
 					?>
                 </div> 
 				<div class="form-group">
 					<?php echo form_label('Pack Retail :'); ?>
 					<?php
-						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pack_retail','value'=>'0','step'=>'.01','id'=>'pack_retail');
+						$data = array('class'=>'form-control input-lg','step'=>'any','type'=>'number','name'=>'pack_retail','value'=>'0','step'=>'any','id'=>'pack_retail');
 						echo form_input($data);
 					?>
                 </div> 
 				<div class="form-group">
 					<?php echo form_label('Pack Cost:'); ?>
 					<?php
-						$data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pack_cost','value'=>'0','id'=>'pack_cost');
+						$data = array('class'=>'form-control input-lg','step'=>'any','type'=>'number','name'=>'pack_cost','value'=>'0','id'=>'pack_cost');
 						echo form_input($data);
 					?>
                 </div>                 

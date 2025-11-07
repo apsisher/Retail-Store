@@ -161,7 +161,7 @@
                                  ?>
                                  <tr class="balancesheet-row">
                                      <td  colspan="4"> Total Deposits </td>
-                                     <td ><b><?php echo number_format($total_deposits,'2','.',''); ?></b></td>
+                                     <td ><b><?php echo number_format($total_deposits,'3','.',''); ?></b></td>
                                  </tr>
                                 </tbody>
                             </table>
@@ -225,7 +225,7 @@
                                  ?>
                                  <tr class="balancesheet-row">
                                      <td  colspan="4"> Total cheques written </td>
-                                     <td ><b><?php echo number_format($total_cheque,'2','.',''); ?></b></td>
+                                     <td ><b><?php echo number_format($total_cheque,'3','.',''); ?></b></td>
                                  </tr>
                                 </tbody>
                             </table>

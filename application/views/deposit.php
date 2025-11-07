@@ -74,7 +74,7 @@
                         <div class="form-group">
                             <label><i class="fa fa-check-circle"></i> Amount</label>
                             <?php
-                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','reqiured'=>'','step'=>'.01','value'=>'0');
+                                $data = array('class'=>'form-control cheque-fields ','type'=>'number','name'=>'amount','reqiured'=>'','step'=>'any','value'=>'0');
                                 echo form_input($data);
                             ?>
                         </div> 

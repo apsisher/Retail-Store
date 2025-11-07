@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Supply extends CI_Controller
 {
@@ -893,7 +886,7 @@ class Supply extends CI_Controller
                   'price' => $result[0]->whole_sale,
                   'purchase' => $result[0]->pack_cost,
                   'qty' => $result[0]->packsize,
-                  'tax' => $tax_amount,
+                  'tax' => $tax_amount*$result[0]->packsize,
                   'agentid' => $user_name['id'],
                   'source' => 'supply',
                   'pack' => 1
@@ -1030,23 +1023,21 @@ class Supply extends CI_Controller
       $user_name = $this->session->userdata('user_id');
 
       $val = intval($val);
-
-      if($val != '' AND $id != '' AND  $val > -1)
+      
+      if($id != '' AND  $val >= 0)
       {
-
         $result = $this->Crud_model->fetch_attr_record_by_userid_source('mp_temp_barcoder_invoice','id',$id,$user_name['id'],'supply');
     
+        $temp_args = array(
+            'table_name' => 'mp_temp_barcoder_invoice',
+            'id' => $id
+          );
 
-              $temp_args = array(
-                  'table_name' => 'mp_temp_barcoder_invoice',
-                  'id' => $id
-                );
+        $temp_data = array(
+          'discount' => $val
+        );
 
-              $temp_data = array(
-                'discount' => $val
-              );
-
-              $this->Crud_model->edit_record_id($temp_args,$temp_data);
+        $this->Crud_model->edit_record_id($temp_args,$temp_data);
       }
          //LOAD FRESH CONTENT AVAILABLE IN TEMP TABLE
           $data['temp_data'] = $this->Crud_model->fetch_userid_source('mp_temp_barcoder_invoice','supply',$user_name['id']);

@@ -1,12 +1,5 @@
 <?php
-/*
-*  @author    : Muhammad Ibrahim
-*  @Mail      : aliibrahimroshan@gmail.com
-*  @Created   : 14th August, 2017
-*  @Developed : Team Gigabyte
-*  @URL       : www.gigabyteltd.net
-*  @Envato    : https://codecanyon.net/user/gb_developers
-*/
+ 
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Product extends CI_Controller
 {
@@ -56,7 +49,9 @@ class Product extends CI_Controller
    'Cost',
    'Retail',
    'Worth',
+   'Cost Pack',
    'Whole sale',
+   'Pft Mrgn(Pack)',
    'Tax(%)',
    'Status',
    'Action'
@@ -142,6 +137,8 @@ class Product extends CI_Controller
      'Retail',
      'Worth',
      'W-sale',
+     'Pack-cost',
+     'Profit margin(Pack)',
      'Tax(%)',
      'Location'
     );

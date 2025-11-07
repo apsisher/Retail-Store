@@ -88,13 +88,13 @@
                            </td> 
                            <td>
                                 <?php
-                                    $data = array('class'=>'form-control input-lg','step'=>'.01','type'=>'number','name'=>'debitamount[]','value'=>'0','reqiured'=>'','onkeyup'=>'count_debits()');
+                                    $data = array('class'=>'form-control input-lg','step'=>'any','type'=>'number','name'=>'debitamount[]','value'=>'0','reqiured'=>'','onkeyup'=>'count_debits()');
                                     echo form_input($data);
                                 ?>
                            </td> 
                            <td>
                                 <?php
-                                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'creditamount[]','step'=>'.01','value'=>'0','reqiured'=>'','onkeyup'=>'count_credits()');
+                                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'creditamount[]','step'=>'any','value'=>'0','reqiured'=>'','onkeyup'=>'count_credits()');
                                     echo form_input($data);
                                 ?>
                            </td>
@@ -115,13 +115,13 @@
                            <th >Totals: </th>
                            <th >
                                <?php 
-                                 $data = array('type'=>'number','name'=>'total_debit_amount','step'=>'.01','value'=>'0.00','readonly'=>'readonly','class'=>'accounts_total_amount','reqiured'=>'');
+                                 $data = array('type'=>'number','name'=>'total_debit_amount','step'=>'any','value'=>'0.00','readonly'=>'readonly','class'=>'accounts_total_amount','reqiured'=>'');
                                     echo form_input($data);
                                 ?>
                            </th>
                            <th>
                                <?php 
-                                 $data = array('type'=>'number','name'=>'total_credit_amount','step'=>'.01','value'=>'0.00','readonly'=>'readonly','class'=>'accounts_total_amount','reqiured'=>'');
+                                 $data = array('type'=>'number','name'=>'total_credit_amount','step'=>'any','value'=>'0.00','readonly'=>'readonly','class'=>'accounts_total_amount','reqiured'=>'');
                                     echo form_input($data);
                                 ?>
                            </th>

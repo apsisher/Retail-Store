@@ -10,33 +10,32 @@
                 </div>
                 <div class="box-body ">
                 <?php
-    				$attributes = array('id'=>'Sales_form','method'=>'post','class'=>'form-horizontal');
+    				$attributes = array('id'=>'sales_form','method'=>'post','class'=>'form-horizontal');
     			?>
-                    <?php echo form_open('sales_report/',$attributes); ?>
-                        <div class="col-md-12 no-print">
-                            <div class="form-group">
-                                <?php echo form_label('Date From:'); ?>
-                                <?php
-                                    $data = array('class'=>'form-control input-lg','type'=>'date','name'=>'date1');
-    								echo form_input($data); 
-                                ?>
-                            </div>
-                            <div class="form-group">
-                                <?php echo form_label('Date To:'); ?>
-                                <?php $data1 = array('class'=>'form-control input-lg','type'=>'date','name'=>'date2');
-    								echo form_input($data1); 
-                                ?>
-                            </div>
-                            <div class="form-group">
-                                <button onclick="printDiv('print-section')" class="btn btn-default btn-flat btn-lg  pull-right "><i class="fa fa-print pull-left"></i> Print Report</button>
-
-                                <?php
-    								$data = array('class'=>'btn btn-info  btn-flat btn-lg pull-right','type' => 'submit','name'=>'btnSubmit','value'=>'true', 'content' => '<i class="fa fa-search" aria-hidden="true"></i> Search sales');
-    								echo form_button($data);
-    							?>
-                            </div>
+                <?php echo form_open('sales_report',$attributes); ?>
+                    <div class="col-md-12 no-print">
+                        <div class="form-group">
+                            <?php echo form_label('Date From:'); ?>
+                            <?php
+                                $data = array('class'=>'form-control input-lg','type'=>'date','name'=>'date1');
+                                echo form_input($data); 
+                            ?>
                         </div>
-                     <?php echo form_close(); ?> 
+                        <div class="form-group">
+                            <?php echo form_label('Date To:'); ?>
+                            <?php $data1 = array('class'=>'form-control input-lg','type'=>'date','name'=>'date2');
+                                echo form_input($data1); 
+                            ?>
+                        </div>
+                        <div class="form-group">
+                            <button onclick="printDiv('print-section')" class="btn btn-default btn-flat btn-lg  pull-right "><i class="fa fa-print pull-left"></i> Print Report</button>
+                            <?php
+                                $data = array('class'=>'btn btn-info  btn-flat btn-lg pull-right','type' => 'submit','name'=>'btnSubmit','value'=>'true', 'content' => '<i class="fa fa-search" aria-hidden="true"></i> Search sales');
+                                echo form_button($data);
+                            ?>
+                        </div>
+                    </div>
+                    <?php echo form_close(); ?> 
                 </div>
                 <div  >
                 <div  class="col-md-12 table-responsive">

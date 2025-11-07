@@ -164,9 +164,9 @@
         </div>
         <div class="row bg-setting-product">
             <div class="col-md-12">
-                <b>Total Purchased Bill : </b>  <?php echo number_format($total_bill,'2','.',''); ?>/-
-                <b>Total Purchased Paid : </b>    <?php echo number_format($total_pur,'2','.',''); ?>/-
-                <b>Total Balances  : </b>   <?php echo number_format($total_bal,'2','.',''); ?>/-
+                <b>Total Purchased Bill : </b>  <?php echo number_format($total_bill,'3','.',''); ?>/-
+                <b>Total Purchased Paid : </b>    <?php echo number_format($total_pur,'3','.',''); ?>/-
+                <b>Total Balances  : </b>   <?php echo number_format($total_bal,'3','.',''); ?>/-
             </div>
         </div>
 </section>

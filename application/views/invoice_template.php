@@ -31,9 +31,9 @@ if($temp_data != NULL)
 
         $sub_total_tax = $single_val->qty * $single_val->tax;
 
-        $total_tax = number_format($total_tax + $sub_total_tax,2,'.','');
+        $total_tax = number_format($total_tax + $sub_total_tax,3,'.','');
 
-        $total_gross = number_format($total_gross+($single_val->price*$single_val->qty),2,'.','');
+        $total_gross = number_format($total_gross+($single_val->price*$single_val->qty),3,'.','');
  ?>
     <tr > 
         <td><?php echo $single_val->product_name; ?></td>
@@ -43,7 +43,7 @@ if($temp_data != NULL)
             <input type="number"  onkeyup="amend_qty(this.value,'<?php echo $single_val->id; ?>')" class="supply_fields" value="<?php echo $single_val->qty; ?>" name="supply_qty" id="supply_qty">
         </td>
         <td>
-            <input type="number" step=".01"  class="supply_fields" value="<?php echo $single_val->discount; ?>" name="discount_offered" onkeyup="amend_discount(this.value,'<?php echo $single_val->id; ?>')" id="discount_offered">
+            <input type="number" step="any"  class="supply_fields" value="<?php echo $single_val->discount; ?>" name="discount_offered" onkeyup="amend_discount(this.value,'<?php echo $single_val->id; ?>')" id="discount_offered">
         </td>
         <td >
             <a onclick="delete_item('<?php echo $single_val->id; ?>')" ><i class="fa fa-trash margin" aria-hidden='true'></i>
@@ -69,22 +69,22 @@ if($temp_data != NULL)
             </div>
             <div class="col-md-4 col-sm-12 col-xs-12">
                 Discount (<?php echo $currency; ?>) :
-               <input type="number" readonly name="discountfield" id="discountfield" step=".01" class=" amount-box text-right" value="<?php echo number_format($total_discount,'2','.',''); ?>" />
+               <input type="number" readonly name="discountfield" id="discountfield" step="any" class=" amount-box text-right" value="<?php echo number_format($total_discount,'3','.',''); ?>" />
             </div>  
         </div> 
         <div class="row total-grid-values">
             <div class="col-md-4 total_amount_area">
                 <div class="">
                     <p > Total Amount (<?php echo $currency; ?>) </p>
-                    <h4  id="net_total_amount"> <?php echo number_format(($total_tax+$total_gross)-$total_discount,'2','.',''); ?>
+                    <h4  id="net_total_amount"> <?php echo number_format(($total_tax+$total_gross)-$total_discount,'3','.',''); ?>
                     </h4>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12 col-xs-12">
                 Bill Paid (<?php echo $currency; ?>):
-                <input type="number" name="bill_paid" id="bill_paid" class="text-center pos_box" step=".01" value="<?php echo ($total_tax+$total_gross)-$total_discount; ?>" />
+                <input type="number" name="bill_paid" id="bill_paid" class="text-center pos_box" step="any" value="<?php echo ($total_tax+$total_gross)-$total_discount; ?>" />
                 <input type="hidden" name="total_bill" id="total_bill"  value="<?php echo $total_tax+$total_gross; ?>" />
-                <input type="hidden" name="bill_cost" id="bill_cost" class=" text-center" value="<?php echo number_format($total_cost,'2','.',''); ?>" />
+                <input type="hidden" name="bill_cost" id="bill_cost" class=" text-center" value="<?php echo number_format($total_cost,'3','.',''); ?>" />
             </div> 
         </div>        
          <div class="row total_amount_area_row">
@@ -140,16 +140,16 @@ if($temp_data != NULL)
             if(dis_amt > 0)
             {
                var newamt = parseFloat(total_gross_amt-dis_amt)+parseFloat(total_tax_amt); 
-               $('#net_total_amount').html(newamt.toFixed(2));
-               $('#bill_paid').val(newamt.toFixed(2));
-               $('#total_bill').val(newamt.toFixed(2));
+               $('#net_total_amount').html(newamt.toFixed(3));
+               $('#bill_paid').val(newamt.toFixed(3));
+               $('#total_bill').val(newamt.toFixed(3));
             }
             else
             {   
                 var pre_val =  parseFloat(total_gross_amt)+parseFloat(total_tax_amt);
-                 $('#net_total_amount').html(pre_val.toFixed(2));
-                 $('#bill_paid').val(pre_val.toFixed(2));
-                 $('#total_bill').val(pre_val.toFixed(2));
+                 $('#net_total_amount').html(pre_val.toFixed(3));
+                 $('#bill_paid').val(pre_val.toFixed(3));
+                 $('#total_bill').val(pre_val.toFixed(3));
             }
           },500)
     }
@@ -160,7 +160,7 @@ if($temp_data != NULL)
         var netamt =  $('#net_total_amount').html();
 
         var cash_given = amt-parseFloat(netamt);
-        $('#cash_given_to_customer').html(cash_given.toFixed(2));
+        $('#cash_given_to_customer').html(cash_given.toFixed(3));
     }
 
     //USED TO OPEN CUSTOMER PAYMENT MODEL 

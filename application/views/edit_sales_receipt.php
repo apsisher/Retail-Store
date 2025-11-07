@@ -65,7 +65,7 @@
                           $data = array('class'=>'form-control input-lg ','type'=>'text','name'=>'billing_address','value'=>$parent_row[0]->billing_address,'reqiured'=>'');
                           echo form_input($data); 
 
-                           $data = array('id'=>'save_available_balance','type'=>'hidden','name'=>'bank_amount','value'=> $bank_balance,'step'=>'.01');  
+                           $data = array('id'=>'save_available_balance','type'=>'hidden','name'=>'bank_amount','value'=> $bank_balance,'step'=>'any');  
                            echo form_input($data);           
                       ?>
                   </div>
@@ -193,28 +193,28 @@
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg qty','type'=>'number','name'=>'qty[]','id'=>'quantity_item','step'=>'.01','reqiured'=>'','value'=>$single_item->qty);
+                                          $data = array('class'=>'form-control input-lg qty','type'=>'number','name'=>'qty[]','id'=>'quantity_item','step'=>'any','reqiured'=>'','value'=>$single_item->qty);
                                           echo form_input($data);
                                       ?>
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg price','type'=>'number','name'=>'price[]','id'=>'price','step'=>'.01','reqiured'=>'','value'=>$single_item->price);
+                                          $data = array('class'=>'form-control input-lg price','type'=>'number','name'=>'price[]','id'=>'price','step'=>'any','reqiured'=>'','value'=>$single_item->price);
                                           echo form_input($data);
                                       ?>
                                  </td>    
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg sales_tax','type'=>'number','name'=>'tax[]','id'=>'sales_tax','step'=>'.01','reqiured'=>'','value'=>$single_item->qty*$single_item->tax);
+                                          $data = array('class'=>'form-control input-lg sales_tax','type'=>'number','name'=>'tax[]','id'=>'sales_tax','step'=>'any','reqiured'=>'','value'=>$single_item->qty*$single_item->tax);
 
                                           echo form_input($data); 
-                                          $data = array('class'=>'single_tax','type'=>'hidden','name'=>'single_tax[]','id'=>'single_tax','step'=>'.01','reqiured'=>'','value'=>$single_item->tax);
+                                          $data = array('class'=>'single_tax','type'=>'hidden','name'=>'single_tax[]','id'=>'single_tax','step'=>'any','reqiured'=>'','value'=>$single_item->tax);
                                           echo form_input($data);
                                       ?>
                                  </td>   
                                  <td>
                                       <?php
-                                          $data = array('class'=>'form-control input-lg item_Subtotal','type'=>'number','name'=>'subtotal[]','id'=>'amount','step'=>'.01','reqiured'=>'','value'=>$single_item->price*$single_item->qty);
+                                          $data = array('class'=>'form-control input-lg item_Subtotal','type'=>'number','name'=>'subtotal[]','id'=>'amount','step'=>'any','reqiured'=>'','value'=>$single_item->price*$single_item->qty);
                                           echo form_input($data);
                                       ?>
                                  </td>                           
@@ -244,7 +244,7 @@
                                  <td class=" expense-total-settings">Sub total</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'sub_total','step'=>'.01','value'=>$total_sub,'readonly'=>'readonly','class'=>'subtotal_amount bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'sub_total','step'=>'any','value'=>$total_sub,'readonly'=>'readonly','class'=>'subtotal_amount bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -254,7 +254,7 @@
                                  <td class="expense-total-settings">Tax</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_tax','step'=>'.01','value'=>$total_tax,'readonly'=>'readonly','id'=>'taxfield','class'=>' bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_tax','step'=>'any','value'=>$total_tax,'readonly'=>'readonly','id'=>'taxfield','class'=>' bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -264,7 +264,7 @@
                                  <td class=" expense-total-settings">Total</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'.01','value'=>$parent_row[0]->total_bill,'readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'total_bill','step'=>'any','value'=>$parent_row[0]->total_bill,'readonly'=>'readonly','class'=>'total_bill bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -274,7 +274,7 @@
                                  <td class=" expense-total-settings">Received</td>
                                  <td>
                                      <?php 
-                                       $data = array('type'=>'number','name'=>'received','step'=>'.01','value'=>$parent_row[0]->total_paid,'class'=>'received bill-total-settings','reqiured'=>'');
+                                       $data = array('type'=>'number','name'=>'received','step'=>'any','value'=>$parent_row[0]->total_paid,'class'=>'received bill-total-settings','reqiured'=>'');
                                           echo form_input($data);
                                       ?>
                                  </td>
@@ -371,9 +371,9 @@
 
     var  taxamount = CalculatedAmountTax(1*price,tax);
 
-    tableRow.find('.sales_tax').val(taxamount.toFixed(2));
+    tableRow.find('.sales_tax').val(taxamount.toFixed(3));
 
-    tableRow.find('.single_tax').val(taxamount.toFixed(2));
+    tableRow.find('.single_tax').val(taxamount.toFixed(3));
 
     calculateSubTotal();
    
@@ -392,7 +392,7 @@
 
     var  taxamount = quantity_item*tax;
 
-    tableRow.find('.sales_tax').val(taxamount.toFixed(2));
+    tableRow.find('.sales_tax').val(taxamount.toFixed(3));
 
     tableRow.find('#amount').val(quantity_item*price);
 
@@ -415,10 +415,10 @@
             totalTaxAmount += tax_Amount;
         });
 
-        $('.subtotal_amount').val(totalGrossAmount.toFixed(2));
-        $('#taxfield').val(totalTaxAmount.toFixed(2));
-        $('.total_bill').val((totalGrossAmount+totalTaxAmount).toFixed(2));
-        $('.received').val((totalGrossAmount+totalTaxAmount).toFixed(2));
+        $('.subtotal_amount').val(totalGrossAmount.toFixed(3));
+        $('#taxfield').val(totalTaxAmount.toFixed(3));
+        $('.total_bill').val((totalGrossAmount+totalTaxAmount).toFixed(3));
+        $('.received').val((totalGrossAmount+totalTaxAmount).toFixed(3));
    }
 
     function CalculatedAmountTax(retail,tax)

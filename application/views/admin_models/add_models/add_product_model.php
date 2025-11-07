@@ -37,7 +37,7 @@
 				  	<div class="form-group">  
 						<?php
 							echo form_label('Fee/Charges :');
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'price','value'=>'0');
+							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'any','name'=>'price','value'=>'0');
 							echo form_input($data);	
 						 ?>	
 				    </div>        
@@ -61,7 +61,7 @@
 						<?php
 							echo form_label('Tax (%):');
 
-							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'.01','name'=>'sales_tax','value'=>'0');
+							$data = array('class'=>'form-control input-lg','type'=>'number','step'=>'any','name'=>'sales_tax','value'=>'0');
 							echo form_input($data);	
 
 							$data = array('type'=>'hidden','name'=>'redirect_link','value'=>$redirect_link);

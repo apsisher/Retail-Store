@@ -25,7 +25,7 @@ if($temp_data != NULL)
 {
     foreach ($temp_data as $single_val) 
     {
-         $total_gross = number_format($total_gross+($single_val->pack_cost*$single_val->qty),2,'.','');
+         $total_gross = number_format($total_gross+($single_val->pack_cost*$single_val->qty),3,'.','');
  
  ?>
     <tr > 
@@ -35,16 +35,16 @@ if($temp_data != NULL)
             <input type="number" onkeyup="amend_qty('qty',this.value,'<?php echo $single_val->id; ?>')" class="supply_fields" value="<?php echo $single_val->qty; ?>" name="supply_qty" id="supply_qty" />  
         </td>
          <td>
-            <input type="number"  disabled step=".01" value="<?php echo $single_val->cost; ?>" name="purchase_cost" id="purchase_cost">
+            <input type="number"  disabled step="any" value="<?php echo $single_val->cost; ?>" name="purchase_cost" id="purchase_cost">
         </td>   
          <td>
-            <input type="number"  disabled  class="supply_fields" step=".01" value="<?php echo $single_val->retail; ?>" name="purchase_retail" id="purchase_retail">
+            <input type="number"  disabled  class="supply_fields" step="any" value="<?php echo $single_val->retail; ?>" name="purchase_retail" id="purchase_retail">
         </td>         
         <td>
-            <input type="number" disabled  class="supply_fields" step=".01" value="<?php echo $single_val->pack_cost; ?>" name="purchase_cost_pack" id="purchase_cost_pack">
+            <input type="number" disabled  class="supply_fields" step="any" value="<?php echo $single_val->pack_cost; ?>" name="purchase_cost_pack" id="purchase_cost_pack">
         </td>
         <td>
-            <input type="number"  disabled  class="supply_fields" step=".01" value="<?php echo $single_val->pack_retail; ?>" name="purchase_cost_pack" id="purchase_cost_pack">  
+            <input type="number"  disabled  class="supply_fields" step="any" value="<?php echo $single_val->pack_retail; ?>" name="purchase_cost_pack" id="purchase_cost_pack">  
         </td>
         <td>
             <input type="date" disabled class="supply_fields" value="<?php echo $single_val->manu_date; ?>" name="manu_date" id="manu_date">  
@@ -72,7 +72,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Grand Total'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pur_total','id'=>'grand_total','step'=>'.01','value'=>$total_gross);
+                    $data = array('class'=>'form-control input-lg','type'=>'number','name'=>'pur_total','id'=>'grand_total','step'=>'any','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div> 
@@ -117,7 +117,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Cash recieved'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','step'=>'.01','value'=>$total_gross);
+                    $data = array('class'=>'form-control input-lg','onkeyup'=>'calculate_func(this.value)','type'=>'number','name'=>'pur_paid','step'=>'any','value'=>$total_gross);
                     echo form_input($data);
                 ?>
             </div>
@@ -127,7 +127,7 @@ if($temp_data != NULL)
             <div class="form-group">
                 <?php echo form_label('Balance'); ?>
                 <?php
-                    $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','name'=>'pur_balance','step'=>'.01','value'=>0);
+                    $data = array('class'=>'form-control input-lg','type'=>'number','id'=>'balance_field','name'=>'pur_balance','step'=>'any','value'=>0);
                     echo form_input($data);
                 ?>
             </div>
